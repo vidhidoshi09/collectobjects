@@ -152,7 +152,8 @@
       flex-direction: column;
     }
 
-    #camera-video { flex: 1; width: 100%; object-fit: cover; display: block; transform: scaleX(-1); }
+    #camera-video { flex: 1; width: 100%; object-fit: cover; display: block; }
+    #camera-video.mirrored { transform: scaleX(-1); } /* selfie/webcam only */
 
     .cam-denied {
       display: none; flex: 1; flex-direction: column;
@@ -661,6 +662,7 @@ function hideAll() {
    STEP 1 — CAMERA
 ════════════════════════════════════════════════ */
 let stream = null;
+let mirrored = false; // true for a camera facing the user, so preview and photo read like a mirror
 
 async function openCamera() {
   const video  = document.getElementById('camera-video');
@@ -676,6 +678,9 @@ async function openCamera() {
       audio: false,
     });
     video.srcObject = stream;
+    // Back camera → true orientation; front camera or laptop webcam (often unreported) → mirror
+    mirrored = stream.getVideoTracks()[0]?.getSettings().facingMode !== 'environment';
+    video.classList.toggle('mirrored', mirrored);
   } catch (err) {
     console.warn('[camera]', err.name);
     video.style.display = 'none';
@@ -696,10 +701,13 @@ function captureFrame() {
   const side = Math.min(vw, vh);
   canvas.width = canvas.height = 1024;
   const ctx = canvas.getContext('2d');
-  // Mirror horizontally to match the flipped preview
   ctx.save();
-  ctx.scale(-1, 1);
-  ctx.drawImage(video, (vw-side)/2, (vh-side)/2, side, side, -1024, 0, 1024, 1024);
+  if (mirrored) {
+    // Match the mirrored preview
+    ctx.scale(-1, 1);
+    ctx.translate(-1024, 0);
+  }
+  ctx.drawImage(video, (vw-side)/2, (vh-side)/2, side, side, 0, 0, 1024, 1024);
   ctx.restore();
   return canvas.toDataURL('image/jpeg', 0.92);
 }
