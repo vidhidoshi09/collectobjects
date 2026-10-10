@@ -178,7 +178,7 @@
     #shutter-btn:active { transform: scale(0.91); background: #ccc; }
 
     /* ═══════════════════════════════════════
-       STEP 2 — SCISSORS CUT ANIMATION
+       STEP 2 — PROCESSING (progress ring)
     ═══════════════════════════════════════ */
     #processing-overlay {
       background: var(--color-bg);
@@ -188,73 +188,36 @@
       gap: 28px;
     }
 
-    /* Image preview with scissors cutting around it */
-    .cut-stage {
+    .progress-ring {
       position: relative;
-      width: 240px;
-      height: 240px;
+      width: 96px;
+      height: 96px;
     }
-
-    /* The photo being "cut" */
-    .cut-stage__img {
+    .progress-ring svg {
       width: 100%; height: 100%;
-      object-fit: cover;
-      border-radius: 20px;
-      display: block;
+      transform: rotate(-90deg);
     }
-
-    /* SVG overlay */
-    .cut-stage__svg {
-      position: absolute;
-      inset: -12px;
-      width: calc(100% + 24px);
-      height: calc(100% + 24px);
-      overflow: visible;
+    .progress-ring__track {
+      fill: none;
+      stroke: var(--color-dot);
+      stroke-width: 6;
     }
-
-    /* Layer 1 — full dashed line always visible from the start */
-    .cut-trace {
+    .progress-ring__bar {
       fill: none;
       stroke: var(--color-accent);
-      stroke-width: 3;
+      stroke-width: 6;
       stroke-linecap: round;
-      stroke-dasharray: 8 7;
-      opacity: 0.35;
-      filter: drop-shadow(0 0 3px rgba(245,167,66,0.4));
+      transition: stroke-dashoffset 0.15s linear;
     }
-
-    /* Layer 2 — bright solid segment that lights up where scissors has been */
-    .cut-done {
-      fill: none;
-      stroke: var(--color-accent);
-      stroke-width: 3.5;
-      stroke-linecap: round;
-      stroke-dasharray: 942;
-      stroke-dashoffset: 942;
-      animation: grow-done 2.8s linear infinite;
-      filter: drop-shadow(0 0 5px rgba(245,167,66,0.7));
-    }
-    @keyframes grow-done {
-      0%   { stroke-dashoffset: 942; opacity: 0; }
-      4%   { stroke-dashoffset: 942; opacity: 1; }
-      95%  { stroke-dashoffset: 0;   opacity: 1; }
-      99%  { stroke-dashoffset: 0;   opacity: 0; }
-      100% { stroke-dashoffset: 942; opacity: 0; }
-    }
-
-    /* Scissors — follows the line, same 2.8s */
-    .cut-scissors {
+    .progress-ring__pct {
       position: absolute;
-      font-size: 22px;
-      line-height: 1;
-      offset-path: path('M22,12 L222,12 Q234,12 234,24 L234,222 Q234,234 222,234 L22,234 Q12,234 12,222 L12,24 Q12,12 22,12 Z');
-      offset-distance: 0%;
-      offset-rotate: auto;
-      animation: scissors-ride 2.8s linear infinite;
-    }
-    @keyframes scissors-ride {
-      0%   { offset-distance: 0%;   }
-      100% { offset-distance: 100%; }
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 20px; font-weight: var(--fw-bold);
+      color: var(--color-text-primary);
     }
 
     .processing-label {
@@ -450,19 +413,14 @@
 
 <!-- STEP 2 — PROCESSING ──────────────────── -->
 <div id="processing-overlay" class="overlay" role="status" aria-label="Removing background">
-  <div class="cut-stage">
-    <img id="proc-preview" class="cut-stage__img" src="" alt="" />
-    <svg class="cut-stage__svg" viewBox="0 0 246 246" xmlns="http://www.w3.org/2000/svg">
-      <!-- faint dashed guide — full line visible from start, scissors follows it -->
-      <path class="cut-trace"
-        d="M22,12 L222,12 Q234,12 234,24 L234,222 Q234,234 222,234 L22,234 Q12,234 12,222 L12,24 Q12,12 22,12 Z" />
-      <!-- bright solid segment lights up where scissors has already cut -->
-      <path class="cut-done"
-        d="M22,12 L222,12 Q234,12 234,24 L234,222 Q234,234 222,234 L22,234 Q12,234 12,222 L12,24 Q12,12 22,12 Z" />
+  <div class="progress-ring">
+    <svg viewBox="0 0 100 100" aria-hidden="true">
+      <circle class="progress-ring__track" cx="50" cy="50" r="44" />
+      <circle class="progress-ring__bar" id="progress-bar" cx="50" cy="50" r="44" />
     </svg>
-    <div class="cut-scissors">✂️</div>
+    <span class="progress-ring__pct" id="progress-pct">0%</span>
   </div>
-  <p class="processing-label">Cutting background…</p>
+  <p class="processing-label" id="processing-label">Removing background</p>
   <p class="processing-sub" id="processing-sub">Just a moment</p>
 </div>
 
@@ -753,11 +711,59 @@ function captureFrame() {
 ════════════════════════════════════════════════ */
 const BG_TIMEOUT_MS = 90_000;
 
-// First use on a phone downloads the model; show its progress on the processing screen
+/* Progress ring on the processing screen.
+   ML Kit reports no progress while cutting, so that phase shows an estimate
+   that eases toward 95% and completes when the result arrives. The one-time
+   model download reports real progress. */
+const progress = (() => {
+  const RING = 2 * Math.PI * 44; // circumference of the r=44 circle
+  const bar = document.getElementById('progress-bar');
+  const pct = document.getElementById('progress-pct');
+  const label = document.getElementById('processing-label');
+  const sub = document.getElementById('processing-sub');
+  bar.style.strokeDasharray = RING;
+
+  let timer = null, startedAt = 0, downloading = false;
+
+  function set(p) {
+    p = Math.max(0, Math.min(100, p));
+    bar.style.strokeDashoffset = RING * (1 - p / 100);
+    pct.textContent = `${Math.round(p)}%`;
+  }
+  function estimate() {
+    startedAt = performance.now();
+    label.textContent = 'Removing background';
+    sub.textContent = 'Just a moment';
+  }
+
+  return {
+    start() {
+      downloading = false;
+      set(0);
+      estimate();
+      clearInterval(timer);
+      timer = setInterval(() => {
+        if (downloading) return;
+        const secs = (performance.now() - startedAt) / 1000;
+        set(95 * (1 - Math.exp(-secs / 1.2)));
+      }, 50);
+    },
+    download(p) {
+      downloading = p < 100;
+      label.textContent = 'Getting ready';
+      sub.textContent = 'Downloading the cutout tool (first time only)';
+      set(p);
+      if (!downloading) { set(0); estimate(); } // download done → cutting starts
+    },
+    finish() {
+      clearInterval(timer);
+      set(100);
+    },
+  };
+})();
+
 if (isNative) {
-  BackgroundRemover.addListener('modelDownload', ({ percent }) => {
-    document.getElementById('processing-sub').textContent = `Getting the cutout tool ready… ${percent}%`;
-  });
+  BackgroundRemover.addListener('modelDownload', ({ percent }) => progress.download(percent));
 }
 
 async function removeBackground(jpegDataURL) {
@@ -827,18 +833,20 @@ async function onShutterPressed() {
   stopCamera();
   hideOverlay('camera-overlay');
 
-  // 2. Show processing overlay — set photo as cut-stage preview
-  document.getElementById('proc-preview').src = jpegDataURL;
-  document.getElementById('processing-sub').textContent = 'Just a moment';
+  // 2. Show processing overlay with the progress ring
+  progress.start();
   showOverlay('processing-overlay');
 
   try {
     // 3. Remove background on the device
     const photo = await removeBackground(jpegDataURL);
+    progress.finish();
+    await new Promise(r => setTimeout(r, 250)); // let 100% register
 
     // 4. Show review screen
     showReview(photo);
   } catch (err) {
+    progress.finish();
     console.error('[bg-removal]', err.message || err);
     alert(`⚠️ Background removal failed (${err.message || 'unknown error'})\n\nShowing original image.`);
     // Fallback: keep the original photo
