@@ -6,8 +6,18 @@ A minimal app for collecting everyday objects as memories. It runs as a web app 
 
 ```bash
 npm install
-npm start   # serves the app at http://localhost:8000
+npm start   # serves the app at http://localhost:8000 and reloads on save
 ```
+
+### Live reload on the Android emulator
+Start the emulator, then run these in two terminals:
+
+```bash
+npm start            # terminal 1: local server
+npm run dev:android  # terminal 2: installs the app pointed at the local server
+```
+
+Saving `index.html` now refreshes the app on the emulator. Press Ctrl+C in terminal 2 when done, then run `npm run sync` before building a normal APK.
 
 ## Android app
 
