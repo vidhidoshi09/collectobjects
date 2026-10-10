@@ -47,10 +47,10 @@ After editing `index.html`, `css/`, `js/` or `assets/`, run `npm run sync` again
 ## Project structure
 
 - `index.html`: markup and the inline icon sprite; loads `vendor/native.js`, then `js/main.js`.
-- `css/app.css`: all styles.
+- `css/app.css`: all styles; tokens follow `design.md` (the design system).
 - `js/`: the app as ES modules.
   - `main.js`: event wiring, Android back button, startup.
-  - `platform.js`: Capacitor and plugins from `window.Native`.
+  - `platform.js`: Capacitor and plugins (App, Filesystem, Dialog, BackgroundRemover) from `window.Native`.
   - `state.js`: shared mutable state (memories, camera stream, pending photo).
   - `storage.js`: files on the device, legacy migration, photo URLs.
   - `grid.js`: grid, detail view, editing, delete.
@@ -58,5 +58,6 @@ After editing `index.html`, `css/`, `js/` or `assets/`, run `npm run sync` again
   - `background.js`: background removal and the progress ring.
   - `review.js`: review and save.
   - `overlays.js`, `format.js`: overlay show/hide, date and HTML helpers.
+  - `ripple.js`, `snackbar.js`, `textfield.js`: Material press ripple, snackbar messages, growing multi-line fields.
 - `src/native.js`: source of `vendor/native.js` (bundled by `npm run vendor`).
 - `assets/`: images. `android/`: the Capacitor Android project. `www/`: build output.

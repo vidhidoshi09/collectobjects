@@ -2,6 +2,7 @@ import { state } from './state.js';
 import { showOverlay, hideOverlay, hideAll } from './overlays.js';
 import { progress, removeBackground } from './background.js';
 import { showReview } from './review.js';
+import { showSnackbar } from './snackbar.js';
 
 /* ════════════════════════════════════════════════
    STEP 1 — CAMERA
@@ -87,8 +88,8 @@ export async function onGalleryPicked(file) {
     jpegDataURL = canvas.toDataURL('image/jpeg', 0.92);
   } catch (err) {
     console.error('[gallery]', err);
-    alert('Could not open that photo. Please try another one.');
     hideAll();
+    showSnackbar("That photo couldn't be opened. Try another one.");
     return;
   }
   await processPhoto(jpegDataURL);
@@ -109,9 +110,9 @@ async function processPhoto(jpegDataURL) {
     showReview(photo);
   } catch (err) {
     progress.finish();
-    console.error('[bg-removal]', err.message || err);
-    alert(`Background removal failed (${err.message || 'unknown error'})\n\nShowing original image.`);
+    console.error('[bg-removal]', err.message || err); // details stay in the log, not the UI
     // Fallback: keep the original photo
     showReview({ base64: jpegDataURL.split(',')[1], mime: 'image/jpeg' });
+    showSnackbar("Couldn't cut this one out, so we kept the full photo.");
   }
 }

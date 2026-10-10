@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Same as values/styles.xml, plus the extra-large (28dp) dialog corners (API 28+) -->
+    <style name="AppTheme.AlertDialog" parent="android:Theme.Material.Light.Dialog.Alert">
+        <item name="android:colorAccent">@color/md_primary</item>
+        <item name="android:colorBackground">@color/md_surface_container_high</item>
+        <item name="android:textColorPrimary">@color/md_on_surface</item>
+        <item name="android:textColorSecondary">@color/md_on_surface_variant</item>
+        <item name="android:dialogCornerRadius">28dp</item>
+    </style>
+</resources>

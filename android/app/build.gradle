@@ -35,6 +35,8 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$androidxAppCompatVersion"
     implementation "androidx.coordinatorlayout:coordinatorlayout:$androidxCoordinatorLayoutVersion"
     implementation "androidx.core:core-splashscreen:$coreSplashScreenVersion"
+    // Material 3 app theme, so native dialogs and sheets wear the brand colors (design.md §2)
+    implementation "com.google.android.material:material:1.12.0"
     implementation project(':capacitor-android')
     // On-device background removal (BackgroundRemoverPlugin)
     implementation "com.google.android.gms:play-services-mlkit-subject-segmentation:16.0.0-beta1"

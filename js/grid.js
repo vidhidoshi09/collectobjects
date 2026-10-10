@@ -1,6 +1,9 @@
 import { loadMemories, saveMemories, deletePhoto, photoSrc } from './storage.js';
 import { fmtShort, esc } from './format.js';
 import { showOverlay, hideOverlay } from './overlays.js';
+import { Dialog } from './platform.js';
+import { showSnackbar } from './snackbar.js';
+import { autoGrow } from './textfield.js';
 
 /* ════════════════════════════════════════════════
    RENDER GRID
@@ -12,7 +15,7 @@ export async function renderGrid() {
 
   document.getElementById('header-date').textContent  = fmtShort(new Date());
   document.getElementById('header-count').textContent =
-    `${memories.length} object${memories.length !== 1 ? 's' : ''} collected`;
+    memories.length === 1 ? '1 memory' : `${memories.length} memories`;
 
   document.body.classList.toggle('is-empty', memories.length === 0);
   if (memories.length === 0) {
@@ -25,7 +28,7 @@ export async function renderGrid() {
         </div>
         <p class="empty__title">Keep the little things</p>
         <p class="empty__sub">Snap an object that matters to you. We'll cut it out and keep it in your collection.</p>
-        <button class="empty__cta" id="empty-cta" type="button">
+        <button class="empty__cta btn btn--filled btn--hero ripple" id="empty-cta" type="button">
           <svg class="icon" aria-hidden="true"><use href="#i-photo-camera"/></svg>
           Create now
         </button>
@@ -35,7 +38,7 @@ export async function renderGrid() {
   }
 
   grid.innerHTML = memories.map((m, i) => `
-    <div class="card" role="button" tabindex="0" aria-label="${esc(m.name)}" data-id="${m.id}">
+    <div class="card ripple" role="button" tabindex="0" aria-label="${esc(m.name)}" data-id="${m.id}">
       <div class="card__img-wrap">
         <img src="${srcs[i]}" alt="${esc(m.name)}" loading="lazy" decoding="async" />
       </div>
@@ -44,9 +47,12 @@ export async function renderGrid() {
     </div>
   `).join('');
 
-  // Tap card → detail view
+  // Tap card (or Enter / Space on it) → detail view
   grid.querySelectorAll('.card').forEach(card => {
     card.addEventListener('click', () => openDetail(card.dataset.id));
+    card.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openDetail(card.dataset.id); }
+    });
   });
 }
 
@@ -65,6 +71,7 @@ async function openDetail(id) {
   document.getElementById('detail-delete').dataset.id = m.id;
 
   showOverlay('detail-overlay');
+  autoGrow(document.getElementById('detail-note'));
 }
 
 // Saves an edited name or story for the memory open in the detail view
@@ -75,7 +82,7 @@ export async function updateOpenMemory(changes) {
     await saveMemories(updated);
   } catch (err) {
     console.error('[storage]', err);
-    alert('Could not save your change. Please try again.');
+    showSnackbar("Couldn't save. Please try again.");
     return;
   }
   renderGrid();
@@ -88,10 +95,28 @@ export function closeDetail() {
   document.getElementById('detail-img').src = '';
 }
 
+// Native Android dialog; in a desktop browser Dialog falls back to window.confirm
+export async function confirmDelete() {
+  const { value } = await Dialog.confirm({
+    title: 'Delete this memory?',
+    message: "This can't be undone.",
+    okButtonTitle: 'Delete',
+    cancelButtonTitle: 'Cancel',
+  });
+  return value;
+}
+
 export async function deleteMemory(id) {
   const removed = loadMemories().find(m => String(m.id) === String(id));
-  await saveMemories(loadMemories().filter(m => m !== removed));
+  try {
+    await saveMemories(loadMemories().filter(m => m !== removed));
+  } catch (err) {
+    console.error('[storage]', err);
+    showSnackbar("Couldn't save. Please try again.");
+    return;
+  }
   if (removed?.file) await deletePhoto(removed.file);
   closeDetail();
-  renderGrid();
+  await renderGrid();
+  showSnackbar('Memory deleted');
 }

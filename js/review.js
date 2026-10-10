@@ -3,6 +3,7 @@ import { loadMemories, saveMemories, writePhoto } from './storage.js';
 import { fmtFull } from './format.js';
 import { showOverlay, hideOverlay, hideAll } from './overlays.js';
 import { renderGrid } from './grid.js';
+import { showSnackbar } from './snackbar.js';
 
 /* ════════════════════════════════════════════════
    STEP 3 — REVIEW
@@ -12,7 +13,6 @@ export function showReview(photo) {
 
   document.getElementById('review-img').src = `data:${photo.mime};base64,${photo.base64}`;
   document.getElementById('name-input').value = '';
-  document.getElementById('name-input').placeholder = 'Name this object…';
 
   hideOverlay('processing-overlay');
   showOverlay('review-overlay');
@@ -25,7 +25,7 @@ export function showReview(photo) {
    STEP 4 — SAVE TO DEVICE
 ════════════════════════════════════════════════ */
 export async function saveMemory() {
-  const name  = document.getElementById('name-input').value.trim() || 'My Object';
+  const name  = document.getElementById('name-input').value.trim() || 'Untitled memory';
   const photo = state.pendingPhoto;
   if (!photo) return;
   state.pendingPhoto = null; // guards against a double tap saving twice
@@ -37,7 +37,7 @@ export async function saveMemory() {
   } catch (err) {
     console.error('[storage]', err);
     state.pendingPhoto = photo;
-    alert('Could not save this memory. Please try again.');
+    showSnackbar("Couldn't save. Please try again.");
     return;
   }
 

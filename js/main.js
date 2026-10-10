@@ -1,9 +1,14 @@
 import { App, isNative } from './platform.js';
 import { initStorage, loadMemories } from './storage.js';
 import { hideOverlay, hideAll } from './overlays.js';
-import { renderGrid, updateOpenMemory, closeDetail, deleteMemory } from './grid.js';
+import { renderGrid, updateOpenMemory, closeDetail, confirmDelete, deleteMemory } from './grid.js';
 import { openCamera, stopCamera, onShutterPressed, onGalleryPicked } from './camera.js';
 import { saveMemory } from './review.js';
+import { initRipples } from './ripple.js';
+import { showSnackbar } from './snackbar.js';
+import { autoGrow } from './textfield.js';
+
+initRipples();
 
 /* ════════════════════════════════════════════════
    EVENTS
@@ -43,12 +48,13 @@ document.getElementById('detail-name').addEventListener('change', e => {
 document.getElementById('detail-name').addEventListener('keydown', e => {
   if (e.key === 'Enter') e.target.blur();
 });
+document.getElementById('detail-note').addEventListener('input', e => autoGrow(e.target));
 document.getElementById('detail-note').addEventListener('change', e => {
   updateOpenMemory({ note: e.target.value.trim() });
 });
-document.getElementById('detail-delete').addEventListener('click', e => {
+document.getElementById('detail-delete').addEventListener('click', async e => {
   const id = e.currentTarget.dataset.id;
-  if (confirm('Remove this memory?')) deleteMemory(id);
+  if (await confirmDelete()) deleteMemory(id);
 });
 
 // Escape closes everything
@@ -76,5 +82,5 @@ initStorage()
   .then(renderGrid)
   .catch(err => {
     console.error('[storage]', err);
-    alert('Could not load your memories.');
+    showSnackbar("Couldn't load your memories. Please restart the app.");
   });
