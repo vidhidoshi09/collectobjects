@@ -21,6 +21,7 @@ export async function openCamera() {
       audio: false,
     });
     video.srcObject = state.stream;
+    video.play().catch(() => {}); // Android WebView can wait for a gesture otherwise
     // Back camera → true orientation; front camera or laptop webcam (often unreported) → mirror
     state.mirrored = state.stream.getVideoTracks()[0]?.getSettings().facingMode !== 'environment';
     video.classList.toggle('mirrored', state.mirrored);

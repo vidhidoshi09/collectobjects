@@ -262,8 +262,10 @@ button { cursor: pointer; user-select: none; }
   color: var(--color-on-surface);
   cursor: pointer; user-select: none;
 }
-.card__img-wrap { width: 100%; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; }
-.card__img-wrap img { width: 90%; height: 90%; object-fit: contain; }
+/* Strict square tile: the image is taken out of flow so tall or wide cut-outs
+   can never stretch the tile (flex items otherwise grow to fit tall images). */
+.card__img-wrap { position: relative; width: 100%; aspect-ratio: 1; }
+.card__img-wrap img { position: absolute; inset: 5%; width: 90%; height: 90%; object-fit: contain; }
 .card__name {
   font: var(--type-title-small); letter-spacing: var(--tracking-title-small);
   text-align: center; margin-top: var(--space-8);
@@ -568,17 +570,57 @@ body.is-empty #fab { display: none !important; }
 /* ═══════════════════════════════════════
    STEP 3 — REVIEW (name + confirm)
 ═══════════════════════════════════════ */
+.review {
+  flex: 1; min-height: 0;
+  display: flex; flex-direction: column; align-items: center;
+  padding: var(--space-8) var(--space-24) calc(var(--space-24) + env(safe-area-inset-bottom, 0px));
+}
+
+/* The object takes the space that's left, so it shrinks (never crops)
+   when the keyboard opens */
 .review-img-wrap {
-  width: 72%; aspect-ratio: 1;
+  flex: 1; min-height: 0; width: 100%;
   display: flex; align-items: center; justify-content: center;
-  margin-bottom: var(--space-32);
+  padding: var(--space-8) 14%;
 }
 .review-img-wrap img { width: 100%; height: 100%; object-fit: contain; }
 
-.review-actions {
-  display: flex; align-items: center; justify-content: flex-end;
-  gap: var(--space-8); width: 100%;
+/* Big centred name with an underline (brand look, not a Material field) */
+.review-name {
+  flex-shrink: 0; width: 100%;
   margin-top: var(--space-24);
+  padding: var(--space-8) var(--space-4) var(--space-12);
+  font: var(--type-title-large); letter-spacing: 0;
+  text-align: center; color: var(--color-on-surface);
+  background: transparent; border: none; border-radius: 0;
+  border-bottom: 2px solid var(--color-outline-variant);
+  outline: none;
+  transition: border-color var(--duration-standard) var(--easing-standard);
+}
+.review-name::placeholder { color: var(--color-outline); }
+.review-name:focus { border-bottom-color: var(--color-primary-container); }
+
+/* Round Retake + orange Save pill */
+.review-actions {
+  flex-shrink: 0; width: 100%;
+  display: flex; align-items: center; justify-content: center; gap: var(--space-16);
+  margin-top: var(--space-24);
+}
+.review-retake {
+  position: relative; overflow: hidden;
+  width: 52px; height: 52px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  border: none; cursor: pointer;
+  background: var(--color-surface-container); color: var(--color-on-surface);
+  font-size: var(--icon-size);
+}
+.review-save {
+  position: relative; overflow: hidden;
+  flex: 1; max-width: 200px; height: 52px; border-radius: 26px;
+  border: none; cursor: pointer;
+  background: var(--color-primary-container); color: var(--color-on-primary-container);
+  font: var(--type-label-large); letter-spacing: var(--tracking-label-large);
+  box-shadow: var(--elevation-1);
 }
 
 /* ═══════════════════════════════════════

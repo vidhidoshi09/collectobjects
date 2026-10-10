@@ -20,6 +20,7 @@ import com.google.mlkit.vision.segmentation.subject.SubjectSegmentation;
 import com.google.mlkit.vision.segmentation.subject.SubjectSegmenter;
 import com.google.mlkit.vision.segmentation.subject.SubjectSegmenterOptions;
 import java.io.ByteArrayOutputStream;
+import java.nio.FloatBuffer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -44,7 +45,7 @@ public class BackgroundRemoverPlugin extends Plugin {
 
     @Override
     public void load() {
-        segmenter = SubjectSegmentation.getClient(new SubjectSegmenterOptions.Builder().enableForegroundBitmap().build());
+        segmenter = SubjectSegmentation.getClient(new SubjectSegmenterOptions.Builder().enableForegroundConfidenceMask().build());
     }
 
     @Override
@@ -135,8 +136,9 @@ public class BackgroundRemoverPlugin extends Plugin {
             .process(InputImage.fromBitmap(bitmap, 0))
             .addOnSuccessListener(result ->
                 executor.execute(() -> {
-                    Bitmap foreground = result.getForegroundBitmap();
-                    Bitmap cropped = foreground == null ? null : cropToContent(foreground);
+                    FloatBuffer mask = result.getForegroundConfidenceMask();
+                    Bitmap foreground = mask == null ? null : softCutout(bitmap, mask);
+                    Bitmap cropped = foreground == null ? null : cropToContent(removeSmallIslands(foreground));
                     if (cropped == null) {
                         call.reject("No object found in the photo");
                         return;
@@ -153,6 +155,83 @@ public class BackgroundRemoverPlugin extends Plugin {
                 Log.e(TAG, "Segmentation failed", e);
                 call.reject("Background removal failed", e);
             });
+    }
+
+    /**
+     * Builds the cut-out from ML Kit's per-pixel confidence instead of its
+     * thresholded foreground bitmap, so edges are soft (partly transparent)
+     * rather than jagged. Confidence below LOW is background, above HIGH is
+     * fully object, and in between fades smoothly.
+     */
+    private static Bitmap softCutout(Bitmap src, FloatBuffer mask) {
+        final float LOW = 0.3f, HIGH = 0.7f;
+        int w = src.getWidth();
+        int h = src.getHeight();
+        int[] pixels = new int[w * h];
+        src.getPixels(pixels, 0, w, 0, 0, w, h);
+        mask.rewind();
+        for (int i = 0; i < pixels.length; i++) {
+            float t = (mask.get() - LOW) / (HIGH - LOW);
+            t = t < 0 ? 0 : (t > 1 ? 1 : t);
+            t = t * t * (3 - 2 * t); // smoothstep
+            pixels[i] = ((int) (t * 255) << 24) | (pixels[i] & 0x00FFFFFF);
+        }
+        Bitmap out = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        out.setPixels(pixels, 0, w, 0, 0, w, h);
+        return out;
+    }
+
+    /**
+     * Keeps the main object: clears detached pieces smaller than 8% of the largest
+     * one (e.g. a stray bit of background the model kept), which would otherwise
+     * widen the crop and shrink the object in its tile.
+     */
+    private static Bitmap removeSmallIslands(Bitmap src) {
+        int w = src.getWidth();
+        int h = src.getHeight();
+        int[] pixels = new int[w * h];
+        src.getPixels(pixels, 0, w, 0, 0, w, h);
+
+        int[] label = new int[w * h]; // 0 = unvisited/transparent, n = component id
+        java.util.ArrayList<Integer> sizes = new java.util.ArrayList<>();
+        sizes.add(0);
+        int[] stack = new int[w * h];
+        for (int start = 0; start < pixels.length; start++) {
+            if (label[start] != 0 || (pixels[start] >>> 24) <= 16) continue;
+            int id = sizes.size();
+            int size = 0, top = 0;
+            stack[top++] = start;
+            label[start] = id;
+            while (top > 0) {
+                int i = stack[--top];
+                size++;
+                int x = i % w, y = i / w;
+                if (x > 0) top = visit(i - 1, id, pixels, label, stack, top);
+                if (x < w - 1) top = visit(i + 1, id, pixels, label, stack, top);
+                if (y > 0) top = visit(i - w, id, pixels, label, stack, top);
+                if (y < h - 1) top = visit(i + w, id, pixels, label, stack, top);
+            }
+            sizes.add(size);
+        }
+        if (sizes.size() <= 2) return src; // zero or one piece: nothing to clean
+
+        int largest = 0;
+        for (int size : sizes) largest = Math.max(largest, size);
+        int minKeep = Math.round(largest * 0.08f);
+        for (int i = 0; i < pixels.length; i++) {
+            if (label[i] != 0 && sizes.get(label[i]) < minKeep) pixels[i] = 0;
+        }
+        Bitmap out = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        out.setPixels(pixels, 0, w, 0, 0, w, h);
+        return out;
+    }
+
+    private static int visit(int i, int id, int[] pixels, int[] label, int[] stack, int top) {
+        if (label[i] == 0 && (pixels[i] >>> 24) > 16) {
+            label[i] = id;
+            stack[top++] = i;
+        }
+        return top;
     }
 
     /** Trims the transparent area around the object, keeping a small margin. Returns null if nothing is left. */
