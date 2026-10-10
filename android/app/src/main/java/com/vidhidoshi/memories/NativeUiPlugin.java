@@ -1,4 +1,4 @@
-package com.memories.app;
+package com.vidhidoshi.memories;
 
 import android.content.DialogInterface;
 import androidx.appcompat.app.AlertDialog;

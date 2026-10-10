@@ -37,8 +37,23 @@ npm run apk           # -> android/app/build/outputs/apk/debug/app-debug.apk
 
 After editing `index.html`, `css/`, `js/` or `assets/`, run `npm run sync` again so the Android project picks up the change.
 
+### Release build for the Play Store
+1. Create an upload key once (keep it and its passwords safe, outside git):
+   `keytool -genkeypair -v -keystore ~/memories-upload.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload`
+2. Create `android/keystore.properties` (git-ignored):
+   ```
+   storeFile=/Users/<you>/memories-upload.jks
+   storePassword=...
+   keyAlias=upload
+   keyPassword=...
+   ```
+3. `npm run release` → `android/app/build/outputs/bundle/release/app-release.aab`, which you upload to Play Console.
+4. Bump `versionCode` (and `versionName`) in `android/app/build.gradle` for every upload.
+
+Store listing text, privacy policy, Data safety answers and graphics are in `store/`.
+
 ### Notes
-- App ID: `com.memories.app` (set in `capacitor.config.json`).
+- App ID: `com.vidhidoshi.memories` (set in `capacitor.config.json`).
 - The camera uses the `CAMERA` permission. Android asks for it the first time you tap **+**.
 - The hardware back button closes the open screen. On the grid, it exits the app.
 - Memories are saved as files in the app's private storage on the device (`memories.json` plus `photos/`). Uninstalling the app deletes them.

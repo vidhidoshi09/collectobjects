@@ -2,7 +2,7 @@
   "name": "memories",
   "version": "1.0.0",
   "private": true,
-  "description": "Memories — object collection app (web + Android via Capacitor)",
+  "description": "Memories \u2014 object collection app (web + Android via Capacitor)",
   "scripts": {
     "start": "npm run vendor && browser-sync start --server --files \"index.html, css/**, js/**, assets/**\" --port 8000 --no-open --no-notify --no-ui",
     "vendor": "node scripts/build-vendor.js",
@@ -11,7 +11,8 @@
     "open:android": "cap open android",
     "apk": "npm run sync && cd android && ./gradlew assembleDebug",
     "dev:android": "cap run android --live-reload --host localhost --port 8000 --forwardPorts 8000:8000",
-    "postinstall": "npm run vendor"
+    "postinstall": "npm run vendor",
+    "release": "npm run sync && cd android && ./gradlew bundleRelease"
   },
   "dependencies": {
     "@capacitor/android": "^8.5.3",
