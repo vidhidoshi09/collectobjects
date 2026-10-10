@@ -1,7 +1,7 @@
 import { loadMemories, saveMemories, deletePhoto, photoSrc } from './storage.js';
 import { fmtShort, esc } from './format.js';
 import { showOverlay, hideOverlay } from './overlays.js';
-import { Dialog } from './platform.js';
+import { NativeUi, isNative } from './platform.js';
 import { showSnackbar } from './snackbar.js';
 import { autoGrow } from './textfield.js';
 
@@ -95,15 +95,16 @@ export function closeDetail() {
   document.getElementById('detail-img').src = '';
 }
 
-// Native Android dialog; in a desktop browser Dialog falls back to window.confirm
+// Native Material 3 dialog on Android; plain confirm() in a desktop browser
 export async function confirmDelete() {
-  const { value } = await Dialog.confirm({
-    title: 'Delete this memory?',
-    message: "This can't be undone.",
-    okButtonTitle: 'Delete',
-    cancelButtonTitle: 'Cancel',
+  const title = 'Delete this memory?';
+  const message = "This can't be undone.";
+  if (!isNative) return confirm(`${title}\n\n${message}`);
+
+  const { confirmed } = await NativeUi.confirm({
+    title, message, confirmLabel: 'Delete', cancelLabel: 'Cancel', destructive: true,
   });
-  return value;
+  return confirmed;
 }
 
 export async function deleteMemory(id) {

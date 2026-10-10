@@ -47,7 +47,7 @@ After editing `index.html`, `css/`, `js/` or `assets/`, run `npm run sync` again
 ## Project structure
 
 - `index.html`: markup and the inline icon sprite; loads `vendor/native.js`, then `js/main.js`.
-- `css/app.css`: all styles; tokens follow `design.md` (the design system).
+- `css/app.css`: all styles; tokens follow `design/tokens.json` (design system: `design.md`).
 - `js/`: the app as ES modules.
   - `main.js`: event wiring, Android back button, startup.
   - `platform.js`: Capacitor and plugins (App, Filesystem, Dialog, BackgroundRemover) from `window.Native`.

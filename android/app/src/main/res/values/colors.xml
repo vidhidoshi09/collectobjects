@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Brand colors as Material 3 roles (design.md §2) -->
+<!-- Brand colors as Material 3 roles (design/tokens.json) -->
 <resources>
     <color name="md_primary">#875300</color>
     <color name="md_on_primary">#FFFFFF</color>
     <color name="md_primary_container">#F5A742</color>
     <color name="md_on_primary_container">#683F00</color>
     <color name="md_surface">#EDECEA</color>
+    <color name="md_surface_container_lowest">#FFFFFF</color>
+    <color name="md_surface_container_low">#F2F1EF</color>
+    <color name="md_surface_container">#E6E3E0</color>
     <color name="md_surface_container_high">#F7F6F4</color>
+    <color name="md_surface_container_highest">#E6E3E0</color>
+    <color name="md_outline_variant">#CCC8C2</color>
     <color name="md_on_surface">#111111</color>
     <color name="md_on_surface_variant">#636363</color>
     <color name="md_outline">#8A8580</color>

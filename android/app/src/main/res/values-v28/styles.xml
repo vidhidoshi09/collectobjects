@@ -8,5 +8,6 @@
         <item name="android:textColorPrimary">@color/md_on_surface</item>
         <item name="android:textColorSecondary">@color/md_on_surface_variant</item>
         <item name="android:dialogCornerRadius">28dp</item>
+        <item name="android:fontFamily">@font/nunito_sans</item>
     </style>
 </resources>
