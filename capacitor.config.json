@@ -1,0 +1,8 @@
+{
+  "appId": "com.memories.app",
+  "appName": "Memories",
+  "webDir": "www",
+  "android": {
+    "backgroundColor": "#edecea"
+  }
+}

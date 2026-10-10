@@ -594,6 +594,7 @@ function openDetail(id) {
 
 function closeDetail() {
   hideOverlay('detail-overlay');
+  document.getElementById('fab').style.display = 'flex';
   document.getElementById('detail-img').src = '';
 }
 
@@ -827,6 +828,19 @@ document.getElementById('detail-delete').addEventListener('click', e => {
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') { stopCamera(); hideAll(); }
 });
+
+// Android hardware back button (only present when running as the native app)
+const CapApp = window.Capacitor?.Plugins?.App;
+if (CapApp) {
+  CapApp.addListener('backButton', () => {
+    const isActive = id => document.getElementById(id).classList.contains('active');
+    if (isActive('processing-overlay')) return; // let background removal finish
+    if (isActive('review-overlay'))  return document.getElementById('review-close').click();
+    if (isActive('camera-overlay'))  return document.getElementById('camera-close').click();
+    if (isActive('detail-overlay'))  return document.getElementById('detail-close').click();
+    CapApp.exitApp();
+  });
+}
 
 
 /* ════════════════════════════════════════════════
