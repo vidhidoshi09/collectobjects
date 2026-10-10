@@ -4,20 +4,24 @@
   "private": true,
   "description": "Memories — object collection app (web + Android via Capacitor)",
   "scripts": {
-    "start": "browser-sync start --server --files \"index.html, assets/**\" --port 8000 --no-open --no-notify --no-ui",
-    "build": "node scripts/build-web.js",
+    "start": "npm run vendor && browser-sync start --server --files \"index.html, assets/**\" --port 8000 --no-open --no-notify --no-ui",
+    "vendor": "node scripts/build-vendor.js",
+    "build": "npm run vendor && node scripts/build-web.js",
     "sync": "npm run build && cap sync android",
     "open:android": "cap open android",
     "apk": "npm run sync && cd android && ./gradlew assembleDebug",
-    "dev:android": "cap run android --live-reload --host localhost --port 8000 --forwardPorts 8000:8000"
+    "dev:android": "cap run android --live-reload --host localhost --port 8000 --forwardPorts 8000:8000",
+    "postinstall": "npm run vendor"
   },
   "dependencies": {
     "@capacitor/android": "^8.5.3",
     "@capacitor/app": "^8.1.2",
-    "@capacitor/core": "^8.5.3"
+    "@capacitor/core": "^8.5.3",
+    "@capacitor/filesystem": "^8.1.4"
   },
   "devDependencies": {
     "@capacitor/cli": "^8.5.3",
-    "browser-sync": "^3.0.4"
+    "browser-sync": "^3.0.4",
+    "esbuild": "^0.25.12"
   }
 }

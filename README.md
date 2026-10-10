@@ -41,4 +41,5 @@ After editing `index.html` or `assets/`, run `npm run sync` again so the Android
 - App ID: `com.memories.app` (set in `capacitor.config.json`).
 - The camera uses the `CAMERA` permission. Android asks for it the first time you tap **+**.
 - The hardware back button closes the open screen. On the grid, it exits the app.
-- Memories are stored in the app's local storage on the device. Uninstalling the app deletes them.
+- Memories are saved as files in the app's private storage on the device (`memories.json` plus `photos/`). Uninstalling the app deletes them.
+- Background removal runs on the device with Google ML Kit (`BackgroundRemoverPlugin.java`); no API key or internet service. The model is a Google Play services module: Play Store installs download it with the app, otherwise it downloads on first use. In a desktop browser (`npm start`) the photo is kept as is.

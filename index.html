@@ -494,22 +494,95 @@
 
 <canvas id="capture-canvas" style="display:none"></canvas>
 
+<script src="vendor/native.js"></script>
 <script>
 'use strict';
 
+const { Capacitor, App, Filesystem, Directory, Encoding, BackgroundRemover } = window.Native;
+const isNative = Capacitor.isNativePlatform();
+
 /* ════════════════════════════════════════════════
-   STORAGE
+   STORAGE — app's private files on the device
+   memories.json holds the list; photos/<id>.png holds each cut-out.
+   (In a desktop browser, Capacitor keeps these in IndexedDB instead.)
 ════════════════════════════════════════════════ */
-const STORAGE_KEY = 'memories_collection';
+const INDEX_FILE  = 'memories.json';
+const PHOTO_DIR   = 'photos';
+const LEGACY_KEY  = 'memories_collection'; // old localStorage storage, migrated once
+
+let memories = [];               // in-memory copy of memories.json
+const photoSrcCache = new Map(); // file path → displayable URL
 
 function loadMemories() {
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
-  catch { return []; }
+  return memories;
 }
 
-function saveMemories(arr) {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(arr)); }
-  catch (e) { console.warn('localStorage full:', e); }
+async function saveMemories(arr) {
+  await Filesystem.writeFile({
+    path: INDEX_FILE, directory: Directory.Data, encoding: Encoding.UTF8,
+    data: JSON.stringify(arr),
+  });
+  memories = arr;
+}
+
+async function readIndexFile() {
+  try {
+    await Filesystem.stat({ path: INDEX_FILE, directory: Directory.Data });
+  } catch {
+    return null; // first launch
+  }
+  const { data } = await Filesystem.readFile({ path: INDEX_FILE, directory: Directory.Data, encoding: Encoding.UTF8 });
+  return JSON.parse(data);
+}
+
+async function writePhoto(id, base64, mime) {
+  const path = `${PHOTO_DIR}/${id}.${mime === 'image/jpeg' ? 'jpg' : 'png'}`;
+  await Filesystem.writeFile({ path, data: base64, directory: Directory.Data, recursive: true });
+  return path;
+}
+
+async function deletePhoto(path) {
+  photoSrcCache.delete(path);
+  try { await Filesystem.deleteFile({ path, directory: Directory.Data }); }
+  catch (e) { console.warn('[storage] could not delete', path, e); }
+}
+
+// Bundled samples have `image` (an asset path); captured memories have `file`.
+async function photoSrc(m) {
+  if (!m.file) return m.image;
+  if (photoSrcCache.has(m.file)) return photoSrcCache.get(m.file);
+
+  let src;
+  if (isNative) {
+    const { uri } = await Filesystem.getUri({ path: m.file, directory: Directory.Data });
+    src = Capacitor.convertFileSrc(uri);
+  } else {
+    const { data } = await Filesystem.readFile({ path: m.file, directory: Directory.Data });
+    const mime = m.file.endsWith('.jpg') ? 'image/jpeg' : 'image/png';
+    src = data instanceof Blob ? URL.createObjectURL(data) : `data:${mime};base64,${data}`;
+  }
+  photoSrcCache.set(m.file, src);
+  return src;
+}
+
+// Moves memories saved by older versions (base64 images in localStorage) into files.
+async function migrateLegacy() {
+  let legacy;
+  try { legacy = JSON.parse(localStorage.getItem(LEGACY_KEY) || 'null'); }
+  catch { legacy = null; }
+  if (!Array.isArray(legacy) || legacy.length === 0) return null;
+
+  const migrated = [];
+  for (const m of legacy) {
+    const match = /^data:(image\/[a-z]+);base64,(.*)$/.exec(m.image || '');
+    if (match) {
+      const file = await writePhoto(m.id, match[2], match[1]);
+      migrated.push({ id: m.id, name: m.name, date: m.date, file });
+    } else {
+      migrated.push(m);
+    }
+  }
+  return migrated;
 }
 
 /* ════════════════════════════════════════════════
@@ -528,17 +601,23 @@ const SEED = [
   { id:4, name:'Rubber Duck',  date:'May 13, 2026', image:'assets/duck.png' },
 ];
 
-function initializeIfEmpty() {
-  if (loadMemories().length === 0) {
-    saveMemories(SEED);
+async function initStorage() {
+  const existing = await readIndexFile();
+  if (existing) {
+    memories = existing;
+    return;
   }
+  const migrated = await migrateLegacy();
+  await saveMemories(migrated || SEED.map(m => ({ ...m })));
+  if (migrated) localStorage.removeItem(LEGACY_KEY);
 }
 
 /* ════════════════════════════════════════════════
    RENDER GRID
 ════════════════════════════════════════════════ */
-function renderGrid() {
+async function renderGrid() {
   const memories = loadMemories().slice().reverse();
+  const srcs = await Promise.all(memories.map(photoSrc));
   const grid = document.getElementById('grid');
 
   document.getElementById('header-date').textContent  = fmtShort(new Date());
@@ -555,10 +634,10 @@ function renderGrid() {
     return;
   }
 
-  grid.innerHTML = memories.map(m => `
+  grid.innerHTML = memories.map((m, i) => `
     <div class="card" role="button" tabindex="0" aria-label="${esc(m.name)}" data-id="${m.id}">
       <div class="card__img-wrap">
-        <img src="${m.image}" alt="${esc(m.name)}" loading="lazy" decoding="async" />
+        <img src="${srcs[i]}" alt="${esc(m.name)}" loading="lazy" decoding="async" />
       </div>
       <p class="card__name">${esc(m.name)}</p>
       <p class="card__date">${m.date}</p>
@@ -578,12 +657,11 @@ function esc(s) {
 /* ════════════════════════════════════════════════
    DETAIL VIEW
 ════════════════════════════════════════════════ */
-function openDetail(id) {
-  const memories = loadMemories();
-  const m = memories.find(x => String(x.id) === String(id));
+async function openDetail(id) {
+  const m = loadMemories().find(x => String(x.id) === String(id));
   if (!m) return;
 
-  document.getElementById('detail-img').src   = m.image;
+  document.getElementById('detail-img').src   = await photoSrc(m);
   document.getElementById('detail-img').alt   = m.name;
   document.getElementById('detail-name').textContent = m.name;
   document.getElementById('detail-date').textContent = m.date;
@@ -598,9 +676,10 @@ function closeDetail() {
   document.getElementById('detail-img').src = '';
 }
 
-function deleteMemory(id) {
-  const updated = loadMemories().filter(m => String(m.id) !== String(id));
-  saveMemories(updated);
+async function deleteMemory(id) {
+  const removed = loadMemories().find(m => String(m.id) === String(id));
+  await saveMemories(loadMemories().filter(m => m !== removed));
+  if (removed?.file) await deletePhoto(removed.file);
   closeDetail();
   renderGrid();
 }
@@ -668,61 +747,27 @@ function captureFrame() {
 }
 
 /* ════════════════════════════════════════════════
-   STEP 2 — BACKGROUND REMOVAL via remove.bg API
-   DEV_MODE: set true to skip API calls while testing UI
+   STEP 2 — BACKGROUND REMOVAL, on the device
+   Android: ML Kit via BackgroundRemoverPlugin. Returns { base64, mime }.
+   Desktop browser preview: no on-device model, so the photo is kept as is.
 ════════════════════════════════════════════════ */
-const DEV_SKIP_BG = false; // ← flip to true to save credits while testing UI
-
 async function removeBackground(jpegDataURL) {
-  // Skip API during UI development
-  if (DEV_SKIP_BG) {
-    const res = await fetch(jpegDataURL);
-    return res.blob();
-  }
+  const base64 = jpegDataURL.split(',')[1];
+  if (!isNative) return { base64, mime: 'image/jpeg' };
 
-  // Convert data URL → Blob
-  const res  = await fetch(jpegDataURL);
-  const blob = await res.blob();
-
-  // Build multipart form for remove.bg
-  const form = new FormData();
-  form.append('image_file', blob, 'photo.jpg');
-  form.append('size', 'auto');
-
-  console.log('[removebg] Sending to API...');
-
-  const response = await fetch('https://api.remove.bg/v1.0/removebg', {
-    method: 'POST',
-    headers: { 'X-Api-Key': 'mkvyD4Lt9VciJAMLPwUip9Ws' },
-    body: form,
-  });
-
-  if (!response.ok) {
-    const err = await response.json().catch(() => ({}));
-    throw new Error(err?.errors?.[0]?.title || `remove.bg ${response.status}`);
-  }
-
-  console.log('[removebg] Done');
-  return response.blob(); // PNG with transparent background
+  const { image } = await BackgroundRemover.removeBackground({ image: base64 });
+  return { base64: image, mime: 'image/png' };
 }
 
 /* ════════════════════════════════════════════════
    STEP 3 — REVIEW
 ════════════════════════════════════════════════ */
-let _pendingBlob = null;  // Blob for the bg-removed image
+let _pendingPhoto = null;  // { base64, mime } of the cut-out waiting to be saved
 
-function showReview(blob) {
-  // Revoke previous to avoid memory leaks
-  if (_pendingBlob && _pendingBlob !== blob) {
-    if (_pendingBlob instanceof Blob) {
-      const url = document.getElementById('review-img').src;
-      if (url.startsWith('blob:')) URL.revokeObjectURL(url);
-    }
-  }
-  _pendingBlob = blob;
+function showReview(photo) {
+  _pendingPhoto = photo;
 
-  const objectURL = URL.createObjectURL(blob);
-  document.getElementById('review-img').src = objectURL;
+  document.getElementById('review-img').src = `data:${photo.mime};base64,${photo.base64}`;
   document.getElementById('name-input').value = '';
   document.getElementById('name-input').placeholder = 'Name this object…';
 
@@ -734,34 +779,27 @@ function showReview(blob) {
 }
 
 /* ════════════════════════════════════════════════
-   STEP 4 — SAVE TO LOCALSTORAGE
+   STEP 4 — SAVE TO DEVICE
 ════════════════════════════════════════════════ */
 async function saveMemory() {
-  const name = document.getElementById('name-input').value.trim() || 'My Object';
-  const blob = _pendingBlob;
-  if (!blob) return;
+  const name  = document.getElementById('name-input').value.trim() || 'My Object';
+  const photo = _pendingPhoto;
+  if (!photo) return;
+  _pendingPhoto = null; // guards against a double tap saving twice
 
-  // Convert blob → base64 data URL for persistent storage
-  const reader = new FileReader();
+  try {
+    const id   = Date.now();
+    const file = await writePhoto(id, photo.base64, photo.mime);
+    await saveMemories([...loadMemories(), { id, name, date: fmtFull(new Date()), file }]);
+  } catch (err) {
+    console.error('[storage]', err);
+    _pendingPhoto = photo;
+    alert('⚠️ Could not save this memory. Please try again.');
+    return;
+  }
 
-  reader.onload = () => {
-    const dataURL = reader.result;
-    const memories = loadMemories();
-    const newMemory = {
-      id:    Date.now(),
-      name:  name,
-      date:  fmtFull(new Date()),
-      image: dataURL,
-    };
-    memories.push(newMemory);
-    saveMemories(memories);
-
-    _pendingBlob = null;
-
-    hideAll();
-    renderGrid();
-  };
-  reader.readAsDataURL(blob);
+  hideAll();
+  renderGrid();
 }
 
 /* ════════════════════════════════════════════════
@@ -780,18 +818,16 @@ async function onShutterPressed() {
   showOverlay('processing-overlay');
 
   try {
-    // 3. Remove background in browser
-    const blob = await removeBackground(jpegDataURL);
+    // 3. Remove background on the device
+    const photo = await removeBackground(jpegDataURL);
 
     // 4. Show review screen
-    showReview(blob);
+    showReview(photo);
   } catch (err) {
-    console.error('[mediapipe]', err.message || err);
-    alert(`⚠️ Background removal failed (${err.message || 'unknown error'})\n\nShowing original image. Check console for details.`);
-    // Fallback: convert original JPEG to blob and show
-    const res = await fetch(jpegDataURL);
-    const fallbackBlob = await res.blob();
-    showReview(fallbackBlob);
+    console.error('[bg-removal]', err.message || err);
+    alert(`⚠️ Background removal failed (${err.message || 'unknown error'})\n\nShowing original image.`);
+    // Fallback: keep the original photo
+    showReview({ base64: jpegDataURL.split(',')[1], mime: 'image/jpeg' });
   }
 }
 
@@ -829,16 +865,15 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape') { stopCamera(); hideAll(); }
 });
 
-// Android hardware back button (only present when running as the native app)
-const CapApp = window.Capacitor?.Plugins?.App;
-if (CapApp) {
-  CapApp.addListener('backButton', () => {
+// Android hardware back button
+if (isNative) {
+  App.addListener('backButton', () => {
     const isActive = id => document.getElementById(id).classList.contains('active');
     if (isActive('processing-overlay')) return; // let background removal finish
     if (isActive('review-overlay'))  return document.getElementById('review-close').click();
     if (isActive('camera-overlay'))  return document.getElementById('camera-close').click();
     if (isActive('detail-overlay'))  return document.getElementById('detail-close').click();
-    CapApp.exitApp();
+    App.exitApp();
   });
 }
 
@@ -846,8 +881,12 @@ if (CapApp) {
 /* ════════════════════════════════════════════════
    INIT
 ════════════════════════════════════════════════ */
-initializeIfEmpty();
-renderGrid();
+initStorage()
+  .then(renderGrid)
+  .catch(err => {
+    console.error('[storage]', err);
+    alert('⚠️ Could not load your memories.');
+  });
 </script>
 </body>
 </html>
