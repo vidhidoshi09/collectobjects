@@ -4,6 +4,7 @@
   "private": true,
   "description": "Memories — object collection app (web + Android via Capacitor)",
   "scripts": {
+    "start": "serve -l 8000 .",
     "build": "node scripts/build-web.js",
     "sync": "npm run build && cap sync android",
     "open:android": "cap open android",
@@ -15,6 +16,7 @@
     "@capacitor/core": "^8.5.3"
   },
   "devDependencies": {
-    "@capacitor/cli": "^8.5.3"
+    "@capacitor/cli": "^8.5.3",
+    "serve": "^14.2.6"
   }
 }

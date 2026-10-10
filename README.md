@@ -2,6 +2,13 @@
 
 A minimal app for collecting everyday objects as memories. It runs as a web app (`index.html`), and Capacitor packages the same app as an Android app (`android/`).
 
+## Run locally
+
+```bash
+npm install
+npm start   # serves the app at http://localhost:8000
+```
+
 ## Android app
 
 ### Get an APK without installing anything
