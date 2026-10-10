@@ -463,7 +463,7 @@
     <div class="cut-scissors">✂️</div>
   </div>
   <p class="processing-label">Cutting background…</p>
-  <p class="processing-sub">Just a moment</p>
+  <p class="processing-sub" id="processing-sub">Just a moment</p>
 </div>
 
 <!-- STEP 3 — REVIEW ──────────────────────── -->
@@ -751,11 +751,25 @@ function captureFrame() {
    Android: ML Kit via BackgroundRemoverPlugin. Returns { base64, mime }.
    Desktop browser preview: no on-device model, so the photo is kept as is.
 ════════════════════════════════════════════════ */
+const BG_TIMEOUT_MS = 90_000;
+
+// First use on a phone downloads the model; show its progress on the processing screen
+if (isNative) {
+  BackgroundRemover.addListener('modelDownload', ({ percent }) => {
+    document.getElementById('processing-sub').textContent = `Getting the cutout tool ready… ${percent}%`;
+  });
+}
+
 async function removeBackground(jpegDataURL) {
   const base64 = jpegDataURL.split(',')[1];
   if (!isNative) return { base64, mime: 'image/jpeg' };
 
-  const { image } = await BackgroundRemover.removeBackground({ image: base64 });
+  const timeout = new Promise((_, reject) =>
+    setTimeout(() => reject(new Error('it took too long')), BG_TIMEOUT_MS));
+  const { image } = await Promise.race([
+    BackgroundRemover.removeBackground({ image: base64 }),
+    timeout,
+  ]);
   return { base64: image, mime: 'image/png' };
 }
 
@@ -815,6 +829,7 @@ async function onShutterPressed() {
 
   // 2. Show processing overlay — set photo as cut-stage preview
   document.getElementById('proc-preview').src = jpegDataURL;
+  document.getElementById('processing-sub').textContent = 'Just a moment';
   showOverlay('processing-overlay');
 
   try {

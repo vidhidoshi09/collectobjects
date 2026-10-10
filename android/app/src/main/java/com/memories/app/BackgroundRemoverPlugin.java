@@ -3,6 +3,7 @@ package com.memories.app;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
+import android.util.Log;
 import androidx.annotation.NonNull;
 import com.getcapacitor.JSObject;
 import com.getcapacitor.Plugin;
@@ -29,10 +30,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * downloaded once (at install from the Play Store, or on first use otherwise).
  *
  * JS: BackgroundRemover.removeBackground({ image: <base64 JPEG/PNG> }) → { image: <base64 PNG> }
+ * While the model downloads, emits "modelDownload" events: { percent: 0–100 }.
+ * Logcat tag: BackgroundRemover
  */
 @CapacitorPlugin(name = "BackgroundRemover")
 public class BackgroundRemoverPlugin extends Plugin {
 
+    private static final String TAG = "BackgroundRemover";
     private static final String MODEL_ERROR = "Could not download the background removal model";
 
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -73,6 +77,7 @@ public class BackgroundRemoverPlugin extends Plugin {
         client
             .areModulesAvailable(segmenter)
             .addOnSuccessListener(availability -> {
+                Log.d(TAG, "Model available: " + availability.areModulesAvailable());
                 if (availability.areModulesAvailable()) {
                     onReady.run();
                     return;
@@ -82,6 +87,13 @@ public class BackgroundRemoverPlugin extends Plugin {
                     @Override
                     public void onInstallStatusUpdated(@NonNull ModuleInstallStatusUpdate update) {
                         int state = update.getInstallState();
+                        ModuleInstallStatusUpdate.ProgressInfo info = update.getProgressInfo();
+                        Log.d(TAG, "Model install state " + state + (info == null ? "" : ", " + info.getBytesDownloaded() + "/" + info.getTotalBytesToDownload() + " bytes"));
+                        if (info != null && info.getTotalBytesToDownload() > 0) {
+                            JSObject progress = new JSObject();
+                            progress.put("percent", (int) (100 * info.getBytesDownloaded() / info.getTotalBytesToDownload()));
+                            notifyListeners("modelDownload", progress);
+                        }
                         if (state == ModuleInstallStatusUpdate.InstallState.STATE_COMPLETED) {
                             client.unregisterListener(this);
                             if (done.compareAndSet(false, true)) onReady.run();
@@ -99,20 +111,26 @@ public class BackgroundRemoverPlugin extends Plugin {
                 client
                     .installModules(request)
                     .addOnSuccessListener(response -> {
+                        Log.d(TAG, "Model install requested, already installed: " + response.areModulesAlreadyInstalled());
                         if (response.areModulesAlreadyInstalled()) {
                             client.unregisterListener(listener);
                             if (done.compareAndSet(false, true)) onReady.run();
                         }
                     })
                     .addOnFailureListener(e -> {
+                        Log.e(TAG, "Model install failed", e);
                         client.unregisterListener(listener);
                         if (done.compareAndSet(false, true)) call.reject(MODEL_ERROR, e);
                     });
             })
-            .addOnFailureListener(e -> call.reject("Google Play services is not available", e));
+            .addOnFailureListener(e -> {
+                Log.e(TAG, "Model availability check failed", e);
+                call.reject("Google Play services is not available", e);
+            });
     }
 
     private void segment(PluginCall call, Bitmap bitmap) {
+        Log.d(TAG, "Segmenting " + bitmap.getWidth() + "x" + bitmap.getHeight());
         segmenter
             .process(InputImage.fromBitmap(bitmap, 0))
             .addOnSuccessListener(result ->
@@ -127,10 +145,14 @@ public class BackgroundRemoverPlugin extends Plugin {
                     cropped.compress(Bitmap.CompressFormat.PNG, 100, out);
                     JSObject ret = new JSObject();
                     ret.put("image", Base64.encodeToString(out.toByteArray(), Base64.NO_WRAP));
+                    Log.d(TAG, "Done: " + cropped.getWidth() + "x" + cropped.getHeight());
                     call.resolve(ret);
                 })
             )
-            .addOnFailureListener(e -> call.reject("Background removal failed", e));
+            .addOnFailureListener(e -> {
+                Log.e(TAG, "Segmentation failed", e);
+                call.reject("Background removal failed", e);
+            });
     }
 
     /** Trims the transparent area around the object, keeping a small margin. Returns null if nothing is left. */
