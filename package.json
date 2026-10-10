@@ -4,7 +4,7 @@
   "private": true,
   "description": "Memories — object collection app (web + Android via Capacitor)",
   "scripts": {
-    "start": "npm run vendor && browser-sync start --server --files \"index.html, assets/**\" --port 8000 --no-open --no-notify --no-ui",
+    "start": "npm run vendor && browser-sync start --server --files \"index.html, css/**, js/**, assets/**\" --port 8000 --no-open --no-notify --no-ui",
     "vendor": "node scripts/build-vendor.js",
     "build": "npm run vendor && node scripts/build-web.js",
     "sync": "npm run build && cap sync android",
