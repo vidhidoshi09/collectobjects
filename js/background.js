@@ -7,40 +7,24 @@ import { BackgroundRemover, isNative } from './platform.js';
 ════════════════════════════════════════════════ */
 const BG_TIMEOUT_MS = 90_000;
 
-/* Circular progress on the processing screen (Material determinate,
-   track separated from the indicator by a gap).
+/* Orange progress ring on the processing screen, percentage in the middle.
    ML Kit reports no progress while cutting, so that phase shows an estimate
    that eases toward 95% and completes when the result arrives. The one-time
    model download reports real progress. */
 export const progress = (() => {
-  const RING = 2 * Math.PI * 22; // circumference of the r=22 circle (48px, 4px stroke)
-  // Round caps reach half the 4px stroke past each dash end, so a visible
-  // 4px gap needs 4 + 2 + 2 along the path.
-  const GAP = 8;
+  const RING  = 2 * Math.PI * 44; // circumference of the r=44 circle
   const ring  = document.getElementById('progress');
   const bar   = document.getElementById('progress-bar');
-  const track = document.getElementById('progress-track');
   const pct   = document.getElementById('progress-pct');
   const label = document.getElementById('processing-label');
   const sub   = document.getElementById('processing-sub');
+  bar.style.strokeDasharray = RING;
 
   let timer = null, startedAt = 0, downloading = false;
 
   function set(p) {
     p = Math.max(0, Math.min(100, p));
-    const len = RING * p / 100;
-    const trackLen = RING - len - 2 * GAP;
-    bar.style.visibility = len > 0 ? 'visible' : 'hidden';
-    bar.style.strokeDasharray = `${len} ${RING}`;
-    if (len <= 0) {                  // nothing done yet: the whole track shows
-      track.style.visibility = 'visible';
-      track.style.strokeDasharray = `${RING} ${RING}`;
-      track.style.strokeDashoffset = '0';
-    } else {
-      track.style.visibility = trackLen > 0 ? 'visible' : 'hidden';
-      track.style.strokeDasharray = `${Math.max(0, trackLen)} ${RING}`;
-      track.style.strokeDashoffset = `${-(len + GAP)}`;
-    }
+    bar.style.strokeDashoffset = RING * (1 - p / 100);
     pct.textContent = `${Math.round(p)}%`;
     ring.setAttribute('aria-valuenow', Math.round(p));
   }

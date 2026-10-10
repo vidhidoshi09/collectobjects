@@ -28,5 +28,5 @@ where a platform term differs (e.g. "Settings" is the same on both).
 | `toast.photoUnreadable` | Bad gallery photo | "That photo couldn't be opened. Try another one." |
 | `toast.loadFailed` | Load failed | "Couldn't load your memories. Please restart the app." |
 
-**Accessibility labels:** "New memory" (add), "Back", "Close", "Delete",
+**Accessibility labels:** "New memory" (add), "Close", "Delete",
 "Choose from gallery", "Take photo", "Retake".

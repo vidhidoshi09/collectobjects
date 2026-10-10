@@ -22,13 +22,13 @@ export async function renderGrid() {
     grid.innerHTML = `
       <div class="empty" style="grid-column:1/-1">
         <div class="empty__samples" aria-hidden="true">
-          <img src="assets/croissant.png" alt="" />
-          <img src="assets/teapot.png" alt="" />
-          <img src="assets/duck.png" alt="" />
+          <img class="sticker" src="assets/croissant.png" alt="" />
+          <img class="sticker" src="assets/teapot.png" alt="" />
+          <img class="sticker" src="assets/duck.png" alt="" />
         </div>
         <p class="empty__title">Keep the little things</p>
         <p class="empty__sub">Snap an object that matters to you. We'll cut it out and keep it in your collection.</p>
-        <button class="empty__cta btn btn--filled btn--hero ripple" id="empty-cta" type="button">
+        <button class="empty__cta btn-primary" id="empty-cta" type="button">
           <svg class="icon" aria-hidden="true"><use href="#i-photo-camera"/></svg>
           Create now
         </button>
@@ -38,9 +38,9 @@ export async function renderGrid() {
   }
 
   grid.innerHTML = memories.map((m, i) => `
-    <div class="card ripple" role="button" tabindex="0" aria-label="${esc(m.name)}" data-id="${m.id}">
+    <div class="card" role="button" tabindex="0" aria-label="${esc(m.name)}" data-id="${m.id}">
       <div class="card__img-wrap">
-        <img src="${srcs[i]}" alt="${esc(m.name)}" loading="lazy" decoding="async" />
+        <img class="sticker" src="${srcs[i]}" alt="${esc(m.name)}" loading="lazy" decoding="async" />
       </div>
       <p class="card__name">${esc(m.name)}</p>
       <p class="card__date">${m.date}</p>

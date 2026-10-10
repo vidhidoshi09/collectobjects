@@ -9,27 +9,24 @@ Liquid Glass for everything else.
 ## Brand → iOS mapping
 
 **Colors:** generate an asset catalog (`Assets.xcassets`) color set per role from
-`tokens.json` (`surface`, `onSurface`, `primaryContainer`, …). The brand orange is
+`tokens.json` (`bg`, `text`, `accent`, …). The brand orange is
 the app `tint`, so system controls (buttons, toggles, progress, glass tints) pick it up.
 
-**Type:** register Nunito Sans (400, 600) in the app and use it through Dynamic Type
+**Type:** register Nunito Sans (400, 900) in the app and use it through Dynamic Type
 so it scales with the user's text size:
-`Font.custom("NunitoSans-Regular", size: 16, relativeTo: .body)`.
+`Font.custom("NunitoSans-Black", size: 28, relativeTo: .title)`. Names keep the white
+sticker stroke (draw the text twice: stroked white behind, filled on top).
 
 | Brand token | iOS text style it scales with |
 |---|---|
-| `headline-medium` (28) | `.title` (large-title nav uses the system's own size) |
-| `headline-small` (24) | `.title2` |
-| `title-large` (22) | `.title3` |
-| `title-medium` (16) | `.headline` |
-| `title-small` (14) | `.subheadline` |
-| `body-large` (16) | `.body` |
-| `body-medium` (14) | `.callout` |
-| `body-small` (12) | `.footnote` |
-| `label-large` (14) | `.subheadline` (buttons) |
-| `label-medium` (12) | `.caption` |
+| `display` (28, 400) | `.title` (large-title nav uses the system's own size) |
+| `headline` (28, 900) | `.title` |
+| `title` (22, 900) | `.title3` |
+| `label` (15, 900) | `.subheadline` (buttons, grid names) |
+| `body` (14, 400) | `.callout` |
+| `caption` (13, 400) | `.footnote` |
 
-**Spacing / shape:** same 4pt grid and shape scale; touch targets ≥ 44pt.
+**Spacing / shape:** same 4pt grid; round controls; touch targets ≥ 44pt.
 
 **Icons:** SF Symbols, regular weight, matching the icon map in `components.md`.
 
@@ -46,9 +43,9 @@ so it scales with the user's text size:
 |---|---|
 | Alerts / confirmation dialogs | System font only (Apple doesn't allow restyling); brand shows only via tint. Use custom `.sheet`s for branded moments. |
 | Back navigation | Swipe-from-edge + system back button; no in-app back arrow. |
-| Feedback | Haptics (`.sensoryFeedback`) instead of ripples. |
+| Feedback | Haptics (`.sensoryFeedback`) alongside the press scale. |
 | Messages | Small toast/banner (iOS has no snackbar). |
-| Motion | System springs (`.smooth`, `.snappy`) instead of Material curves. |
+| Motion | System springs (`.smooth`, `.snappy`) instead of CSS ease. |
 | Cut-out | Vision foreground-mask request (on-device, no download). |
 
 ## Shared beyond design

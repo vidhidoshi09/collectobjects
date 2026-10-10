@@ -16,72 +16,49 @@
    TOKENS — design/tokens.json is the source of truth (see design.md)
 ═══════════════════════════════════════ */
 :root {
-  /* ── Color roles (§2) ── */
-  --color-surface:                #edecea;
-  --color-surface-container:      #e6e3e0;
-  --color-surface-container-high: #f7f6f4;
-  --color-dot:                    #ccc8c2;
-  --color-on-surface:             #111111;
-  --color-on-surface-variant:     #636363;
-  --color-outline:                #8a8580;
-  --color-outline-variant:        #ccc8c2;
-  --color-primary-container:      #f5a742;
-  --color-on-primary-container:   #683f00;
-  --color-primary:                #875300;
-  --color-on-primary:             #ffffff;
-  --color-error:                  #ba1a1a;
-  --color-inverse-surface:        #2b2926;
-  --color-inverse-on-surface:     #f4f2ef;
-  --color-inverse-primary:        #ffb868;
-  --color-scrim:                  #000000;
-  --color-camera:                 #000000;
-  --color-on-camera:              #ffffff;
-  --color-camera-scrim:           rgb(0 0 0 / 0.4);
-  --color-sticker-outline:        #ffffff; /* brand: white outline around cut-outs */
+  /* ── Color ── */
+  --color-bg:             #edecea; /* warm grey, every brand screen */
+  --color-dot:            #ccc8c2; /* dot texture + progress track */
+  --color-text:           #111111; /* names, titles, body, icons */
+  --color-text-secondary: #636363; /* dates, subtitles, placeholders (AA on bg) */
+  --color-line:           rgb(0 0 0 / 0.1); /* resting underline of an empty field */
+  --color-accent:         #f5a742; /* brand orange: FAB, primary buttons, progress */
+  --color-on-accent:      #683f00; /* text + icons on orange (AA) */
+  --color-round:          #e2dfdb; /* secondary round buttons */
+  --color-sticker:        #ffffff; /* white outline round cut-outs and names */
+  --color-scrim:          rgb(0 0 0 / 0.45); /* floating close button */
+  --color-camera:         #000000;
+  --color-on-camera:      #ffffff;
+  --color-on-camera-secondary: #a3a3a3;
+  --color-camera-control: rgb(255 255 255 / 0.15); /* gallery button */
+  --color-shutter-pressed: #cccccc;
+  --color-shutter-halo:   rgb(255 255 255 / 0.25);
+  --color-shutter-halo-outer: rgb(255 255 255 / 0.1);
+  --color-toast:          #2b2926; /* snackbar */
+  --color-on-toast:       #f4f2ef;
+  --color-toast-action:   #ffb868;
+  --color-focus:          #683f00;
 
-  /* ── State layers (§2): opacity of the content color ── */
-  --state-hover:   0.08;
-  --state-focus:   0.10;
-  --state-pressed: 0.10;
-
-  /* ── Typography (§3): weights 400 and 600 only ── */
+  /* ── Typography: Nunito Sans, weights 400 + 900 ── */
   --font-family: 'Nunito Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  --weight-regular:  400;
-  --weight-semibold: 600;
-  --type-headline-medium: var(--weight-semibold) 28px/36px var(--font-family);
-  --type-headline-small:  var(--weight-semibold) 24px/32px var(--font-family);
-  --type-title-large:     var(--weight-semibold) 22px/28px var(--font-family);
-  --type-title-medium:    var(--weight-semibold) 16px/24px var(--font-family);
-  --type-title-small:     var(--weight-semibold) 14px/20px var(--font-family);
-  --type-body-large:      var(--weight-regular)  16px/24px var(--font-family);
-  --type-body-medium:     var(--weight-regular)  14px/20px var(--font-family);
-  --type-body-small:      var(--weight-regular)  12px/16px var(--font-family);
-  --type-label-large:     var(--weight-semibold) 14px/20px var(--font-family);
-  --type-label-medium:    var(--weight-semibold) 12px/16px var(--font-family);
-  /* Material tracking for each role */
-  --tracking-title-medium: 0.15px;
-  --tracking-title-small:  0.1px;
-  --tracking-body-large:   0.5px;
-  --tracking-body-medium:  0.25px;
-  --tracking-body-small:   0.4px;
-  --tracking-label-large:  0.1px;
-  --tracking-label-medium: 0.5px;
+  --weight-regular: 400;
+  --weight-heavy:   900;
+  --type-display:  var(--weight-regular) 28px/1.15 var(--font-family); /* "Memories" */
+  --type-headline: var(--weight-heavy)   28px/1.15 var(--font-family); /* object name: detail, review */
+  --type-title:    var(--weight-heavy)   22px/1.25 var(--font-family); /* empty title, progress % */
+  --type-label:    var(--weight-heavy)   15px/1.2  var(--font-family); /* grid name, buttons, processing label */
+  --type-body:     var(--weight-regular) 14px/1.5  var(--font-family); /* story, descriptions, snackbar */
+  --type-caption:  var(--weight-regular) 13px/1.4  var(--font-family); /* dates, subtitles */
+  --tracking-display: -0.5px;
+  --tracking-label:    0.2px;
+  --name-stroke: 4px; /* white "sticker" stroke behind object names */
 
-  /* ── Icons (§4) ── */
-  --icon-size-default: 24px;
-  --icon-size:        var(--icon-size-default);
-  --icon-size-button: 20px;
-  --icon-size-hero:   48px;
+  /* ── Icons: Material Symbols Rounded, weight 400 ── */
+  --icon-size:       24px;
+  --icon-size-large: 32px; /* FAB */
+  --icon-size-hero:  40px; /* camera-off message */
 
-  /* ── Shape (§5) ── */
-  --shape-extra-small: 4px;
-  --shape-small:       8px;
-  --shape-medium:      12px;
-  --shape-large:       16px;
-  --shape-extra-large: 28px;
-  --shape-full:        9999px;
-
-  /* ── Spacing, 4px grid (§5) ── */
+  /* ── Spacing, 4px grid ── */
   --space-4:  4px;
   --space-8:  8px;
   --space-12: 12px;
@@ -89,89 +66,89 @@
   --space-24: 24px;
   --space-32: 32px;
   --space-40: 40px;
-  --space-48: 48px;
   --space-64: 64px;
-
-  /* ── Background texture (§2): 1px dots every 28px ── */
+  --screen-margin: var(--space-16); /* every screen's side margin */
   --dot-size:    1px;
   --dot-spacing: 28px;
 
-  /* ── Strokes ── */
-  --focus-ring-width:        2px;
-  --focus-ring-offset:       2px;
-  --indicator-width:         1px; /* text-field active indicator, at rest */
-  --indicator-width-focused: 2px;
+  /* ── Shape ── */
+  --radius-lg:   20px;
+  --radius-full: 9999px;
 
-  /* ── Component sizes ── */
+  /* ── Sizes ── */
   --app-max-width:     430px;
   --touch-target:      48px;
-  --icon-button-size:  40px;
-  --top-app-bar-height: 64px;
+  --close-size:        40px; /* visible circle; the hit area is --touch-target */
+  --button-height:     52px; /* primary pill + secondary round */
+  --primary-max-width: 200px;
   --fab-size:          56px;
-  --button-height:     40px;
-  --hero-button-height: 56px;
-  --text-field-height: 56px;
-  --progress-size:     48px;
   --shutter-size:      72px;
-  --snackbar-min-height: 48px;
-  --text-measure:      280px; /* max width of short centred copy */
+  --progress-size:     96px;
+  --progress-stroke:   6;    /* SVG user units of the 100-unit ring */
+  --underline:         2px;
+  --text-measure:      280px; /* short centred copy */
+  --story-measure:     340px;
+  --card-image-inset:  5%;
+  --review-image-inset: 14%;
+  --detail-image-width: 78%;
+  --sample-width:      30%;
+  --sample-scale:      1.25; /* teapot artwork has extra padding */
+  --overlay-top:       calc(var(--space-16) * 2 + var(--close-size)); /* clears the close button */
 
-  /* ── Elevation (§5): Material key + ambient shadow pairs ── */
-  --elevation-1: 0 1px 2px 0 rgb(0 0 0 / 0.3), 0 1px 3px 1px rgb(0 0 0 / 0.15);
-  --elevation-3: 0 1px 3px 0 rgb(0 0 0 / 0.3), 0 4px 8px 3px rgb(0 0 0 / 0.15);
+  /* ── Elevation ── */
+  --shadow-accent: 0 6px 20px rgb(245 167 66 / 0.35);
+  --shadow-toast:  0 6px 20px rgb(0 0 0 / 0.18);
+  --blur-scrim:    blur(6px);
 
-  /* Cut-out objects: white sticker outline + soft drop shadow (brand) */
+  /* Signature cut-out: white sticker outline + soft shadow (outline offsets are fixed) */
   --sticker-filter:
-    drop-shadow( 2px    0      0 var(--color-sticker-outline))
-    drop-shadow(-2px    0      0 var(--color-sticker-outline))
-    drop-shadow( 0      2px    0 var(--color-sticker-outline))
-    drop-shadow( 0     -2px    0 var(--color-sticker-outline))
-    drop-shadow( 1.5px  1.5px  0 var(--color-sticker-outline))
-    drop-shadow(-1.5px  1.5px  0 var(--color-sticker-outline))
-    drop-shadow( 1.5px -1.5px  0 var(--color-sticker-outline))
-    drop-shadow(-1.5px -1.5px  0 var(--color-sticker-outline))
+    drop-shadow( 2px    0      0 var(--color-sticker))
+    drop-shadow(-2px    0      0 var(--color-sticker))
+    drop-shadow( 0      2px    0 var(--color-sticker))
+    drop-shadow( 0     -2px    0 var(--color-sticker))
+    drop-shadow( 1.5px  1.5px  0 var(--color-sticker))
+    drop-shadow(-1.5px  1.5px  0 var(--color-sticker))
+    drop-shadow( 1.5px -1.5px  0 var(--color-sticker))
+    drop-shadow(-1.5px -1.5px  0 var(--color-sticker))
     drop-shadow(0 6px 18px rgb(0 0 0 / 0.12));
 
-  /* ── Motion (§6) ── */
-  --easing-emphasized-decelerate: cubic-bezier(0.05, 0.7, 0.1, 1);
-  --easing-emphasized-accelerate: cubic-bezier(0.3, 0, 0.8, 0.15);
-  --easing-standard:              cubic-bezier(0.2, 0, 0, 1);
-  --duration-enter:    400ms;
-  --duration-exit:     200ms;
-  --duration-standard: 300ms;
-  --duration-short:    150ms;
-  --overlay-rise:      var(--space-32);
+  /* ── Motion ── */
+  --press-scale:      0.95; /* every tappable thing shrinks a little while pressed */
+  --duration-press:   200ms;
+  --duration-fade:    250ms;
+  --duration-progress: 150ms;
+  --easing:           ease;
+  --toast-rise:       var(--space-8);
 
   /* ── Layers ── */
   --z-content:  1;
   --z-fab:      50;
   --z-overlay:  200;
+  --z-close:    10;
   --z-snackbar: 300;
 
-  /* Side gutters of the centred app column, safe areas included */
-  --gutter-left:  max(calc(var(--space-16) + env(safe-area-inset-left,  0px)), calc(50vw - var(--app-max-width) / 2 + var(--space-16)));
-  --gutter-right: max(calc(var(--space-16) + env(safe-area-inset-right, 0px)), calc(50vw - var(--app-max-width) / 2 + var(--space-16)));
+  /* Right gutter of the centred app column, safe area included (FAB) */
+  --gutter-right: max(calc(var(--screen-margin) + env(safe-area-inset-right, 0px)), calc(50vw - var(--app-max-width) / 2 + var(--screen-margin)));
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 html, body { height: 100%; }
 
 body {
-  font: var(--type-body-medium);
-  letter-spacing: var(--tracking-body-medium);
-  background-color: var(--color-surface);
-  color: var(--color-on-surface);
+  font: var(--type-body);
+  background-color: var(--color-bg);
+  color: var(--color-text);
   overflow: hidden;
   max-width: var(--app-max-width);
   margin: 0 auto;
   position: relative;
 }
 
-button, input, textarea { font: inherit; letter-spacing: inherit; color: inherit; }
-button { cursor: pointer; user-select: none; }
+button, input, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; user-select: none; border: none; background: none; }
 
-/* Visible focus for keyboard users (§10) */
-:focus-visible { outline: var(--focus-ring-width) solid var(--color-primary); outline-offset: var(--focus-ring-offset); }
+/* Visible focus for keyboard users */
+:focus-visible { outline: var(--underline) solid var(--color-focus); outline-offset: var(--underline); }
 
 #dots {
   position: fixed; inset: 0; z-index: 0;
@@ -180,48 +157,69 @@ button { cursor: pointer; user-select: none; }
   pointer-events: none;
 }
 
-/* Material Symbols: 24px by default, coloured by the parent's color */
+/* Material Symbols Rounded: 24px by default, coloured by the parent's color */
 .icon { width: var(--icon-size); height: var(--icon-size); fill: currentColor; display: block; flex-shrink: 0; }
 .icon--hero { --icon-size: var(--icon-size-hero); }
 
-/* ═══════════════════════════════════════
-   STATE LAYER + RIPPLE (js/ripple.js)
-   Hover/focus tint the host with its content color; a press adds a ripple.
-   --ripple-inset shrinks both to the visible container (icon buttons).
-═══════════════════════════════════════ */
-.ripple { position: relative; }
-.ripple::before {
-  content: '';
-  position: absolute; inset: var(--ripple-inset, 0);
-  border-radius: inherit;
-  background: currentColor;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity var(--duration-short) var(--easing-standard);
+/* Press feedback: scale down, everywhere */
+.card, .fab, .btn-close, .btn-primary, .btn-round, #gallery-btn, #shutter-btn {
+  transition: transform var(--duration-press) var(--easing), background-color var(--duration-press) var(--easing);
 }
-@media (hover: hover) {
-  .ripple:hover::before { opacity: var(--state-hover); }
-}
-.ripple:focus-visible::before { opacity: var(--state-focus); }
+.card:active, .fab:active, .btn-close:active, .btn-primary:active, .btn-round:active,
+#gallery-btn:active, #shutter-btn:active { transform: scale(var(--press-scale)); }
 
-.ripple__clip {
-  position: absolute; inset: var(--ripple-inset, 0);
-  border-radius: inherit;
-  overflow: hidden;
-  pointer-events: none;
+/* Cut-out objects everywhere: sticker outline + soft shadow */
+.sticker {
+  object-fit: contain;
+  mix-blend-mode: multiply;
+  filter: var(--sticker-filter);
 }
-.ripple__wave {
-  position: absolute;
-  border-radius: 50%;
-  background: currentColor;
-  opacity: var(--state-pressed);
-  transform: scale(0.2);
-  transition:
-    transform var(--duration-standard) var(--easing-standard),
-    opacity var(--duration-short) var(--easing-standard);
+
+/* Object names everywhere: heavy weight with a white "sticker" stroke */
+.card__name, .detail-name, .review-name {
+  -webkit-text-stroke: var(--name-stroke) var(--color-sticker);
+  paint-order: stroke fill;
 }
-.ripple__wave.is-grown { transform: scale(1); }
-.ripple__wave.is-done  { opacity: 0; }
+/* no stroke behind a placeholder */
+.name-field:placeholder-shown { -webkit-text-stroke-width: 0; }
+
+/* ═══════════════════════════════════════
+   BUTTONS
+═══════════════════════════════════════ */
+/* Primary: orange pill (Save, Create now) */
+.btn-primary {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-8);
+  height: var(--button-height);
+  padding: 0 var(--space-32);
+  border-radius: var(--radius-full);
+  background: var(--color-accent); color: var(--color-on-accent);
+  font: var(--type-label); letter-spacing: var(--tracking-label);
+  white-space: nowrap;
+  box-shadow: var(--shadow-accent);
+}
+
+/* Secondary: grey circle (Retake, Delete) */
+.btn-round {
+  width: var(--button-height); height: var(--button-height); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: var(--radius-full);
+  background: var(--color-round); color: var(--color-text);
+}
+
+/* Close: floating translucent-dark circle, top-left of every overlay.
+   40px circle inside a 48px touch target. */
+.btn-close {
+  position: absolute; z-index: var(--z-close);
+  top:  calc(var(--space-16) - (var(--touch-target) - var(--close-size)) / 2 + env(safe-area-inset-top,  0px));
+  left: calc(var(--screen-margin) - (var(--touch-target) - var(--close-size)) / 2 + env(safe-area-inset-left, 0px));
+  width: var(--touch-target); height: var(--touch-target);
+  padding: calc((var(--touch-target) - var(--close-size)) / 2);
+  display: flex; align-items: center; justify-content: center;
+  border-radius: var(--radius-full);
+  background: var(--color-scrim); background-clip: content-box;
+  color: var(--color-on-camera);
+  backdrop-filter: var(--blur-scrim); -webkit-backdrop-filter: var(--blur-scrim);
+}
 
 /* ═══════════════════════════════════════
    HOME / GRID
@@ -232,201 +230,65 @@ button { cursor: pointer; user-select: none; }
   width: 100%; max-width: var(--app-max-width);
   z-index: var(--z-content); overflow-y: auto; -webkit-overflow-scrolling: touch;
   padding:
-    calc(var(--space-24) + env(safe-area-inset-top,    0px))
-    calc(var(--space-16) + env(safe-area-inset-right,  0px))
-    calc(var(--fab-size) + var(--space-16) * 2 + env(safe-area-inset-bottom, 0px))
-    calc(var(--space-16) + env(safe-area-inset-left,   0px));
+    calc(var(--space-24) + env(safe-area-inset-top, 0px))
+    calc(var(--screen-margin) + env(safe-area-inset-right, 0px))
+    calc(var(--fab-size) + var(--space-24) * 2 + env(safe-area-inset-bottom, 0px))
+    calc(var(--screen-margin) + env(safe-area-inset-left, 0px));
 }
 
-.header { margin-bottom: var(--space-24); }
-.header__date {
-  font: var(--type-label-medium); letter-spacing: var(--tracking-label-medium);
-  color: var(--color-on-surface-variant);
-}
-.header__title { font: var(--type-headline-medium); margin-top: var(--space-4); }
-.header__count {
-  font: var(--type-body-medium); letter-spacing: var(--tracking-body-medium);
-  color: var(--color-on-surface-variant); margin-top: var(--space-4);
-}
+.header { margin-bottom: var(--space-32); }
+.header__date, .header__count { font: var(--type-caption); color: var(--color-text-secondary); }
+.header__title { font: var(--type-display); letter-spacing: var(--tracking-display); margin-block: var(--space-4); }
 
 .grid {
   display: grid; grid-template-columns: 1fr 1fr;
-  column-gap: var(--space-16); row-gap: var(--space-24);
+  column-gap: var(--space-16); row-gap: var(--space-32);
 }
 
 /* Grid item */
 .card {
   display: flex; flex-direction: column; align-items: center;
-  padding-bottom: var(--space-8);
-  border-radius: var(--shape-medium);
-  color: var(--color-on-surface);
   cursor: pointer; user-select: none;
 }
 /* Strict square tile: the image is taken out of flow so tall or wide cut-outs
    can never stretch the tile (flex items otherwise grow to fit tall images). */
 .card__img-wrap { position: relative; width: 100%; aspect-ratio: 1; }
-.card__img-wrap img { position: absolute; inset: 5%; width: 90%; height: 90%; object-fit: contain; }
+.card__img-wrap img {
+  position: absolute; inset: var(--card-image-inset);
+  width: calc(100% - var(--card-image-inset) * 2); height: calc(100% - var(--card-image-inset) * 2);
+}
 .card__name {
-  font: var(--type-title-small); letter-spacing: var(--tracking-title-small);
-  text-align: center; margin-top: var(--space-8);
-  padding-inline: var(--space-8); max-width: 100%; overflow-wrap: anywhere;
+  margin-top: var(--space-8);
+  font: var(--type-label); letter-spacing: var(--tracking-label);
+  text-align: center; max-width: 100%; overflow-wrap: anywhere;
 }
 .card__date {
-  font: var(--type-body-small); letter-spacing: var(--tracking-body-small);
-  color: var(--color-on-surface-variant); text-align: center;
-}
-
-/* Cut-out objects everywhere */
-.sticker, .card__img-wrap img, .empty__samples img {
-  mix-blend-mode: multiply;
-  filter: var(--sticker-filter);
+  margin-top: var(--space-4);
+  font: var(--type-caption); color: var(--color-text-secondary); text-align: center;
 }
 
 /* ═══════════════════════════════════════
-   FAB
+   FAB — round orange +
 ═══════════════════════════════════════ */
 .fab {
   position: fixed;
-  bottom: calc(var(--space-16) + env(safe-area-inset-bottom, 0px));
+  bottom: calc(var(--space-24) + env(safe-area-inset-bottom, 0px));
   right: var(--gutter-right);
   width: var(--fab-size); height: var(--fab-size);
-  border: none; border-radius: var(--shape-large);
-  background: var(--color-primary-container);
-  color: var(--color-on-primary-container);
-  box-shadow: var(--elevation-3);
+  border-radius: var(--radius-full);
+  background: var(--color-accent); color: var(--color-on-accent);
+  box-shadow: var(--shadow-accent);
   display: flex; align-items: center; justify-content: center;
   z-index: var(--z-fab);
+  --icon-size: var(--icon-size-large);
 }
 
 /* the empty state has its own button, so the floating + is hidden */
 body.is-empty #fab { display: none !important; }
 
 /* ═══════════════════════════════════════
-   BUTTONS (§7)
-═══════════════════════════════════════ */
-.btn {
-  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-8);
-  height: var(--button-height);
-  padding: 0 var(--space-24);
-  border: none; border-radius: var(--shape-full);
-  font: var(--type-label-large); letter-spacing: var(--tracking-label-large);
-  white-space: nowrap;
-  --icon-size: var(--icon-size-button);
-}
-/* 48px touch target around the 40px button */
-.btn::after {
-  content: ''; position: absolute;
-  inset: calc((var(--button-height) - var(--touch-target)) / 2) 0;
-}
-.btn--icon { padding-left: var(--space-16); }
-.btn--filled { background: var(--color-primary-container); color: var(--color-on-primary-container); }
-.btn--tonal  { background: var(--color-surface-container); color: var(--color-on-surface); }
-.btn--hero {
-  height: var(--hero-button-height);
-  padding: 0 var(--space-24);
-  --icon-size: var(--icon-size-default);
-}
-.btn--hero::after { content: none; }
-
-/* Standard icon button: 48px touch target, 40px state-layer circle */
-.icon-btn {
-  --ripple-inset: calc((var(--touch-target) - var(--icon-button-size)) / 2);
-  width: var(--touch-target); height: var(--touch-target);
-  flex-shrink: 0;
-  display: inline-flex; align-items: center; justify-content: center;
-  border: none; border-radius: var(--shape-full);
-  background: none;
-  color: var(--color-on-surface-variant);
-}
-/* Camera screen: white icon on a 40% black circle */
-.icon-btn--camera {
-  color: var(--color-on-camera);
-  background-color: var(--color-camera-scrim);
-  background-clip: content-box;
-  padding: var(--ripple-inset);
-}
-.icon-btn--large { --ripple-inset: 0px; } /* 48px scrim circle (camera gallery button) */
-
-/* ═══════════════════════════════════════
-   TOP APP BAR (§7)
-═══════════════════════════════════════ */
-.top-app-bar {
-  flex-shrink: 0;
-  display: flex; align-items: center;
-  height: var(--top-app-bar-height);
-  padding: 0 var(--space-4);
-  background: var(--color-surface);
-}
-.top-app-bar__spacer { flex: 1; }
-
-/* ═══════════════════════════════════════
-   FILLED TEXT FIELD (§7)
-   Label sits inside until the field is focused or filled, then floats.
-═══════════════════════════════════════ */
-.text-field {
-  position: relative; width: 100%;
-  background: var(--color-surface-container);
-  border-radius: var(--shape-extra-small) var(--shape-extra-small) 0 0;
-  color: var(--color-on-surface);
-}
-/* hover state layer */
-.text-field::before {
-  content: ''; position: absolute; inset: 0;
-  border-radius: inherit;
-  background: var(--color-on-surface);
-  opacity: 0; pointer-events: none;
-  transition: opacity var(--duration-short) var(--easing-standard);
-}
-@media (hover: hover) {
-  .text-field:hover::before { opacity: var(--state-hover); }
-}
-/* active indicator: 1px on-surface-variant → 2px primary */
-.text-field::after {
-  content: ''; position: absolute; left: 0; right: 0; bottom: 0;
-  height: var(--indicator-width);
-  background: var(--color-on-surface-variant);
-  transition: height var(--duration-short) var(--easing-standard),
-              background-color var(--duration-short) var(--easing-standard);
-}
-.text-field:focus-within::after { height: var(--indicator-width-focused); background: var(--color-primary); }
-
-.text-field__input {
-  position: relative; /* above the hover layer */
-  display: block; width: 100%;
-  min-height: var(--text-field-height);
-  padding: var(--space-24) var(--space-16) var(--space-8);
-  border: none; background: none; outline: none; resize: none;
-  font: var(--type-body-large); letter-spacing: var(--tracking-body-large);
-  color: var(--color-on-surface);
-  caret-color: var(--color-primary);
-}
-.text-field__input:focus-visible { outline: none; }
-.text-field__input::placeholder { color: transparent; transition: color var(--duration-short) var(--easing-standard); }
-.text-field__input:focus::placeholder { color: var(--color-on-surface-variant); }
-
-.text-field__label {
-  position: absolute; left: var(--space-16); top: var(--space-16);
-  max-width: calc(100% - var(--space-32));
-  font: var(--type-body-large); letter-spacing: var(--tracking-body-large);
-  color: var(--color-on-surface-variant);
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  pointer-events: none;
-  transform-origin: left top;
-  transition: transform var(--duration-short) var(--easing-standard),
-              color var(--duration-short) var(--easing-standard);
-}
-/* floated: body-small (12/16 = 0.75 × body-large) at 8px from the top */
-.text-field__input:focus + .text-field__label,
-.text-field__input:not(:placeholder-shown) + .text-field__label {
-  transform: translateY(calc(var(--space-8) * -1)) scale(0.75);
-}
-.text-field__input:focus + .text-field__label { color: var(--color-primary); }
-.text-field--multiline .text-field__input { overflow: hidden; }
-
-/* ═══════════════════════════════════════
    SHARED OVERLAY BASE
-   Enter: fade + 32px rise (emphasized decelerate). Leave: fade (emphasized
-   accelerate). display:none when inactive, so hidden overlays stay inert.
+   Gentle fade in/out. display:none when inactive, so hidden overlays stay inert.
 ═══════════════════════════════════════ */
 .overlay {
   display: none;
@@ -435,46 +297,43 @@ body.is-empty #fab { display: none !important; }
   width: 100%; max-width: var(--app-max-width);
   flex-direction: column;
   z-index: var(--z-overlay);
+  background: var(--color-bg);
   opacity: 0;
-  pointer-events: none;
+  pointer-events: none; /* while fading out */
   transition:
-    opacity var(--duration-exit) var(--easing-emphasized-accelerate),
-    display var(--duration-exit) allow-discrete;
+    opacity var(--duration-fade) var(--easing),
+    display var(--duration-fade) allow-discrete;
 }
-.overlay.active {
-  display: flex;
-  opacity: 1;
-  transform: none;
-  pointer-events: auto;
-  transition:
-    opacity var(--duration-enter) var(--easing-emphasized-decelerate),
-    transform var(--duration-enter) var(--easing-emphasized-decelerate),
-    display var(--duration-enter) allow-discrete;
-}
+.overlay.active { display: flex; opacity: 1; pointer-events: auto; }
 @starting-style {
-  .overlay.active { opacity: 0; transform: translateY(var(--overlay-rise)); }
+  .overlay.active { opacity: 0; }
 }
 
-/* Full-screen pages with a top app bar (review, detail) */
-.overlay--page {
-  background: var(--color-surface);
-  padding:
-    env(safe-area-inset-top, 0px)
-    env(safe-area-inset-right, 0px)
-    env(safe-area-inset-bottom, 0px)
-    env(safe-area-inset-left, 0px);
-}
-.page {
+/* Centred column of a brand screen (review, detail), below the close button */
+.screen {
   flex: 1; min-height: 0;
-  display: flex; flex-direction: column;
-  overflow-y: auto; -webkit-overflow-scrolling: touch;
-  padding: 0 var(--space-16) var(--space-24);
-}
-.page__content {
-  margin-block: auto; /* centred when it fits, scrolls when it doesn't */
-  width: 100%;
   display: flex; flex-direction: column; align-items: center;
+  padding:
+    calc(var(--overlay-top) + env(safe-area-inset-top, 0px))
+    calc(var(--screen-margin) + env(safe-area-inset-right, 0px))
+    calc(var(--space-24) + env(safe-area-inset-bottom, 0px))
+    calc(var(--screen-margin) + env(safe-area-inset-left, 0px));
 }
+
+/* Big centred object name, editable (review input, detail name) */
+.name-field {
+  width: 100%;
+  font: var(--type-headline); letter-spacing: var(--tracking-display);
+  text-align: center; color: var(--color-text);
+  background: transparent; border: none; border-radius: 0; outline: none;
+  border-bottom: var(--underline) solid transparent;
+  padding: var(--space-8) var(--space-4);
+  caret-color: var(--color-accent);
+  transition: border-color var(--duration-press) var(--easing);
+}
+.name-field::placeholder, .story::placeholder { color: var(--color-text-secondary); }
+.name-field:focus, .story:focus { border-bottom-color: var(--color-accent); }
+.name-field:focus-visible, .story:focus-visible { outline: none; }
 
 /* ═══════════════════════════════════════
    STEP 1 — CAMERA
@@ -482,23 +341,15 @@ body.is-empty #fab { display: none !important; }
 #camera-overlay { background: var(--color-camera); }
 #camera-overlay :focus-visible { outline-color: var(--color-on-camera); }
 
-/* close sits where a top app bar's leading icon would */
-#camera-close {
-  position: absolute;
-  top: calc((var(--top-app-bar-height) - var(--touch-target)) / 2 + env(safe-area-inset-top, 0px));
-  left: calc(var(--space-4) + env(safe-area-inset-left, 0px));
-  z-index: 1;
-}
-
 #camera-video { flex: 1; min-height: 0; width: 100%; object-fit: cover; display: block; }
 #camera-video.mirrored { transform: scaleX(-1); } /* selfie/webcam only */
 
 .cam-denied {
   display: none; flex: 1; flex-direction: column;
-  align-items: center; justify-content: center; gap: var(--space-16);
+  align-items: center; justify-content: center; gap: var(--space-12);
   padding: var(--space-32);
-  color: var(--color-on-camera);
-  font: var(--type-body-medium); letter-spacing: var(--tracking-body-medium);
+  color: var(--color-on-camera-secondary);
+  font: var(--type-body);
   text-align: center;
 }
 .cam-denied p { max-width: var(--text-measure); }
@@ -510,95 +361,74 @@ body.is-empty #fab { display: none !important; }
   background: var(--color-camera);
 }
 
-/* Shutter: white disc with a white ring 4px outside it */
+/* Shutter: white disc with a soft halo */
 #shutter-btn {
-  width: var(--shutter-size); height: var(--shutter-size);
-  flex-shrink: 0;
-  border: none; border-radius: var(--shape-full);
+  width: var(--shutter-size); height: var(--shutter-size); flex-shrink: 0;
+  border-radius: var(--radius-full);
   background: var(--color-on-camera);
-  color: var(--color-camera); /* ripple color */
-  box-shadow: 0 0 0 var(--space-4) var(--color-camera), 0 0 0 var(--space-8) var(--color-on-camera);
+  box-shadow: 0 0 0 var(--space-4) var(--color-shutter-halo), 0 0 0 var(--space-8) var(--color-shutter-halo-outer);
 }
-#shutter-btn:focus-visible { outline-offset: calc(var(--space-8) + var(--focus-ring-offset)); }
+#shutter-btn:active { background: var(--color-shutter-pressed); }
+#shutter-btn:focus-visible { outline-offset: calc(var(--space-8) + var(--underline)); }
 
 /* gallery button sits left of the shutter; the spacer keeps the shutter centred */
-.cam-spacer { width: var(--touch-target); height: var(--touch-target); flex-shrink: 0; }
+#gallery-btn, .cam-spacer { width: var(--touch-target); height: var(--touch-target); flex-shrink: 0; }
+#gallery-btn {
+  display: flex; align-items: center; justify-content: center;
+  border-radius: var(--radius-full);
+  background: var(--color-camera-control); color: var(--color-on-camera);
+}
 
 /* ═══════════════════════════════════════
-   STEP 2 — PROCESSING (circular progress)
+   STEP 2 — PROCESSING (orange progress ring)
 ═══════════════════════════════════════ */
 #processing-overlay {
-  background: var(--color-surface);
   align-items: center;
   justify-content: center;
   padding: var(--space-24);
   text-align: center;
 }
 
-/* Determinate, 4px stroke, track separated from the indicator by a 4px gap */
-.progress { width: var(--progress-size); height: var(--progress-size); }
+.progress { position: relative; width: var(--progress-size); height: var(--progress-size); }
 .progress svg { width: 100%; height: 100%; transform: rotate(-90deg); display: block; }
-.progress__track, .progress__indicator {
-  fill: none;
-  stroke-width: 4;
+.progress__track, .progress__indicator { fill: none; stroke-width: var(--progress-stroke); }
+.progress__track { stroke: var(--color-dot); }
+.progress__indicator {
+  stroke: var(--color-accent);
   stroke-linecap: round;
-  transition:
-    stroke-dasharray var(--duration-short) linear,
-    stroke-dashoffset var(--duration-short) linear;
+  transition: stroke-dashoffset var(--duration-progress) linear;
 }
-.progress__track     { stroke: var(--color-outline-variant); }
-.progress__indicator { stroke: var(--color-primary); }
-
-.processing-label {
-  margin-top: var(--space-24);
-  font: var(--type-title-medium); letter-spacing: var(--tracking-title-medium);
-  color: var(--color-on-surface);
-}
-.processing-pct {
-  margin-top: var(--space-4);
-  font: var(--type-title-medium); letter-spacing: var(--tracking-title-medium);
+.progress__pct {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font: var(--type-title);
   font-variant-numeric: tabular-nums;
-  color: var(--color-on-surface-variant);
 }
+
+.processing-label { margin-top: var(--space-24); font: var(--type-label); letter-spacing: var(--tracking-label); }
 .processing-sub {
   margin-top: var(--space-4);
-  font: var(--type-body-medium); letter-spacing: var(--tracking-body-medium);
-  color: var(--color-on-surface-variant);
+  font: var(--type-caption); color: var(--color-text-secondary);
 }
 .processing-sub:empty { display: none; }
 
 /* ═══════════════════════════════════════
    STEP 3 — REVIEW (name + confirm)
 ═══════════════════════════════════════ */
-.review {
-  flex: 1; min-height: 0;
-  display: flex; flex-direction: column; align-items: center;
-  padding: var(--space-8) var(--space-24) calc(var(--space-24) + env(safe-area-inset-bottom, 0px));
-}
-
 /* The object takes the space that's left, so it shrinks (never crops)
    when the keyboard opens */
 .review-img-wrap {
   flex: 1; min-height: 0; width: 100%;
   display: flex; align-items: center; justify-content: center;
-  padding: var(--space-8) 14%;
+  padding: 0 var(--review-image-inset);
 }
-.review-img-wrap img { width: 100%; height: 100%; object-fit: contain; }
+.review-img-wrap img { width: 100%; height: 100%; }
 
-/* Big centred name with an underline (brand look, not a Material field) */
 .review-name {
-  flex-shrink: 0; width: 100%;
+  flex-shrink: 0;
   margin-top: var(--space-24);
-  padding: var(--space-8) var(--space-4) var(--space-12);
-  font: var(--type-title-large); letter-spacing: 0;
-  text-align: center; color: var(--color-on-surface);
-  background: transparent; border: none; border-radius: 0;
-  border-bottom: 2px solid var(--color-outline-variant);
-  outline: none;
-  transition: border-color var(--duration-standard) var(--easing-standard);
+  border-bottom-color: var(--color-line);
 }
-.review-name::placeholder { color: var(--color-outline); }
-.review-name:focus { border-bottom-color: var(--color-primary-container); }
 
 /* Round Retake + orange Save pill */
 .review-actions {
@@ -606,63 +436,44 @@ body.is-empty #fab { display: none !important; }
   display: flex; align-items: center; justify-content: center; gap: var(--space-16);
   margin-top: var(--space-24);
 }
-.review-retake {
-  position: relative; overflow: hidden;
-  width: 52px; height: 52px; border-radius: 50%; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  border: none; cursor: pointer;
-  background: var(--color-surface-container); color: var(--color-on-surface);
-  font-size: var(--icon-size);
-}
-.review-save {
-  position: relative; overflow: hidden;
-  flex: 1; max-width: 200px; height: 52px; border-radius: 26px;
-  border: none; cursor: pointer;
-  background: var(--color-primary-container); color: var(--color-on-primary-container);
-  font: var(--type-label-large); letter-spacing: var(--tracking-label-large);
-  box-shadow: var(--elevation-1);
-}
+.review-save { flex: 1; max-width: var(--primary-max-width); }
 
 /* ═══════════════════════════════════════
    DETAIL VIEW
 ═══════════════════════════════════════ */
-.detail-img-wrap {
-  width: 78%; aspect-ratio: 1;
-  display: flex; align-items: center; justify-content: center;
-  margin-bottom: var(--space-24);
-}
-.detail-img-wrap img { width: 100%; height: 100%; object-fit: contain; }
-
-/* Name: reads as a headline until tapped, then shows as an active field */
-.detail-name {
+.screen--scroll { overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.screen__content {
+  margin-block: auto; /* centred when it fits, scrolls when it doesn't */
   width: 100%;
-  padding: var(--space-4) var(--space-8);
-  border: none; outline: none;
-  border-radius: var(--shape-extra-small) var(--shape-extra-small) 0 0;
-  background: transparent;
-  font: var(--type-headline-small);
-  color: var(--color-on-surface);
-  text-align: center;
-  caret-color: var(--color-primary);
-  transition:
-    background-color var(--duration-short) var(--easing-standard),
-    box-shadow var(--duration-short) var(--easing-standard);
+  display: flex; flex-direction: column; align-items: center;
 }
-.detail-name:focus-visible { outline: none; }
-@media (hover: hover) {
-  .detail-name:hover { background: color-mix(in srgb, var(--color-on-surface) 8%, transparent); }
+
+.detail-img-wrap {
+  width: var(--detail-image-width); aspect-ratio: 1;
+  display: flex; align-items: center; justify-content: center;
 }
-.detail-name:focus {
-  background: var(--color-surface-container);
-  box-shadow: inset 0 calc(var(--indicator-width-focused) * -1) 0 var(--color-primary);
-}
+.detail-img-wrap img { width: 100%; height: 100%; }
+
+.detail-name { margin-top: var(--space-24); }
 .detail-date {
   margin-top: var(--space-4);
-  font: var(--type-body-medium); letter-spacing: var(--tracking-body-medium);
-  color: var(--color-on-surface-variant);
+  font: var(--type-caption); color: var(--color-text-secondary);
   text-align: center;
 }
-#detail-overlay .text-field { margin-top: var(--space-24); }
+
+/* Story: centred body text, underline only while editing */
+.story {
+  display: block; width: 100%; max-width: var(--story-measure);
+  margin-top: var(--space-24);
+  padding: var(--space-4) 0;
+  background: none; border: none; border-radius: 0; outline: none; resize: none; overflow: hidden;
+  border-bottom: var(--underline) solid transparent;
+  font: var(--type-body); color: var(--color-text); text-align: center;
+  caret-color: var(--color-accent);
+  transition: border-color var(--duration-press) var(--easing);
+}
+
+.detail-delete { margin-top: var(--space-24); }
 
 /* ═══════════════════════════════════════
    EMPTY STATE
@@ -679,75 +490,67 @@ body.is-empty #fab { display: none !important; }
   display: flex; align-items: flex-start; justify-content: center;
   gap: var(--space-4); width: 100%; margin-bottom: var(--space-24);
 }
-.empty__samples img { width: 30%; aspect-ratio: 1; object-fit: contain; }
+.empty__samples img { width: var(--sample-width); aspect-ratio: 1; }
 .empty__samples img:not(:nth-child(2)) { margin-top: var(--space-32); }
-.empty__samples img:nth-child(2) { transform: scale(1.25); } /* teapot artwork has extra padding */
+.empty__samples img:nth-child(2) { transform: scale(var(--sample-scale)); }
 
-.empty__title { font: var(--type-headline-small); color: var(--color-on-surface); }
+.empty__title { font: var(--type-title); }
 .empty__sub {
   margin-top: var(--space-8);
-  font: var(--type-body-medium); letter-spacing: var(--tracking-body-medium);
-  color: var(--color-on-surface-variant);
+  font: var(--type-body); color: var(--color-text-secondary);
   max-width: var(--text-measure);
 }
-.empty__cta { margin-top: var(--space-32); }
+.empty__cta { margin-top: var(--space-24); }
 
 /* ═══════════════════════════════════════
-   SNACKBAR (§7) — js/snackbar.js
+   SNACKBAR — js/snackbar.js
+   Dark warm pill, centred above the bottom; moves up to clear the FAB or
+   any .snackbar-anchor on the open screen.
 ═══════════════════════════════════════ */
 .snackbar {
   display: none;
   position: fixed;
-  left: var(--gutter-left); right: var(--gutter-right);
-  bottom: var(--snackbar-bottom, calc(var(--space-16) + env(safe-area-inset-bottom, 0px)));
+  left: 0; right: 0; margin-inline: auto;
+  width: fit-content;
+  max-width: calc(min(100vw, var(--app-max-width)) - var(--screen-margin) * 2);
+  bottom: var(--snackbar-bottom, calc(var(--space-24) + env(safe-area-inset-bottom, 0px)));
   z-index: var(--z-snackbar);
-  min-height: var(--snackbar-min-height);
-  align-items: center; gap: var(--space-4);
-  padding: var(--space-4) var(--space-16);
-  border-radius: var(--shape-extra-small);
-  background: var(--color-inverse-surface);
-  color: var(--color-inverse-on-surface);
-  box-shadow: var(--elevation-3);
+  align-items: center; gap: var(--space-8);
+  padding: var(--space-12) var(--space-24);
+  border-radius: var(--radius-lg);
+  background: var(--color-toast);
+  color: var(--color-on-toast);
+  box-shadow: var(--shadow-toast);
+  text-align: center;
   opacity: 0;
   transition:
-    opacity var(--duration-exit) var(--easing-emphasized-accelerate),
-    display var(--duration-exit) allow-discrete;
+    opacity var(--duration-fade) var(--easing),
+    transform var(--duration-fade) var(--easing),
+    display var(--duration-fade) allow-discrete;
 }
-.snackbar.visible {
-  display: flex;
-  opacity: 1;
-  transform: none;
-  transition:
-    opacity var(--duration-enter) var(--easing-emphasized-decelerate),
-    transform var(--duration-enter) var(--easing-emphasized-decelerate),
-    display var(--duration-enter) allow-discrete;
-}
+.snackbar.visible { display: flex; opacity: 1; transform: none; }
 @starting-style {
-  .snackbar.visible { opacity: 0; transform: translateY(var(--space-8)); }
+  .snackbar.visible { opacity: 0; transform: translateY(var(--toast-rise)); }
 }
 .snackbar--action { padding-right: var(--space-8); }
-.snackbar__text {
-  flex: 1;
-  padding-block: var(--space-8);
-  font: var(--type-body-medium); letter-spacing: var(--tracking-body-medium);
-}
+.snackbar__text { flex: 1; font: var(--type-body); }
 .snackbar__action {
   flex-shrink: 0;
-  height: var(--button-height);
-  padding: 0 var(--space-12);
-  border: none; border-radius: var(--shape-full);
-  background: none;
-  color: var(--color-inverse-primary);
-  font: var(--type-label-large); letter-spacing: var(--tracking-label-large);
+  min-height: var(--touch-target);
+  padding: 0 var(--space-16);
+  border-radius: var(--radius-full);
+  color: var(--color-toast-action);
+  font: var(--type-label); letter-spacing: var(--tracking-label);
 }
 
 /* ═══════════════════════════════════════
-   REDUCED MOTION — fades only
+   REDUCED MOTION — fades only, no scaling
 ═══════════════════════════════════════ */
 @media (prefers-reduced-motion: reduce) {
   @starting-style {
-    .overlay.active, .snackbar.visible { transform: none; }
+    .snackbar.visible { transform: none; }
   }
-  .ripple__wave { transform: scale(1); transition: opacity var(--duration-short) var(--easing-standard); }
-  .progress__track, .progress__indicator { transition: none; }
+  .card:active, .fab:active, .btn-close:active, .btn-primary:active, .btn-round:active,
+  #gallery-btn:active, #shutter-btn:active { transform: none; }
+  .progress__indicator { transition: none; }
 }

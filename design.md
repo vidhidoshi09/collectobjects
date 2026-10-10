@@ -5,24 +5,20 @@ platform. The details live in [`design/`](design/); this page is the map.
 
 ## How it's organised
 
-The system has three layers, like apps that feel both branded and native:
+Brand owns the screens; the native platform owns system moments.
 
-| Layer | What it is | Same on every platform? | Where |
-|---|---|---|---|
-| **1. Brand** | Color roles, typeface, spacing, shape, the cut-out object look, motion intent, voice and copy | ✅ Yes | [`design/foundations.md`](design/foundations.md), [`design/content.md`](design/content.md), [`design/tokens.json`](design/tokens.json) |
-| **2. Platform** | How the brand is expressed with each platform's own components and conventions | ❌ Per platform | [`design/platforms/android.md`](design/platforms/android.md) (Material 3), [`design/platforms/ios.md`](design/platforms/ios.md) (Liquid Glass, planned) |
-| **3. Components & screens** | What each component and screen does, with its implementation on each platform | Behavior shared, build per platform | [`design/components.md`](design/components.md) |
-
-**Rule of thumb:** brand where it's ours, native where it's the platform's.
-Native components (dialogs, sheets, pickers, share sheet) are never restyled
-beyond what the platform theme allows (brand colors and font).
+| Layer | What it is | Where |
+|---|---|---|
+| **1. Brand screens** | The look of every screen: warm dotted background, cut-out stickers, heavy names with a white stroke, round orange actions, Rounded icons, soft press. Color, type, spacing, motion, voice. Same on every platform. | [`design/foundations.md`](design/foundations.md), [`design/tokens.json`](design/tokens.json), [`design/content.md`](design/content.md) |
+| **2. Native system moments** | Dialogs, sheets, pickers, permission prompts, launch screen: the platform's own components, themed with brand colors and font, never restyled. | [`design/components.md`](design/components.md) (which component is native) |
+| **3. Platform files** | How each platform builds both layers: metrics, native theme, icons, token sync. | [`design/platforms/android.md`](design/platforms/android.md), [`design/platforms/ios.md`](design/platforms/ios.md) (planned) |
 
 ## Platforms
 
 | Platform | Status | Built with |
 |---|---|---|
-| Android | Launching (v1) | Capacitor: web UI drawn to Material 3 spec + native Android components (Material 3 theme) |
-| Web preview | Dev only | Same web UI in a browser; no on-device cut-out |
+| Android | Launching (v1) | Capacitor: brand screens in the web UI + native Android dialogs (Material 3 theme with brand colors and Nunito Sans) |
+| Web preview | Dev only | Same web UI in a browser; no on-device cut-out, `confirm()` instead of the native dialog |
 | iOS | Planned (v2) | Fully native SwiftUI with Liquid Glass, separate codebase, same brand layer |
 
 ## Changing the design

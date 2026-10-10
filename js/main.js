@@ -4,11 +4,8 @@ import { hideOverlay, hideAll } from './overlays.js';
 import { renderGrid, updateOpenMemory, closeDetail, confirmDelete, deleteMemory } from './grid.js';
 import { openCamera, stopCamera, onShutterPressed, onGalleryPicked } from './camera.js';
 import { saveMemory } from './review.js';
-import { initRipples } from './ripple.js';
 import { showSnackbar } from './snackbar.js';
 import { autoGrow } from './textfield.js';
-
-initRipples();
 
 /* ════════════════════════════════════════════════
    EVENTS

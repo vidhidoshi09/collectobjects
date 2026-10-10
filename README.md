@@ -65,7 +65,7 @@ Store listing text, privacy policy, Data safety answers and graphics are in `sto
 - `css/app.css`: all styles; tokens follow `design/tokens.json` (design system: `design.md`).
 - `js/`: the app as ES modules.
   - `main.js`: event wiring, Android back button, startup.
-  - `platform.js`: Capacitor and plugins (App, Filesystem, Dialog, BackgroundRemover) from `window.Native`.
+  - `platform.js`: Capacitor and plugins (App, Filesystem, BackgroundRemover, NativeUi) from `window.Native`.
   - `state.js`: shared mutable state (memories, camera stream, pending photo).
   - `storage.js`: files on the device, legacy migration, photo URLs.
   - `grid.js`: grid, detail view, editing, delete.
@@ -73,6 +73,6 @@ Store listing text, privacy policy, Data safety answers and graphics are in `sto
   - `background.js`: background removal and the progress ring.
   - `review.js`: review and save.
   - `overlays.js`, `format.js`: overlay show/hide, date and HTML helpers.
-  - `ripple.js`, `snackbar.js`, `textfield.js`: Material press ripple, snackbar messages, growing multi-line fields.
+  - `snackbar.js`, `textfield.js`: snackbar messages, the growing story field.
 - `src/native.js`: source of `vendor/native.js` (bundled by `npm run vendor`).
 - `assets/`: images. `android/`: the Capacitor Android project. `www/`: build output.

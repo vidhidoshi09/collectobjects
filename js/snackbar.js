@@ -1,7 +1,7 @@
 /* ════════════════════════════════════════════════
    SNACKBAR — short messages at the bottom (replaces alert())
-   Sits 16px above the bottom, or above the FAB / any visible
-   .snackbar-anchor it would otherwise cover. Auto-dismisses after 4s.
+   Centred 24px above the bottom, or above the FAB / any visible
+   .snackbar-anchor in the same band. Auto-dismisses after 4s.
 ════════════════════════════════════════════════ */
 const DURATION_MS = 4000;
 const GAP = 16; // px between the snackbar and what it sits above
@@ -27,26 +27,16 @@ function anchors() {
   return list.filter(isShown);
 }
 
-// Where an element will be once its overlay has finished rising in
-function settledRect(el) {
-  const r = el.getBoundingClientRect();
-  const overlay = el.closest('.overlay');
-  const shift = overlay ? new DOMMatrixReadOnly(getComputedStyle(overlay).transform).m42 : 0;
-  return { top: r.top - shift, bottom: r.bottom - shift, left: r.left, right: r.right };
-}
-
 function place() {
   bar.style.removeProperty('--snackbar-bottom');
   // offset* ignore the entering transform, so this is where the bar will settle
-  const barRect = {
-    top: bar.offsetTop, bottom: bar.offsetTop + bar.offsetHeight, height: bar.offsetHeight,
-    left: bar.offsetLeft, right: bar.offsetLeft + bar.offsetWidth,
-  };
+  const barRect = { top: bar.offsetTop, bottom: bar.offsetTop + bar.offsetHeight, height: bar.offsetHeight };
   let top = barRect.top;
   for (const el of anchors()) {
-    const r = settledRect(el);
-    const overlaps = r.bottom > top - GAP && r.top < barRect.bottom
-      && r.right > barRect.left && r.left < barRect.right;
+    const r = el.getBoundingClientRect();
+    // vertical band only: a short centred message still sits above the FAB,
+    // so the bar's position doesn't depend on its text length
+    const overlaps = r.bottom > top - GAP && r.top < barRect.bottom;
     if (overlaps) top = Math.min(top, r.top - GAP - barRect.height);
   }
   if (top !== barRect.top) {
