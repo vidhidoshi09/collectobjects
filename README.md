@@ -9,6 +9,8 @@ npm install
 npm start   # serves the app at http://localhost:8000
 ```
 
+For a phone-sized preview that reloads when you save `index.html`, open http://localhost:8000/phone.html.
+
 ## Android app
 
 ### Get an APK without installing anything
