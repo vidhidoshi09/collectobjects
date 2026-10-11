@@ -1,11 +1,11 @@
-# Changelog: Collect Objects
+# Changelog: collectobjects
 
 What changed, when, and why. Newest first. (Formerly "Memories".)
 
 ## Unreleased (in progress)
 
 **Identity**
-- Renamed to **Collect Objects** (store app name *Collect Objects*, tagline *the stories behind your things*); home screen title "collection".
+- Renamed to **collectobjects** (lockup *collectobjects — for your trinkets*); home screen title "collection".
 - App ID changes to `com.vidhidoshi.collectobjects` (not yet published, so this is the last free moment).
 - Lowercase, warm Gen Z voice across all copy ("add an object", "what's the story?", "found oct 10").
 - Privacy policy rewritten in the brand voice, headline promise first: *"your things stay on your phone. we never see them."*

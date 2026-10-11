@@ -1,4 +1,4 @@
-# privacy policy · collect objects
+# privacy policy · collectobjects
 
 _last updated: [date you publish]_
 
@@ -7,7 +7,7 @@ _last updated: [date you publish]_
 **your things stay on your phone. we never see them.**
 
 no account. no ads. no tracking. no servers of ours holding your stuff.
-collect objects is made by [your name] ("we", "us"), and this page explains
+collectobjects is made by [your name] ("we", "us"), and this page explains
 exactly what happens with your photos and words.
 
 ---
@@ -50,7 +50,7 @@ includes your photos.**
 
 ## 05 · kids
 
-collect objects isn't made for children under 13.
+collectobjects isn't made for children under 13.
 
 ## 06 · changes
 

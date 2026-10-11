@@ -28,17 +28,16 @@ a little archive of the things you keep.
 
 snap something that matters to you: the key to your first flat, a ticket stub,
 grandma's teapot, the rock from that one beach. it's cut out from its
-background like a sticker and added to your collection with its own number.
+background like a sticker and added to your collection.
 
 every little thing has a story.
 
-— give it a number
-each object keeps the day you found it, and its story.
-your collection grows like a real archive, one find at a time.
+— keep the day you found it
+each object keeps its date and its story.
+your collection grows one find at a time.
 
 — write its story
-open any object and it sits above a little label, like the ones next to things
-on a gallery wall: its name, its number, the day you found it, and the story
+open any object to see its name, the day you found it, and the story
 behind it. where it came from, who gave it to you, why you can't throw it away.
 
 — watch it come alive
@@ -65,8 +64,8 @@ no feeds, no likes, no followers. just your things and the stories that come wit
 | Phone screenshots | _take on a real phone_ | 2–8, PNG/JPEG, 9:16, min 1080px tall recommended |
 
 Suggested screenshots, in order:
-1. Grid ("collection") with 6–8 real cut-outs and their numbers
+1. Grid ("collection") with 6–8 real cut-outs and their dates
 2. Detail view: an object with its name, date and story
 3. Review screen as a new cut-out lifts off the page ("what is it?")
-4. Empty state ("no objects yet")
+4. Empty state ("start collecting")
 5. Processing ("framing it…")
