@@ -59,11 +59,21 @@ no feeds, no likes, no followers. just your things and the stories that come wit
 
 | Asset | File | Spec |
 |---|---|---|
-| App icon | `store/icon-512.png` (source: `store/icon.svg`) | 512×512 PNG: the "c into o" line in paper (`#FAF9F7`), tilted 40° toward the bottom right so it reads "co", on a grainy burgundy wash (`#8E1B2D`) with an orange (`#F5A742`) glow and a cream haze, plus a sparkle |
+| App icon | `store/icon-512.png` (also `assets/logo/`) | 512×512 PNG: the "c into o" line in paper (`#FAF9F7`), tilted 40° toward the bottom right so it reads "co", on a grainy burgundy wash (`#8E1B2D`) with an orange (`#F5A742`) glow and a cream haze, plus a sparkle |
 | Feature graphic | `store/feature-graphic.png` | 1024×500 PNG: icon + "collectobjects" + "for your trinkets" on the page colour with tinted dots, croissant / teapot / duck stickers on the hue glow |
-| Phone screenshots | _take on a real phone_ | 2–8, PNG/JPEG, 9:16, min 1080px tall recommended |
+| Phone screenshots | `store/screenshots/01–05` | 5 × 1080×1920 PNG (9:16): headline + the app in a phone frame, telling the story: collection → snap → sticker → story → share |
 
-Suggested screenshots, in order:
+Screenshots in `store/screenshots/` (upload in this order):
+
+| # | Headline | Shows |
+|---|---|---|
+| 1 | Keep the little things | Collection |
+| 2 | Point at anything you love | Camera |
+| 3 | It becomes a sticker | Save screen with the cut-out |
+| 4 | Keep the story behind it | Close-up with its story |
+| 5 | Share your favourites | A share card |
+
+Earlier suggestions, for real-phone screenshots later:
 1. Grid ("collection") with 6–8 real cut-outs and their dates
 2. Detail view: an object with its name, date and story
 3. Review screen as a new cut-out lifts off the page ("what is it?")

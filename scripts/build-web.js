@@ -9,7 +9,10 @@ fs.rmSync(out, { recursive: true, force: true });
 fs.mkdirSync(out, { recursive: true });
 fs.copyFileSync(path.join(root, 'index.html'), path.join(out, 'index.html'));
 for (const dir of ['css', 'js', 'assets', 'vendor']) {
-  fs.cpSync(path.join(root, dir), path.join(out, dir), { recursive: true });
+  fs.cpSync(path.join(root, dir), path.join(out, dir), {
+    recursive: true,
+    filter: src => !src.startsWith(path.join(root, 'assets', 'logo')), // brand files for the store, not the app
+  });
 }
 
 console.log('Web app copied to www/');
