@@ -6,8 +6,10 @@ import { fmtShortDate } from './format.js';
    every other string is built from them. Outside the web UI, also rename
    capacitor.config.json appName, android/app/src/main/res/values/strings.xml
    (app_name, title_activity_main), <title> in index.html, store/ and design docs.
-   Voice: lowercase, warm, playful, brief. No exclamation marks, no emoji.
-   Button labels (buttons, menu items, dialog actions) are Sentence case: "Add to collection".
+   Voice: warm, playful, brief. No exclamation marks, no emoji.
+   Case: everything the app says is Sentence case ("Add to collection", "What is it?").
+   What the person writes stays as typed; dates are small caps; the wordmark is always collectobjects.
+   Accessibility labels stay lowercase (screen readers don't voice case).
 ════════════════════════════════════════════════ */
 export const BRAND   = 'collectobjects';  // the wordmark: one word, lowercase, everywhere
 export const TAGLINE = 'for your trinkets'; // brand lockup: "collectobjects — for your trinkets"
@@ -22,37 +24,37 @@ const dateLine  = (date, city) => `${fmtShortDate(date)}${city ? ` · ${city.toL
 export const copy = {
   appName: BRAND,
   home: {
-    title: COLLECTION,
+    title: `${COLLECTION[0].toUpperCase()}${COLLECTION.slice(1)}`, // "Collection"
     count: n => (n === 1 ? `1 ${ITEM}` : `${n} ${ITEMS}`),
     gridLabel: `your ${ITEMS}`,
     add: `add ${AN_ITEM}`, // add tile accessibility label
   },
   empty: {
     title: 'Start collecting',
-    body: 'Snap a trinket, cut it out, keep its story.', // echoes the Play Store line
+    body: 'A little home for your trinkets and keepsakes.', // not "museum": too close to a competitor (Museeum)
   },
   camera: {
     label: 'camera',
-    blocked: "camera's off. turn it on in settings, or pick a photo instead.",
+    blocked: "Camera's off. Turn it on in Settings, or pick a photo instead.",
     gallery: 'choose from gallery',
     shutter: 'take photo',
   },
   processing: {
-    cutting: 'framing it…',
-    setup: 'getting ready…',
-    setupSub: 'one-time setup',
+    cutting: 'Framing it…',
+    setup: 'Getting ready…',
+    setupSub: 'One-time setup',
   },
   review: {
     label: `name your ${ITEM}`,
     name: 'name',
-    namePlaceholder: 'what is it?',
+    namePlaceholder: 'What is it?',
     photo: `your ${ITEM}`,
-    storyPlaceholder: "what's the story? (optional)",
+    storyPlaceholder: "What's the story? (optional)",
     retake: 'retake',
     save: `Add to ${COLLECTION}`,
     city: {
       add: 'Add city',
-      finding: 'finding city…',
+      finding: 'Finding city…',
       remove: city => `remove ${city.toLowerCase()}`, // accessibility label of a filled chip
     },
   },
@@ -66,13 +68,13 @@ export const copy = {
     label: ITEM,
     name: 'name',
     story: 'story',
-    storyPlaceholder: "what's the story?",
+    storyPlaceholder: "What's the story?",
     more: 'more',
     delete: 'Delete', // menu item
   },
   delete: {
-    title: `delete this ${ITEM}?`,
-    body: "this can't be undone.",
+    title: `Delete this ${ITEM}?`,
+    body: "This can't be undone.",
     confirm: 'Delete',
     cancel: 'Keep it',
   },

@@ -35,7 +35,6 @@
   --color-dot:            #ccc8c2; /* dot texture + progress track */
   --color-text:           #111111; /* names, titles, body, icons */
   --color-text-secondary: #636363; /* dates, subtitles, placeholders (AA on bg) */
-  --color-line:           rgb(0 0 0 / 0.1); /* resting underline of an empty field */
   --color-accent:         #f5a742; /* brand orange: FAB, primary buttons, progress */
   --color-on-accent:      #683f00; /* text + icons on orange (AA) */
   --color-round:          #e2dfdb; /* secondary round buttons, pressed menu item */
@@ -50,9 +49,10 @@
   --color-shutter-pressed: #cccccc;
   --color-shutter-halo:   rgb(255 255 255 / 0.25);
   --color-shutter-halo-outer: rgb(255 255 255 / 0.1);
-  --color-toast:          #2b2926; /* snackbar */
-  --color-on-toast:       #f4f2ef;
-  --color-toast-action:   #ffb868;
+  --color-toast:          var(--color-surface); /* toast: paper card, like the menu */
+  --color-on-toast:       var(--color-text);
+  --color-toast-icon:     var(--color-on-accent); /* warm brown: readable on paper, still the brand */
+  --color-toast-action:   var(--color-on-accent);
   --color-focus:          #683f00;
   --color-sheen-light:    rgb(255 255 255 / 0.9);  /* holographic sheen on the tilting cut-out */
   --color-sheen-warm:     rgb(255 196 232 / 0.75);
@@ -68,7 +68,7 @@
   --weight-bold:     700;
   --weight-heavy:    800;
   --type-display:  var(--weight-bold)    28px/1.1  var(--font-display);  /* home title "collection" */
-  --type-headline: var(--weight-bold)    26px/1.15 var(--font-display);  /* empty title, review name, detail name */
+  --type-headline: var(--weight-bold)    24px/1.15 var(--font-display);  /* empty title, review name, detail name */
   --type-title:    var(--weight-heavy)   22px/1.25 var(--font-display); /* progress % */
   --type-name:     var(--weight-heavy)   15px/1.2  var(--font-display); /* grid object name (white stroke) */
   --type-label:    var(--weight-semibold) 15px/1.2 var(--font-family); /* buttons, processing label, snackbar action */
@@ -92,6 +92,7 @@
   --space-8:  8px;
   --space-12: 12px;
   --space-16: 16px;
+  --space-20: 20px;
   --space-24: 24px;
   --space-32: 32px;
   --space-40: 40px;
@@ -101,9 +102,7 @@
   --dot-spacing: 28px;
 
   /* ── Shape ── */
-  --radius-sm:   10px;
   --radius-md:   16px;
-  --radius-lg:   20px;
   --radius-full: 9999px;
 
   /* ── Sizes ── */
@@ -119,6 +118,8 @@
   --text-measure:      280px; /* short centred copy */
   --text-measure-wide: 340px; /* name + story column on the detail screen */
   --card-image-inset:  5%;
+  --chip-height:       40px; /* city chip */
+  --add-tile-solo:     64px; /* the add tile on the empty screen */
   --add-tile-size:     56%; /* of a grid cell: a small square where a cut-out would sit */
   --review-image-width: 72%;
   --review-story-max:   120px; /* the story scrolls past this while saving */
@@ -128,8 +129,6 @@
   --overlay-top:       calc(var(--space-16) * 2 + var(--close-size)); /* clears the close button */
 
   /* ── Elevation ── */
-  --shadow-accent: 0 6px 20px rgb(245 167 66 / 0.35);
-  --shadow-toast:  0 6px 20px rgb(0 0 0 / 0.18);
   --shadow-menu:   0 8px 28px rgb(0 0 0 / 0.16), 0 1px 3px rgb(0 0 0 / 0.08);
   --blur-scrim:    blur(6px);
 
@@ -252,7 +251,6 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
   background: var(--color-accent); color: var(--color-on-accent);
   font: var(--type-label); letter-spacing: var(--tracking-label);
   white-space: nowrap;
-  box-shadow: var(--shadow-accent);
 }
 
 /* Secondary: grey rounded square (Retake), the add tile's shape */
@@ -263,7 +261,7 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
   background: var(--color-round); color: var(--color-text);
 }
 
-/* Close: floating translucent-dark circle, top-left of every overlay.
+/* Close: a fill-grey circle, top-left of every overlay (translucent dark over the camera).
    40px circle inside a 48px touch target. */
 .btn-close {
   position: absolute; z-index: var(--z-close);
@@ -273,9 +271,8 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
   padding: calc((var(--touch-target) - var(--close-size)) / 2);
   display: flex; align-items: center; justify-content: center;
   border-radius: var(--radius-full);
-  background: var(--color-scrim); background-clip: content-box;
-  color: var(--color-on-camera);
-  backdrop-filter: var(--blur-scrim); -webkit-backdrop-filter: var(--blur-scrim);
+  background: var(--color-round); background-clip: content-box;
+  color: var(--color-text);
 }
 
 /* More (⋯): the close button's twin, top-right */
@@ -302,7 +299,7 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
   display: flex; align-items: center; gap: var(--space-12);
   width: 100%; min-height: var(--touch-target);
   padding: 0 var(--space-12);
-  border-radius: var(--radius-sm);
+  border-radius: calc(var(--radius-md) - var(--space-4)); /* nested inside the menu's 16 */
   font: var(--type-label); letter-spacing: var(--tracking-label); text-align: left;
   color: var(--color-text);
   transition: background-color var(--duration-press) var(--easing);
@@ -371,6 +368,9 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
   border-radius: var(--radius-md);
   background: var(--color-round); color: var(--color-text);
 }
+/* on the empty screen: the same tile, under the invitation */
+.add-tile--solo { position: static; width: var(--add-tile-solo); height: var(--add-tile-solo); margin: var(--space-24) 0 0; /* not the grid tile's auto margins, which would eat the centring */ transition: transform var(--duration-press) var(--easing); }
+.add-tile--solo:active { transform: scale(var(--press-scale)); }
 
 /* ═══════════════════════════════════════
    SHARED OVERLAY BASE
@@ -425,6 +425,10 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
    STEP 1 — CAMERA
 ═══════════════════════════════════════ */
 #camera-overlay { background: var(--color-camera); }
+#camera-close {
+  background-color: var(--color-scrim); color: var(--color-on-camera);
+  backdrop-filter: var(--blur-scrim); -webkit-backdrop-filter: var(--blur-scrim);
+}
 #camera-overlay :focus-visible { outline-color: var(--color-on-camera); }
 
 #camera-video { flex: 1; min-height: 0; width: 100%; object-fit: cover; display: block; }
@@ -554,20 +558,18 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
 .chip {
   flex-shrink: 0;
   display: inline-flex; align-items: center; gap: var(--space-4);
-  min-height: var(--touch-target); /* a 32px pill inside the 48px touch target */
-  margin-top: var(--space-8);
-  padding: 0 var(--space-12);
-  background: none; color: var(--color-text-secondary);
+  min-height: var(--chip-height);
+  margin-top: var(--space-16);
+  padding: 0 var(--space-16) 0 var(--space-12);
+  border-radius: var(--radius-full);
+  background: var(--color-round); color: var(--color-text-secondary);
   font: var(--type-caption);
   --icon-size: var(--icon-size-small);
+  transition: transform var(--duration-press) var(--easing);
 }
+.chip:active { transform: scale(var(--press-scale)); }
 .chip[hidden] { display: none; }
-.chip span {
-  padding: var(--space-4) 0;
-  border-bottom: 1px dashed var(--color-line); /* reads as tappable, not as a field */
-}
 .chip--filled { color: var(--color-text); }
-.chip--filled span { border-bottom-color: transparent; }
 .chip--finding { opacity: 0.6; }
 
 /* Round Retake + orange Save pill */
@@ -635,11 +637,11 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
 
 
 /* ═══════════════════════════════════════
-   EMPTY STATE: header + add tile as usual, the invitation centred in the
-   space below
+   EMPTY STATE: header as usual; the invitation centred below it, ending
+   in the add tile (the grid's tile appears from the first object on)
 ═══════════════════════════════════════ */
 body.is-empty #home { display: flex; flex-direction: column; }
-body.is-empty #grid { flex: 1; grid-template-rows: auto 1fr; }
+body.is-empty #grid { flex: 1; grid-template-rows: 1fr; }
 .empty {
   grid-column: 1 / -1;
   display: flex; flex-direction: column;
@@ -667,7 +669,7 @@ body.is-empty #grid { flex: 1; grid-template-rows: auto 1fr; }
 
 /* ═══════════════════════════════════════
    SNACKBAR — js/snackbar.js
-   Dark warm pill: optional orange icon + Sentence-case message, centred above
+   Paper card (the menu's surface, radius and shadow): orange icon + Sentence-case message, centred above
    the bottom; moves up to clear any .snackbar-anchor on the open screen.
 ═══════════════════════════════════════ */
 .snackbar {
@@ -679,11 +681,11 @@ body.is-empty #grid { flex: 1; grid-template-rows: auto 1fr; }
   bottom: var(--snackbar-bottom, calc(var(--space-24) + env(safe-area-inset-bottom, 0px)));
   z-index: var(--z-snackbar);
   align-items: center; gap: var(--space-8);
-  padding: var(--space-12) var(--space-24);
-  border-radius: var(--radius-lg);
+  padding: var(--space-12) var(--space-20);
+  border-radius: var(--radius-md);
   background: var(--color-toast);
   color: var(--color-on-toast);
-  box-shadow: var(--shadow-toast);
+  box-shadow: var(--shadow-menu);
   text-align: center;
   opacity: 0;
   transition:
@@ -692,7 +694,7 @@ body.is-empty #grid { flex: 1; grid-template-rows: auto 1fr; }
     display var(--duration-fade) allow-discrete;
 }
 .snackbar.visible { display: flex; opacity: 1; transform: none; }
-.snackbar__icon { --icon-size: var(--icon-size-small); color: var(--color-toast-action); }
+.snackbar__icon { --icon-size: var(--icon-size-small); color: var(--color-toast-icon); }
 .snackbar__icon[hidden] { display: none; }
 @starting-style {
   .snackbar.visible { opacity: 0; transform: translateY(var(--toast-rise)); }

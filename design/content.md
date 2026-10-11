@@ -11,10 +11,10 @@ object has a **story**: why it matters.
 Lowercase, warm, playful, brief. A friend who keeps a little archive of your
 things and takes them as seriously as you do.
 
-- **Always lowercase**, also titles and accessibility labels. **Button labels are
-  Sentence case** ("Add to collection", "Delete", "Keep it"), and so are **toasts**,
-  each with a small icon ("Added to your collection"). Names the person
-  types are kept exactly as typed.
+- **Everything the app says is Sentence case**: titles ("Collection", "Start collecting"),
+  buttons, placeholders, dialogs and toasts (each toast with a small icon).
+  What the person writes stays exactly as typed; dates are small caps; the wordmark
+  is always **collectobjects**. Accessibility labels stay lowercase.
 - **Short.** One idea per message. Questions are fine ("what is it?").
 - **Playful, never cringe.** No slang, no "bestie", no emoji, no exclamation marks,
   no ALL CAPS in the words (small caps in the overline style are typography, not copy).

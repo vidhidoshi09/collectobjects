@@ -28,8 +28,8 @@ export async function renderGrid() {
 
   document.body.classList.toggle('is-empty', objects.length === 0);
   if (objects.length === 0) {
-    // the same add tile, then the invitation under it
-    grid.innerHTML = addTile + `
+    // the invitation, ending in the same add tile
+    grid.innerHTML = `
       <div class="empty">
         <div class="empty__samples" aria-hidden="true">
           <img class="sticker" src="assets/croissant.png" alt="" />
@@ -38,6 +38,9 @@ export async function renderGrid() {
         </div>
         <p class="empty__title">${esc(copy.empty.title)}</p>
         <p class="empty__sub">${esc(copy.empty.body)}</p>
+        <button class="add-tile add-tile--solo" id="add-tile" type="button" aria-label="${esc(copy.home.add)}">
+          <svg class="icon" aria-hidden="true"><use href="#i-add"/></svg>
+        </button>
       </div>`;
     return;
   }

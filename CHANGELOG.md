@@ -34,7 +34,8 @@ What changed, when, and why. Newest first. (Formerly "Memories".)
 - No date above "collection" on the home screen.
 - **Add tile** replaces the orange round button: a quiet square + first in the grid, from the first object on.
 - Add tile is a smaller square, and the empty screen uses it too (header back, no orange button): "Start collecting" / "Snap a trinket, cut it out, keep its story."
-- Primary and secondary buttons are rounded rectangles (radius 16), the add tile's shape.
+- **Design system v1:** Sentence case for everything the app says; surfaces bg → fill → paper; radius 16 (full for close and chips); one shadow; orange only for primary, progress and the caret. Toasts are paper cards with brown icons; close is a fill circle (dark only over the camera); city chip is a fill pill; flat primary button (no glow); headline 24.
+- First screen: header back, "Start collecting" / "A little home for your trinkets and keepsakes.", and the + under it.
 - **Toasts** in Sentence case with a small icon (sunrise/sun/moon greetings, check on save).
 - The detail date is just the date ("oct 11"), no "found".
 
