@@ -48,7 +48,7 @@ where Collect Objects is different.
 |---|---|
 | iPhone only (as far as we know) | **Android first**, iPhone v2 |
 | Long onboarding | **First object in ~10 seconds**; the empty state is the onboarding |
-| Private archive, travel and maps | **Identity**: "the lore behind your things", shareable collection card |
+| Private archive, travel and maps | **Identity**: "the stories behind your things", shareable collection card |
 | Receipt animation | **Lift-off reveal + holographic tilt**, then **3D scans** on iPhone Pro |
 | Feature-rich | **Simple, fast, focused** |
 | Adult, nostalgic tone | **Lowercase Gen Z voice** |
