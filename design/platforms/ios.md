@@ -48,6 +48,13 @@ sticker stroke (draw the text twice: stroked white behind, filled on top).
 | Motion | System springs (`.smooth`, `.snappy`) instead of CSS ease. |
 | Cut-out | Vision foreground-mask request (on-device, no download). |
 
+## Signature iOS feature: 3D scan (v2)
+
+- **3D scan of an object** with Apple **Object Capture** (`ObjectCaptureSession`, on-device), producing a USDZ model the user can spin and zoom in the detail view and place in their room with AR Quick Look.
+- Requires **LiDAR**: iPhone 12 Pro and later **Pro / Pro Max** models (and iPad Pro). Check `ObjectCaptureSession.isSupported`; on other iPhones, offer the 2.5D holographic tilt instead.
+- The flat cut-out stays the grid thumbnail; a small 3D badge marks scanned pieces.
+- Store the model next to the photo (`photos/<id>.usdz`) and add an optional `model` field to the memory record.
+
 ## Shared beyond design
 
 Keep the **data format** identical (`memories.json` with `id`, `name`, `date`,

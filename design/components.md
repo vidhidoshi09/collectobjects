@@ -22,6 +22,7 @@ the native v2. Metrics are in [`foundations.md`](foundations.md) and the platfor
 | **Photo picker** | Choose an existing photo | System picker (file input) | `PhotosPicker` |
 | **Camera** | Full-bleed preview, shutter, gallery, close | In-app camera (WebView `getUserMedia`), 72 white shutter, 48 gallery circle | `AVCaptureSession` view or system camera |
 | **Cut-out** | Remove background on device | ML Kit Subject Segmentation (`BackgroundRemoverPlugin`) | Vision `VNGenerateForegroundInstanceMaskRequest` |
+| **3D view** | Spin a scanned object, place it in AR | Not available (2.5D tilt instead) | Object Capture scan (LiDAR Pro models) → USDZ in `Model3D` / AR Quick Look |
 | **Grid item** | Cut-out + name + date, square tile | Brand: sticker image, `label` name + white stroke, `caption` date | `LazyVGrid` cell |
 | **Empty state** | 3 sample objects (centre raised), title, body, primary CTA | Brand | Same layout in SwiftUI |
 
