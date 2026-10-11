@@ -41,21 +41,35 @@ technical info about how the feature performs (like device model, android
 version and app version), as described in google's ml kit terms. **this never
 includes your photos.**
 
-## 04 · what we don't do
+## 04 · the city (optional)
+
+you can add the city an object was found in. the first time, the app asks for
+**approximate location** (never precise). you can say no, and everything else
+works the same.
+
+- the app saves **only the city's name** (like "london") with that object, on
+  your phone. no coordinates, no street, no history of where you've been.
+- to turn your approximate location into a city name, android's geocoder (part
+  of google play services) sends that approximate location to google. we never
+  receive it.
+- you can take a city off any new object with one tap, or turn location off for
+  the app in your phone's settings.
+
+## 05 · what we don't do
 
 - no accounts or sign-in
 - no ads
 - no analytics or tracking
 - no selling or sharing of your data, ever
 
-## 05 · kids
+## 06 · kids
 
 collectobjects isn't made for children under 13.
 
-## 06 · changes
+## 07 · changes
 
 if this policy changes, we'll update this page and the date at the top.
 
-## 07 · say hi
+## 08 · say hi
 
 questions about your privacy: [your support email]

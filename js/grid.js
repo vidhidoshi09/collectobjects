@@ -81,7 +81,7 @@ async function openDetail(id) {
   document.getElementById('detail-sheen').style.setProperty('--sheen-mask', `url("${src}")`);
   document.getElementById('detail-name').value = m.name;
   document.getElementById('detail-note').value = m.note || '';
-  document.getElementById('detail-meta').textContent = copy.item.found(m.date);
+  document.getElementById('detail-meta').textContent = copy.item.found(m.date, m.city);
   document.getElementById('detail-delete').dataset.id = m.id;
 
   showOverlay('detail-overlay');
@@ -104,7 +104,19 @@ export async function updateOpenObject(changes) {
   renderGrid();
 }
 
+// The ⋯ menu (remove lives here, not one stray tap away)
+const menu = document.getElementById('detail-menu');
+const moreBtn = document.getElementById('detail-more');
+export const isDetailMenuOpen = () => !menu.hidden;
+export function toggleDetailMenu(open = menu.hidden, { refocus = false } = {}) {
+  menu.hidden = !open;
+  moreBtn.setAttribute('aria-expanded', String(open));
+  if (open) menu.querySelector('[role="menuitem"]').focus();
+  else if (refocus) moreBtn.focus();
+}
+
 export function closeDetail() {
+  toggleDetailMenu(false);
   document.activeElement?.blur(); // commits an in-progress name/story edit
   stopTilt();
   stopTilt = () => {};

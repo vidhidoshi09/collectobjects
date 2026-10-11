@@ -9,5 +9,7 @@ import { Haptics } from '@capacitor/haptics';
 const BackgroundRemover = registerPlugin('BackgroundRemover');
 // Implemented in android/app/src/main/java/com/vidhidoshi/collectobjects/NativeUiPlugin.java
 const NativeUi = registerPlugin('NativeUi');
+// Implemented in android/app/src/main/java/com/vidhidoshi/collectobjects/PlacePlugin.java
+const Place = registerPlugin('Place');
 
-window.Native = { Capacitor, App, Filesystem, Directory, Encoding, Haptics, BackgroundRemover, NativeUi };
+window.Native = { Capacitor, App, Filesystem, Directory, Encoding, Haptics, BackgroundRemover, NativeUi, Place };

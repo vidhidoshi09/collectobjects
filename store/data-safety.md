@@ -17,6 +17,14 @@ ephemerally where it says so.
 
 Photos, names and stories are **not collected**: they never leave the device.
 
+**Note on location (verify before submitting):** the optional city uses
+`ACCESS_COARSE_LOCATION` and Android's `Geocoder` (Google Play services). Only
+the city name is stored, on the device; the developer never receives location.
+The geocoder sends approximate location to Google to look up the name. If
+Google's guidance treats that as collection, declare **Location → Approximate
+location**, collected, not shared, purpose **App functionality**, **optional**,
+processed ephemerally.
+
 ## Content rating questionnaire
 
 - Category: **Utility, productivity, communication or other**
@@ -42,4 +50,5 @@ The app does **not** contain ads.
 | Permission | Why |
 |---|---|
 | `CAMERA` | Photograph objects |
+| `ACCESS_COARSE_LOCATION` | Optional: the city an object was found in (city name only) |
 | `INTERNET` | Included by the app framework (Capacitor) and used for development live reload; the app itself makes no network requests |

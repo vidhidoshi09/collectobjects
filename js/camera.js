@@ -67,7 +67,7 @@ export async function onShutterPressed() {
   const jpegDataURL = captureFrame();
   stopCamera();
   hideOverlay('camera-overlay');
-  await processPhoto(jpegDataURL);
+  await processPhoto(jpegDataURL, { fromCamera: true });
 }
 
 // Gallery photo → JPEG data URL, longest side at most 1024px (like camera captures)
@@ -97,7 +97,7 @@ export async function onGalleryPicked(file) {
   await processPhoto(jpegDataURL);
 }
 
-async function processPhoto(jpegDataURL) {
+async function processPhoto(jpegDataURL, { fromCamera = false } = {}) {
   // 2. Show processing overlay with the progress ring
   progress.start();
   showOverlay('processing-overlay');
@@ -109,12 +109,12 @@ async function processPhoto(jpegDataURL) {
     await new Promise(r => setTimeout(r, 250)); // let 100% register
 
     // 4. Show review screen, the original photo blurred behind the reveal
-    showReview(photo, jpegDataURL);
+    showReview(photo, jpegDataURL, { fromCamera });
   } catch (err) {
     progress.finish();
     console.error('[bg-removal]', err.message || err); // details stay in the log, not the UI
     // Fallback: keep the original photo
-    showReview({ base64: jpegDataURL.split(',')[1], mime: 'image/jpeg' });
+    showReview({ base64: jpegDataURL.split(',')[1], mime: 'image/jpeg' }, null, { fromCamera });
     showSnackbar(copy.toast.cutoutFailed);
   }
 }

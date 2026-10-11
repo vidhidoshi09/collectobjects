@@ -16,7 +16,7 @@ export const AN_ITEM = 'an object';       // with its article
 export const COLLECTION = 'collection';   // what the home screen holds (its title)
 
 const exhibitNo = no => `no. ${String(no).padStart(3, '0')}`;
-const found     = date => `found ${fmtShortDate(date)}`;
+const found     = (date, city) => `found ${fmtShortDate(date)}${city ? ` in ${city.toLowerCase()}` : ''}`;
 
 export const copy = {
   appName: BRAND,
@@ -48,20 +48,27 @@ export const copy = {
     name: 'name',
     namePlaceholder: 'what is it?',
     photo: `your ${ITEM}`,
+    storyPlaceholder: "what's the story? (optional)",
     retake: 'retake',
     save: `add to ${COLLECTION}`,
+    city: {
+      add: 'add city',
+      finding: 'finding city…',
+      remove: city => `remove ${city.toLowerCase()}`, // accessibility label of a filled chip
+    },
   },
   item: {
     untitled: `untitled ${ITEM}`,
     no: exhibitNo,      // kept in the data, not shown
     date: fmtShortDate, // grid: "oct 11" (year only when not this year)
-    found,              // detail: "found oct 11"
+    found,              // detail: "found oct 11", or "found oct 11 in london"
   },
   detail: {
     label: ITEM,
     name: 'name',
     story: 'story',
     storyPlaceholder: "what's the story?",
+    more: 'more',
     remove: 'remove',
   },
   remove: {
@@ -81,6 +88,8 @@ export const copy = {
     cutoutFailed: "couldn't cut this one out, so we kept the whole photo.",
     saveFailed: "couldn't save. try again?",
     photoUnreadable: "that photo didn't open. try another one?",
+    cityDenied: "location's off for collectobjects. you can turn it on in settings.",
+    cityFailed: "couldn't find your city right now.",
     loadFailed: `couldn't load your ${ITEMS}. restart the app?`,
   },
 };

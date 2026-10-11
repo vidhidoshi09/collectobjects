@@ -7,6 +7,8 @@ import { renderGrid } from './grid.js';
 import { showSnackbar } from './snackbar.js';
 import { replay, reducedMotion } from './motion.js';
 import { tapLight } from './haptics.js';
+import { autoGrow } from './textfield.js';
+import { resetCity, currentCity } from './city.js';
 
 /* ════════════════════════════════════════════════
    STEP 3 — REVIEW
@@ -24,14 +26,18 @@ img.addEventListener('animationcancel', () => img.classList.remove('is-revealing
 
 // `original`: the photo before the cut-out (JPEG data URL), shown blurred behind
 // the reveal; left out when the cut-out failed and the photo is the original.
-export function showReview(photo, original = null) {
+// `fromCamera`: taken just now, so the city can fill itself in.
+export function showReview(photo, original = null, { fromCamera = false } = {}) {
   state.pendingPhoto = photo;
 
   img.src = `data:${photo.mime};base64,${photo.base64}`;
   document.getElementById('name-input').value = '';
+  document.getElementById('story-input').value = '';
+  resetCity({ auto: fromCamera });
 
   hideOverlay('processing-overlay');
   showOverlay('review-overlay');
+  autoGrow(document.getElementById('story-input')); // measured once the screen is shown
   replay(img, 'is-revealing');
   clearBackdrop();
   if (original && !reducedMotion()) {
@@ -49,6 +55,8 @@ export function showReview(photo, original = null) {
 ════════════════════════════════════════════════ */
 export async function saveObject() {
   const name  = document.getElementById('name-input').value.trim() || copy.item.untitled;
+  const note  = document.getElementById('story-input').value.trim();
+  const city  = currentCity();
   const photo = state.pendingPhoto;
   if (!photo) return;
   state.pendingPhoto = null; // guards against a double tap saving twice
@@ -57,7 +65,7 @@ export async function saveObject() {
   try {
     const file = await writePhoto(id, photo.base64, photo.mime);
     const list = loadObjects();
-    await saveObjects([...list, { id, no: nextNo(list), name, date: fmtStored(new Date()), file }]);
+    await saveObjects([...list, { id, no: nextNo(list), name, date: fmtStored(new Date()), file, ...(note && { note }), ...(city && { city }) }]);
   } catch (err) {
     console.error('[storage]', err);
     state.pendingPhoto = photo;

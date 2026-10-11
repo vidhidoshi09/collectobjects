@@ -9,6 +9,7 @@ public class MainActivity extends BridgeActivity {
     public void onCreate(Bundle savedInstanceState) {
         registerPlugin(BackgroundRemoverPlugin.class);
         registerPlugin(NativeUiPlugin.class);
+        registerPlugin(PlacePlugin.class);
         super.onCreate(savedInstanceState);
     }
 }

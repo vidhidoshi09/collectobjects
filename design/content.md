@@ -46,6 +46,10 @@ Platforms may only change a word where a platform term differs.
 | `processing.cutting` | Processing | "framing it…" |
 | `processing.setup` | First-time model download | "getting ready…" + "one-time setup" |
 | `review.name` | Review field | label "name", placeholder "what is it?" |
+| `review.storyPlaceholder` | Review story | "what's the story? (optional)" |
+| `review.city` | City chip | "add city" · "finding city…" · the city; a11y "remove london" |
+| `item.found` | Detail date line | "found oct 11", or "found oct 11 in london" |
+| `toast.cityDenied` / `toast.cityFailed` | City lookup | "location's off for collectobjects. you can turn it on in settings." · "couldn't find your city right now." |
 | `review.retake` / `review.save` | Review actions | "retake" · "add to collection" |
 | `item.untitled` | Default name | "untitled object" |
 | `item.date` | Grid date | "oct 11"; with the year when it isn't this year: "mar 3, 2025" |
@@ -60,7 +64,7 @@ Platforms may only change a word where a platform term differs.
 | `toast.photoUnreadable` | Bad gallery photo | "that photo didn't open. try another one?" |
 | `toast.loadFailed` | Load failed | "couldn't load your objects. restart the app?" |
 
-**Accessibility labels:** "add an object" (add), "close", "remove" (delete),
+**Accessibility labels:** "add an object" (add), "close", "more" (⋯), "remove" (delete),
 "choose from gallery", "take photo", "retake", "name", "story". A grid tile reads
 "{name}, oct 11".
 

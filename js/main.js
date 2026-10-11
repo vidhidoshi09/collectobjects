@@ -1,7 +1,7 @@
 import { App, isNative } from './platform.js';
 import { initStorage, loadObjects } from './storage.js';
 import { hideOverlay, hideAll } from './overlays.js';
-import { renderGrid, updateOpenObject, closeDetail, confirmDelete, deleteObject } from './grid.js';
+import { renderGrid, updateOpenObject, closeDetail, confirmDelete, deleteObject, toggleDetailMenu, isDetailMenuOpen } from './grid.js';
 import { openCamera, stopCamera, onShutterPressed, onGalleryPicked } from './camera.js';
 import { saveObject } from './review.js';
 import { showSnackbar } from './snackbar.js';
@@ -34,10 +34,11 @@ document.getElementById('retake-btn').addEventListener('click', () => {
 // Save
 document.getElementById('save-btn').addEventListener('click', saveObject);
 
-// Enter key in name field saves
+// Enter in the name field moves on to the story (it stays optional)
 document.getElementById('name-input').addEventListener('keydown', e => {
-  if (e.key === 'Enter') { e.preventDefault(); saveObject(); }
+  if (e.key === 'Enter') { e.preventDefault(); document.getElementById('story-input').focus(); }
 });
+document.getElementById('story-input').addEventListener('input', e => autoGrow(e.target));
 
 // Detail view
 document.getElementById('detail-close').addEventListener('click', closeDetail);
@@ -53,14 +54,24 @@ document.getElementById('detail-note').addEventListener('input', e => autoGrow(e
 document.getElementById('detail-note').addEventListener('change', e => {
   updateOpenObject({ note: e.target.value.trim() });
 });
+// ⋯ opens the menu; a tap anywhere else closes it
+document.getElementById('detail-more').addEventListener('click', e => {
+  e.stopPropagation();
+  toggleDetailMenu();
+});
+document.addEventListener('click', e => {
+  if (isDetailMenuOpen() && !e.target.closest('#detail-menu')) toggleDetailMenu(false);
+});
 document.getElementById('detail-delete').addEventListener('click', async e => {
   const id = e.currentTarget.dataset.id;
+  toggleDetailMenu(false);
   if (await confirmDelete()) deleteObject(id);
 });
 
 // Escape closes everything (the detail view through closeDetail, which stops the tilt)
 document.addEventListener('keydown', e => {
   if (e.key !== 'Escape') return;
+  if (isDetailMenuOpen()) return toggleDetailMenu(false, { refocus: true });
   if (document.getElementById('detail-overlay').classList.contains('active')) closeDetail();
   stopCamera();
   hideAll();
@@ -71,6 +82,7 @@ if (isNative) {
   App.addListener('backButton', () => {
     const isActive = id => document.getElementById(id).classList.contains('active');
     if (isActive('processing-overlay')) return; // let background removal finish
+    if (isDetailMenuOpen()) return toggleDetailMenu(false);
     if (isActive('review-overlay'))  return document.getElementById('review-close').click();
     if (isActive('camera-overlay'))  return document.getElementById('camera-close').click();
     if (isActive('detail-overlay'))  return document.getElementById('detail-close').click();

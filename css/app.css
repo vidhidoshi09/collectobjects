@@ -38,7 +38,9 @@
   --color-line:           rgb(0 0 0 / 0.1); /* resting underline of an empty field */
   --color-accent:         #f5a742; /* brand orange: FAB, primary buttons, progress */
   --color-on-accent:      #683f00; /* text + icons on orange (AA) */
-  --color-round:          #e2dfdb; /* secondary round buttons */
+  --color-round:          #e2dfdb; /* secondary round buttons, pressed menu item */
+  --color-surface:        #faf9f7; /* menus */
+  --color-danger:         #b3261e; /* remove (AA on surface) */
   --color-sticker:        #ffffff; /* white outline round cut-outs and names */
   --color-scrim:          rgb(0 0 0 / 0.45); /* floating close button */
   --color-camera:         #000000;
@@ -81,6 +83,7 @@
 
   /* ── Icons: Material Symbols Rounded, weight 400 ── */
   --icon-size:       24px;
+  --icon-size-small: 18px; /* city chip */
   --icon-size-large: 32px; /* FAB */
   --icon-size-hero:  40px; /* camera-off message */
 
@@ -98,6 +101,8 @@
   --dot-spacing: 28px;
 
   /* ── Shape ── */
+  --radius-sm:   10px;
+  --radius-md:   16px;
   --radius-lg:   20px;
   --radius-full: 9999px;
 
@@ -115,7 +120,9 @@
   --text-measure:      280px; /* short centred copy */
   --text-measure-wide: 340px; /* name + story column on the detail screen */
   --card-image-inset:  5%;
-  --review-image-inset: 14%;
+  --review-image-width: 72%;
+  --review-story-max:   120px; /* the story scrolls past this while saving */
+  --menu-min-width:     180px;
   --detail-image-width: 78%;
   --sample-width:      30%;
   --sample-scale:      1.25; /* teapot artwork has extra padding */
@@ -124,6 +131,7 @@
   /* ── Elevation ── */
   --shadow-accent: 0 6px 20px rgb(245 167 66 / 0.35);
   --shadow-toast:  0 6px 20px rgb(0 0 0 / 0.18);
+  --shadow-menu:   0 8px 28px rgb(0 0 0 / 0.16), 0 1px 3px rgb(0 0 0 / 0.08);
   --blur-scrim:    blur(6px);
 
   /* Signature cut-out: white sticker outline + soft shadow (outline offsets are fixed) */
@@ -273,6 +281,39 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
   color: var(--color-on-camera);
   backdrop-filter: var(--blur-scrim); -webkit-backdrop-filter: var(--blur-scrim);
 }
+
+/* More (⋯): the close button's twin, top-right */
+.btn-more {
+  left: auto;
+  right: calc(var(--screen-margin) - (var(--touch-target) - var(--close-size)) / 2 + env(safe-area-inset-right, 0px));
+}
+
+/* Menu: a small sheet of paper under ⋯ */
+.menu {
+  position: absolute; z-index: var(--z-close);
+  top: calc(var(--space-16) + var(--close-size) + var(--space-8) + env(safe-area-inset-top, 0px));
+  right: calc(var(--screen-margin) + env(safe-area-inset-right, 0px));
+  min-width: var(--menu-min-width);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-menu);
+  transform-origin: top right;
+  animation: menu-in var(--duration-press) var(--easing-out);
+}
+.menu[hidden] { display: none; }
+@keyframes menu-in { from { opacity: 0; transform: scale(0.92); } }
+.menu__item {
+  display: flex; align-items: center; gap: var(--space-12);
+  width: 100%; min-height: var(--touch-target);
+  padding: 0 var(--space-12);
+  border-radius: var(--radius-sm);
+  font: var(--type-label); letter-spacing: var(--tracking-label); text-align: left;
+  color: var(--color-text);
+  transition: background-color var(--duration-press) var(--easing);
+}
+.menu__item:active { background: var(--color-round); }
+.menu__item--danger { color: var(--color-danger); }
 
 /* ═══════════════════════════════════════
    HOME / GRID
@@ -473,10 +514,13 @@ body.is-empty #fab { display: none !important; }
 ═══════════════════════════════════════ */
 /* The object takes the space that's left, so it shrinks (never crops)
    when the keyboard opens */
+/* The original layout: object, name, story and buttons as one group, centred on
+   the page. The object floats (no card) and gives up height (never crops) when
+   the keyboard opens. */
+#review-overlay .screen { justify-content: center; }
 .review-img-wrap {
-  flex: 1; min-height: 0; width: 100%;
+  flex: 0 1 auto; min-height: 0; width: var(--review-image-width); aspect-ratio: 1;
   display: flex; align-items: center; justify-content: center;
-  padding: 0 var(--review-image-inset);
 }
 .review-img-wrap img { width: 100%; height: 100%; }
 
@@ -506,17 +550,42 @@ body.is-empty #fab { display: none !important; }
 @keyframes reveal-lift    { from { transform: scale(var(--reveal-scale)); } to { transform: none; } }
 @keyframes reveal-outline { from { filter: var(--sticker-filter-flat); } to { filter: var(--sticker-filter); } }
 
-.review-name {
-  flex-shrink: 0;
-  margin-top: var(--space-24);
-  border-bottom-color: var(--color-line);
+/* Name and story read as the object's title and caption, not a form:
+   no lines, just the orange caret (same as the detail screen) */
+.review-name, .review-story { border-bottom-color: transparent !important; }
+.review-name { flex-shrink: 0; margin-top: var(--space-32); }
+/* Optional story under the name: quiet until typed in */
+.review-story {
+  flex-shrink: 0; max-height: var(--review-story-max); overflow-y: auto;
+  margin-top: var(--space-4);
+  text-align: center;
 }
+
+/* City chip: "add city", or the city once found (tap to take it off) */
+.chip {
+  flex-shrink: 0;
+  display: inline-flex; align-items: center; gap: var(--space-4);
+  min-height: var(--touch-target); /* a 32px pill inside the 48px touch target */
+  margin-top: var(--space-8);
+  padding: 0 var(--space-12);
+  background: none; color: var(--color-text-secondary);
+  font: var(--type-caption);
+  --icon-size: var(--icon-size-small);
+}
+.chip[hidden] { display: none; }
+.chip span {
+  padding: var(--space-4) 0;
+  border-bottom: 1px dashed var(--color-line); /* reads as tappable, not as a field */
+}
+.chip--filled { color: var(--color-text); }
+.chip--filled span { border-bottom-color: transparent; }
+.chip--finding { opacity: 0.6; }
 
 /* Round Retake + orange Save pill */
 .review-actions {
   flex-shrink: 0; width: 100%;
   display: flex; align-items: center; justify-content: center; gap: var(--space-16);
-  margin-top: var(--space-24);
+  margin-top: var(--space-32);
 }
 .review-save { flex: 1; max-width: var(--primary-max-width); }
 
@@ -575,7 +644,6 @@ body.is-empty #fab { display: none !important; }
   transition: border-color var(--duration-press) var(--easing);
 }
 
-.detail-delete { margin-top: var(--space-24); }
 
 /* ═══════════════════════════════════════
    EMPTY STATE: centred in the space under the header
