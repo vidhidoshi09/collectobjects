@@ -31,6 +31,7 @@ export function showReview(photo, original = null, { fromCamera = false } = {}) 
   state.pendingPhoto = photo;
 
   img.src = `data:${photo.mime};base64,${photo.base64}`;
+  img.classList.toggle('sticker--photo', photo.mime === 'image/jpeg'); // a whole photo, not a cut-out
   document.getElementById('name-input').value = '';
   document.getElementById('story-input').value = '';
   resetCity({ auto: fromCamera });
@@ -39,6 +40,7 @@ export function showReview(photo, original = null, { fromCamera = false } = {}) 
   showOverlay('review-overlay');
   autoGrow(document.getElementById('story-input')); // measured once the screen is shown
   replay(img, 'is-revealing');
+  replay(img.parentElement, 'is-revealing'); // the hue and sparkles bloom in with it
   clearBackdrop();
   if (original && !reducedMotion()) {
     backdrop.style.backgroundImage = `url("${original}")`;

@@ -8,7 +8,7 @@ the native v2. Metrics are in [`foundations.md`](foundations.md) and the platfor
 
 | Component | Behavior (all platforms) | Android (v1) | iOS (v2, SwiftUI) |
 |---|---|---|---|
-| **Screen header** | Title "collection", count | Brand: `display` title, `caption` count (no date) | `NavigationStack` large title + subtitle |
+| **Screen header** | Title "Collection", count | Brand: `display` title, count in `overline` small caps like the dates (no date) | `NavigationStack` large title + subtitle |
 | **Add tile** | Starts a new object; always first in the grid (top-left), on the empty screen too | Brand: small square (56% of a cell) centred where a cut-out would sit, `round` bg, radius 16, 24 `add`; no label (a11y "add an object") | Toolbar `plus` button or bottom glass button (`.glassProminent`, brand tint) |
 | **Primary button** (Add to collection, Add an object) | One per screen, brand orange | Brand pill: 52 high, `accent` bg, `on-accent` `label` text, orange glow | `.buttonStyle(.glassProminent)` tinted brand orange |
 | **Secondary button** (retake) | Lower emphasis, icon only | Brand round: 52 circle, `round` bg, 24 `text` icon | `.buttonStyle(.glass)` |

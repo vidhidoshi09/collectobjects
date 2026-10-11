@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Brand colors as Material 3 roles (design/tokens.json) -->
 <resources>
-    <color name="md_primary">#875300</color>
+    <color name="md_primary">#1F1F1F</color>
     <color name="md_on_primary">#FFFFFF</color>
     <color name="md_primary_container">#F5A742</color>
     <color name="md_on_primary_container">#683F00</color>

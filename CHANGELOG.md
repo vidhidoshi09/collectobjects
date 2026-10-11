@@ -35,6 +35,8 @@ What changed, when, and why. Newest first. (Formerly "Memories".)
 - **Add tile** replaces the orange round button: a quiet square + first in the grid, from the first object on.
 - Add tile is a smaller square, and the empty screen uses it too (header back, no orange button): "Start collecting" / "Snap a trinket, cut it out, keep its story."
 - **Design system v1:** Sentence case for everything the app says; surfaces bg → fill → paper; radius 16 (full for close and chips); one shadow; orange only for primary, progress and the caret. Toasts are paper cards with brown icons; close is a fill circle (dark only over the camera); city chip is a fill pill; flat primary button (no glow); headline 24.
+- **Neutral app with a hue:** dark grey main button, light grey secondary; colour (an orange-to-maroon mix, or orange / maroon via `data-hue`) only in the dot texture, a soft glow behind your object (blooming in on save, with twinkling sparkles) and lightly on the empty screen, the progress ring, toast icons and the caret. Cut-outs no longer multiply into the page, so their white outline stays white over the glow.
+- The object count is set like the dates (small caps).
 - First screen: header back, "Start collecting" / "A little home for your trinkets and keepsakes.", and the + under it.
 - **Toasts** in Sentence case with a small icon (sunrise/sun/moon greetings, check on save).
 - The detail date is just the date ("oct 11"), no "found".

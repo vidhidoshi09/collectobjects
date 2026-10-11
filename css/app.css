@@ -35,8 +35,18 @@
   --color-dot:            #ccc8c2; /* dot texture + progress track */
   --color-text:           #111111; /* names, titles, body, icons */
   --color-text-secondary: #636363; /* dates, subtitles, placeholders (AA on bg) */
-  --color-accent:         #f5a742; /* brand orange: FAB, primary buttons, progress */
-  --color-on-accent:      #683f00; /* text + icons on orange (AA) */
+  /* Neutral app, one hue. The hue only appears as a soft glow (home, empty, behind
+     your object), the progress ring, the caret and small icons. Switch it with
+     <html data-hue="orange"> or "maroon"; the orange-to-maroon mix is the default. */
+  --hue:          #f5a742; /* the mix: orange into maroon */
+  --hue-2:        #8e1b2d;
+  --hue-ink:      #8e1b2d; /* the hue as text/icon colour on paper (AA) */
+  --hue-glow-1:   rgb(245 167 66 / 0.50);
+  --hue-glow-2:   rgb(142 27 45 / 0.30);
+  --color-sparkle: var(--color-surface); /* sparkles: page-light, sitting on the glow */
+  --color-ink:            #1f1f1f; /* primary button */
+  --color-on-ink:         #ffffff;
+  --color-accent:         var(--hue); /* progress, caret, focused underline */
   --color-round:          #e2dfdb; /* secondary round buttons, pressed menu item */
   --color-surface:        #faf9f7; /* menus */
   --color-danger:         #b3261e; /* delete (AA on surface) */
@@ -51,8 +61,8 @@
   --color-shutter-halo-outer: rgb(255 255 255 / 0.1);
   --color-toast:          var(--color-surface); /* toast: paper card, like the menu */
   --color-on-toast:       var(--color-text);
-  --color-toast-icon:     var(--color-on-accent); /* warm brown: readable on paper, still the brand */
-  --color-toast-action:   var(--color-on-accent);
+  --color-toast-icon:     var(--hue-ink);
+  --color-toast-action:   var(--hue-ink);
   --color-focus:          #683f00;
   --color-sheen-light:    rgb(255 255 255 / 0.9);  /* holographic sheen on the tilting cut-out */
   --color-sheen-warm:     rgb(255 196 232 / 0.75);
@@ -98,7 +108,8 @@
   --space-40: 40px;
   --space-64: 64px;
   --screen-margin: var(--space-16); /* every screen's side margin */
-  --dot-size:    1px;
+  --dot-size:    1.25px;
+  --dot-opacity: 0.55;
   --dot-spacing: 28px;
 
   /* ── Shape ── */
@@ -129,6 +140,12 @@
   --overlay-top:       calc(var(--space-16) * 2 + var(--close-size)); /* clears the close button */
 
   /* ── Elevation ── */
+  --glow-blur:        30px;
+  --glow-width-empty:  420px;
+  --glow-height-empty: 300px;
+  --glow-opacity-empty: 0.6;
+  --duration-bloom:    900ms;
+  --duration-twinkle:  1.8s;
   --shadow-menu:   0 8px 28px rgb(0 0 0 / 0.16), 0 1px 3px rgb(0 0 0 / 0.08);
   --blur-scrim:    blur(6px);
 
@@ -201,10 +218,13 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
 /* Visible focus for keyboard users */
 :focus-visible { outline: var(--underline) solid var(--color-focus); outline-offset: var(--underline); }
 
+/* The dots carry the hue: an orange-to-maroon wash seen only through the dot grid */
 #dots {
   position: fixed; inset: 0; z-index: 0;
-  background-image: radial-gradient(circle, var(--color-dot) var(--dot-size), transparent var(--dot-size));
-  background-size: var(--dot-spacing) var(--dot-spacing);
+  background: linear-gradient(160deg, var(--hue), var(--hue-2));
+  -webkit-mask: radial-gradient(circle, #000 var(--dot-size), transparent var(--dot-size)) 0 0 / var(--dot-spacing) var(--dot-spacing);
+          mask: radial-gradient(circle, #000 var(--dot-size), transparent var(--dot-size)) 0 0 / var(--dot-spacing) var(--dot-spacing);
+  opacity: var(--dot-opacity);
   pointer-events: none;
 }
 
@@ -222,9 +242,11 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
 /* Cut-out objects everywhere: sticker outline + soft shadow */
 .sticker {
   object-fit: contain;
-  mix-blend-mode: multiply;
   filter: var(--sticker-filter);
 }
+/* a whole photo (the cut-out failed): multiply its white background into the page.
+   Real cut-outs stay normal so the hue glow never tints their white outline. */
+.sticker--photo { mix-blend-mode: multiply; }
 
 /* Grid names: heavy weight with a white "sticker" stroke (serif names carry none) */
 .card__name {
@@ -242,13 +264,13 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
 /* ═══════════════════════════════════════
    BUTTONS
 ═══════════════════════════════════════ */
-/* Primary: orange rounded rectangle (Add to collection), the add tile's shape */
+/* Primary: dark grey rounded rectangle (Add to collection), the add tile's shape */
 .btn-primary {
   display: inline-flex; align-items: center; justify-content: center; gap: var(--space-8);
   height: var(--button-height);
   padding: 0 var(--space-32);
   border-radius: var(--radius-md);
-  background: var(--color-accent); color: var(--color-on-accent);
+  background: var(--color-ink); color: var(--color-on-ink);
   font: var(--type-label); letter-spacing: var(--tracking-label);
   white-space: nowrap;
 }
@@ -323,7 +345,8 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
 }
 
 .header { margin-bottom: var(--space-32); }
-.header__count { font: var(--type-caption); color: var(--color-text-secondary); }
+/* the count reads like the dates: overline small caps ("4 OBJECTS", "OCT 11") */
+.header__count { margin-top: var(--space-4); }
 .header__title { font: var(--type-display); letter-spacing: var(--tracking-display); margin-block: var(--space-4); }
 
 .grid {
@@ -484,7 +507,7 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
 .progress__track, .progress__indicator { fill: none; stroke-width: var(--progress-stroke); }
 .progress__track { stroke: var(--color-dot); }
 .progress__indicator {
-  stroke: var(--color-accent);
+  stroke: url(#hue-gradient);
   stroke-linecap: round;
   transition: stroke-dashoffset var(--duration-progress) linear;
 }
@@ -570,6 +593,7 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
 .chip:active { transform: scale(var(--press-scale)); }
 .chip[hidden] { display: none; }
 .chip--filled { color: var(--color-text); }
+.chip--filled .icon { color: var(--hue-ink); }
 .chip--finding { opacity: 0.6; }
 
 /* Round Retake + orange Save pill */
@@ -710,6 +734,61 @@ body.is-empty #grid { flex: 1; grid-template-rows: 1fr; }
   font: var(--type-label); letter-spacing: var(--tracking-label);
 }
 
+:root[data-hue="maroon"] {
+  --hue:        #8e1b2d;
+  --hue-2:      #d9466b;
+  --hue-ink:    #8e1b2d;
+  --hue-glow-1: rgb(217 70 107 / 0.40);
+  --hue-glow-2: rgb(142 27 45 / 0.35);
+}
+:root[data-hue="orange"] {
+  --hue:        #f5a742;
+  --hue-2:      #ff6a3d;
+  --hue-ink:    #c2410c;
+  --hue-glow-1: rgb(255 168 76 / 0.55);
+  --hue-glow-2: rgb(255 106 61 / 0.35);
+}
+
+/* ═══════════════════════════════════════
+   HUE GLOW — soft colour behind the empty-state samples (lightly) and behind
+   your object (save + close-up), with sparkles in the page colour on top
+═══════════════════════════════════════ */
+#home { isolation: isolate; }
+#home::before, .review-img-wrap::before, .detail-img-wrap::before {
+  content: ''; position: absolute; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(closest-side at 32% 52%, var(--hue-glow-1), transparent),
+    radial-gradient(closest-side at 70% 46%, var(--hue-glow-2), transparent);
+  filter: blur(var(--glow-blur));
+}
+#home::before { display: none; }
+body.is-empty #home::before {
+  display: block; position: fixed; left: 50%; translate: -50% 0; bottom: 38%;
+  width: var(--glow-width-empty); height: var(--glow-height-empty); opacity: var(--glow-opacity-empty);
+}
+.review-img-wrap, .detail-img-wrap { position: relative; }
+#review-overlay .screen, #detail-overlay .screen__content { isolation: isolate; }
+.review-img-wrap::before, .detail-img-wrap::before { inset: 6%; border-radius: 50%; }
+
+/* the save screen: the glow blooms in as the cut-out lifts off */
+.review-img-wrap.is-revealing::before { animation: glow-bloom var(--duration-bloom) var(--easing-out) var(--delay-reveal) both; }
+@keyframes glow-bloom { from { opacity: 0; transform: scale(0.6); } }
+
+/* Sparkles: little four-point stars in the page colour, twinkling on the glow */
+.sparkles { position: absolute; inset: 0; pointer-events: none; }
+.sparkle {
+  position: absolute; width: var(--s); height: var(--s); translate: -50% -50%;
+  fill: var(--color-sparkle);
+  animation: twinkle var(--duration-twinkle) var(--easing) calc(var(--i) * -0.45s) infinite alternate;
+}
+@keyframes twinkle { from { opacity: 0.35; scale: 0.7; } to { opacity: 1; scale: 1; } }
+.review-img-wrap.is-revealing .sparkle {
+  animation:
+    sparkle-pop var(--duration-reveal) var(--easing-overshoot) calc(var(--delay-reveal) + var(--duration-reveal) * 0.5 + var(--i) * 60ms) both,
+    twinkle var(--duration-twinkle) var(--easing) calc(var(--i) * -0.45s) infinite alternate;
+}
+@keyframes sparkle-pop { from { opacity: 0; scale: 0; } }
+
 /* ═══════════════════════════════════════
    REDUCED MOTION — fades only: no scaling, overshoot, tilt or sheen
 ═══════════════════════════════════════ */
@@ -718,6 +797,7 @@ body.is-empty #grid { flex: 1; grid-template-rows: 1fr; }
   .card--dropped { animation-name: fade-in; animation-timing-function: var(--easing); }
   @keyframes fade-in { from { opacity: 0; } }
   .sheen, .review-backdrop.is-fading { display: none; }
+  .sparkle, .review-img-wrap.is-revealing .sparkle, .review-img-wrap.is-revealing::before { animation: none; }
   @starting-style {
     .snackbar.visible { transform: none; }
   }

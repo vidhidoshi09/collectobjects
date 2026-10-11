@@ -51,7 +51,7 @@ export async function renderGrid() {
     <div class="card${m.id === dropped ? ' card--dropped' : ''}" role="button" tabindex="0"
          aria-label="${esc(`${m.name}, ${copy.item.date(m.date)}`)}" data-id="${m.id}" data-no="${m.no}">
       <div class="card__img-wrap">
-        <img class="sticker" src="${srcs[i]}" alt="" loading="lazy" decoding="async" />
+        <img class="sticker${m.file?.endsWith('.jpg') ? ' sticker--photo' : ''}" src="${srcs[i]}" alt="" loading="lazy" decoding="async" />
       </div>
       <p class="card__name">${esc(m.name)}</p>
       <p class="card__date overline">${esc(copy.item.date(m.date))}</p>
@@ -81,6 +81,7 @@ async function openDetail(id) {
   const src = await photoSrc(m);
   document.getElementById('detail-img').src = src;
   document.getElementById('detail-img').alt = m.name;
+  document.getElementById('detail-img').classList.toggle('sticker--photo', Boolean(m.file?.endsWith('.jpg')));
   document.getElementById('detail-sheen').style.setProperty('--sheen-mask', `url("${src}")`);
   document.getElementById('detail-name').value = m.name;
   document.getElementById('detail-note').value = m.note || '';
