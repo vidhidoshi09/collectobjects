@@ -12,8 +12,8 @@ Liquid Glass for everything else.
 `tokens.json` (`bg`, `text`, `accent`, …). The brand orange is
 the app `tint`, so system controls (buttons, toggles, progress, glass tints) pick it up.
 
-**Type:** register Bricolage Grotesque (variable, or 400/700/800 instances) and use it
-through Dynamic Type so it scales with the user's text size:
+**Type:** register Bricolage Grotesque (titles, object names) and Instrument Sans (body,
+buttons) and use them through Dynamic Type so it scales with the user's text size:
 `Font.custom("BricolageGrotesque", size: 30, relativeTo: .title).weight(.bold)`. Grid
 names keep the white sticker stroke (draw the text twice: stroked white behind,
 filled on top). The overline uses `.smallCaps()` + tracking.

@@ -11,7 +11,7 @@ import { startTilt } from './tilt.js';
 
 /* ════════════════════════════════════════════════
    RENDER GRID
-   Newest first. Each tile: cut-out, name, exhibit number.
+   Newest first. Each tile: cut-out, name, date.
    A just-saved object drops into place (css .card--dropped).
 ════════════════════════════════════════════════ */
 export async function renderGrid() {
@@ -46,12 +46,12 @@ export async function renderGrid() {
   state.justSaved = null;
   grid.innerHTML = objects.map((m, i) => `
     <div class="card${m.id === dropped ? ' card--dropped' : ''}" role="button" tabindex="0"
-         aria-label="${esc(`${m.name}, ${copy.item.no(m.no)}`)}" data-id="${m.id}">
+         aria-label="${esc(`${m.name}, ${copy.item.date(m.date)}`)}" data-id="${m.id}" data-no="${m.no}">
       <div class="card__img-wrap">
         <img class="sticker" src="${srcs[i]}" alt="" loading="lazy" decoding="async" />
       </div>
       <p class="card__name">${esc(m.name)}</p>
-      <p class="card__no overline">${esc(copy.item.no(m.no))}</p>
+      <p class="card__date overline">${esc(copy.item.date(m.date))}</p>
     </div>
   `).join('');
 
@@ -67,7 +67,7 @@ export async function renderGrid() {
 }
 
 /* ════════════════════════════════════════════════
-   DETAIL VIEW — floating cut-out (tilts) + placard
+   DETAIL VIEW — floating cut-out (tilts), name, date, story
 ════════════════════════════════════════════════ */
 let stopTilt = () => {};
 
@@ -81,7 +81,7 @@ async function openDetail(id) {
   document.getElementById('detail-sheen').style.setProperty('--sheen-mask', `url("${src}")`);
   document.getElementById('detail-name').value = m.name;
   document.getElementById('detail-note').value = m.note || '';
-  document.getElementById('detail-meta').textContent = copy.item.meta(m.no, m.date);
+  document.getElementById('detail-meta').textContent = copy.item.found(m.date);
   document.getElementById('detail-delete').dataset.id = m.id;
 
   showOverlay('detail-overlay');

@@ -97,13 +97,12 @@
           <div class="sheen" id="detail-sheen" aria-hidden="true"></div>
         </div>
       </div>
-      <!-- placard, like a gallery wall label: name, exhibit number + date found, the story -->
-      <div class="placard">
-        <input class="name-field placard__name" id="detail-name" data-copy-aria="detail.name" maxlength="60"
+      <!-- name, date found, story: open on the page, no box -->
+      <div class="detail-info">
+        <input class="name-field detail-name" id="detail-name" data-copy-aria="detail.name" maxlength="60"
                autocomplete="off" spellcheck="false" />
-        <p class="placard__meta overline" id="detail-meta"></p>
-        <hr class="placard__rule" />
-        <textarea class="story" id="detail-note" rows="1" maxlength="1000"
+        <p class="detail-date overline" id="detail-meta"></p>
+        <textarea class="story detail-story" id="detail-note" rows="1" maxlength="1000"
                   data-copy-placeholder="detail.storyPlaceholder" data-copy-aria="detail.story"></textarea>
       </div>
       <button class="btn-round detail-delete snackbar-anchor" id="detail-delete" type="button" data-copy-aria="detail.remove"><svg class="icon" aria-hidden="true"><use href="#i-delete"/></svg></button>

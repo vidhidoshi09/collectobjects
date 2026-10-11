@@ -11,13 +11,18 @@ What changed, when, and why. Newest first. (Formerly "Memories".)
 - Privacy policy rewritten in the brand voice, headline promise first: *"your things stay on your phone. we never see them."*
 
 **Small wins (being built)**
-- Exhibit numbers on every object ("no. 007").
-- Museum-label placard on the detail screen.
-- Editorial serif (Instrument Serif) for titles, paired with Nunito Sans.
 - **The reveal:** cut-outs lift off the page with a light haptic.
 - **The drop:** new objects settle into the collection with a success haptic.
 - Holographic tilt on the detail screen (moves with the phone).
 - Storage renamed to `objects.json` / `objects/`, with automatic migration.
+
+**From review (latest)**
+- Fonts: **Bricolage Grotesque** for titles and object names, **Instrument Sans** for body, buttons and dates (more readable); native dialogs use Instrument Sans.
+- Empty state says **"start collecting"** and is centred on the screen.
+- Smaller "collection" title.
+- Grid shows the **date** ("oct 11"), with the year only for older objects; exhibit numbers are kept in the data but not shown.
+- Detail screen is open: name, "found oct 11", story. No box, no number.
+- **Daily greeting** toast on the first open of the day (good morning / afternoon / evening / up late?), from the phone's clock, no location.
 
 **Planned next**
 - Camera framing guide ("one object, fully in frame") for cleaner cut-outs.

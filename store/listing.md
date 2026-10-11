@@ -33,7 +33,7 @@ background like a sticker and added to your collection with its own number.
 every little thing has a story.
 
 — give it a number
-each object gets a permanent number when you add it. no. 001, no. 002, no. 003.
+each object keeps the day you found it, and its story.
 your collection grows like a real archive, one find at a time.
 
 — write its story
@@ -66,7 +66,7 @@ no feeds, no likes, no followers. just your things and the stories that come wit
 
 Suggested screenshots, in order:
 1. Grid ("collection") with 6–8 real cut-outs and their numbers
-2. Detail view: an object above its placard with its story written
+2. Detail view: an object with its name, date and story
 3. Review screen as a new cut-out lifts off the page ("what is it?")
 4. Empty state ("no objects yet")
 5. Processing ("framing it…")

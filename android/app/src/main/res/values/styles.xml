@@ -39,7 +39,7 @@
         <item name="android:alertDialogTheme">@style/AppTheme.AlertDialog</item>
     </style>
 
-    <!-- Material 3 type scale with the brand font (Bricolage Grotesque) (design/foundations.md §3: 400 / 600) -->
+    <!-- Material 3 type scale with the brand UI font (Instrument Sans) (design/foundations.md §3: 400 / 600) -->
     <style name="TextAppearance.App.HeadlineSmall" parent="TextAppearance.Material3.HeadlineSmall">
         <item name="fontFamily">@font/brand_font</item>
         <item name="android:fontFamily">@font/brand_font</item>

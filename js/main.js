@@ -5,6 +5,7 @@ import { renderGrid, updateOpenObject, closeDetail, confirmDelete, deleteObject 
 import { openCamera, stopCamera, onShutterPressed, onGalleryPicked } from './camera.js';
 import { saveObject } from './review.js';
 import { showSnackbar } from './snackbar.js';
+import { greetOncePerDay } from './greeting.js';
 import { autoGrow } from './textfield.js';
 import { copy, applyCopy } from './copy.js';
 
@@ -83,6 +84,7 @@ if (isNative) {
 ════════════════════════════════════════════════ */
 initStorage()
   .then(renderGrid)
+  .then(() => greetOncePerDay())
   .catch(err => {
     console.error('[storage]', err);
     showSnackbar(copy.toast.loadFailed);

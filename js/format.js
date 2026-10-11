@@ -10,6 +10,12 @@ const lower = (d, opts) => d.toLocaleDateString('en-US', opts).toLowerCase();
 
 // "oct 11"
 export const fmtDay = v => lower(toDate(v), { month:'short', day:'numeric' });
+// "oct 11" this year, "oct 11, 2025" for an earlier (or later) year
+export function fmtShortDate(v, now = new Date()) {
+  const d = toDate(v);
+  if (isNaN(d)) return String(v).toLowerCase();
+  return d.getFullYear() === now.getFullYear() ? fmtDay(d) : fmtDate(d);
+}
 // "oct 10, 2026"; a stored date that can't be read is shown as written
 export function fmtDate(v) {
   const d = toDate(v);

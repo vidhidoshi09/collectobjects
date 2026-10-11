@@ -1,4 +1,4 @@
-import { fmtDay, fmtDate } from './format.js';
+import { fmtDay, fmtShortDate } from './format.js';
 
 /* ════════════════════════════════════════════════
    COPY — every user-facing word lives here (mirrors design/content.md)
@@ -16,7 +16,7 @@ export const AN_ITEM = 'an object';       // with its article
 export const COLLECTION = 'collection';   // what the home screen holds (its title)
 
 const exhibitNo = no => `no. ${String(no).padStart(3, '0')}`;
-const found     = date => `found ${fmtDate(date)}`;
+const found     = date => `found ${fmtShortDate(date)}`;
 
 export const copy = {
   appName: BRAND,
@@ -28,7 +28,7 @@ export const copy = {
     add: `add ${AN_ITEM}`, // FAB accessibility label
   },
   empty: {
-    title: `no ${ITEMS} yet`,
+    title: 'start collecting',
     body: 'every little thing has a story. add your first.',
     cta: `add ${AN_ITEM}`,
   },
@@ -53,9 +53,9 @@ export const copy = {
   },
   item: {
     untitled: `untitled ${ITEM}`,
-    no: exhibitNo,
-    found,
-    meta: (no, date) => `${exhibitNo(no)} · ${found(date)}`,
+    no: exhibitNo,      // kept in the data, not shown
+    date: fmtShortDate, // grid: "oct 11" (year only when not this year)
+    found,              // detail: "found oct 11"
   },
   detail: {
     label: ITEM,
@@ -71,6 +71,11 @@ export const copy = {
     cancel: 'keep it',
   },
   common: { close: 'close' },
+  // first open of the day, by the phone's local time (no location needed)
+  greeting: hour =>
+    hour >= 5 && hour < 12 ? 'good morning' :
+    hour >= 12 && hour < 17 ? 'good afternoon' :
+    hour >= 17 && hour < 22 ? 'good evening' : 'up late?',
   toast: {
     removed: `${ITEM} removed`,
     cutoutFailed: "couldn't cut this one out, so we kept the whole photo.",

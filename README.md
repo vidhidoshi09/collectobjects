@@ -1,6 +1,6 @@
 # collectobjects — for your trinkets
 
-Snap an object, it's cut out like a sticker, gets a permanent exhibit number ("no. 007") and a placard for its story. It runs as a web app (`index.html`), and Capacitor packages the same app as an Android app (`android/`).
+Snap an object, it's cut out like a sticker, and carries its story. It runs as a web app (`index.html`), and Capacitor packages the same app as an Android app (`android/`).
 
 Design system: [`design.md`](design.md). All user-facing words: [`js/copy.js`](js/copy.js) (mirrors [`design/content.md`](design/content.md)).
 
@@ -73,7 +73,7 @@ Store listing text, privacy policy, Data safety answers and graphics are in `sto
   - `platform.js`: Capacitor and plugins (App, Filesystem, Haptics, BackgroundRemover, NativeUi) from `window.Native`.
   - `state.js`: shared mutable state (objects, camera stream, pending photo, just-saved id).
   - `storage.js`: files on the device, exhibit numbers, migrations, photo URLs.
-  - `grid.js`: grid, detail view (placard), editing, delete.
+  - `grid.js`: grid, detail view, editing, delete.
   - `camera.js`: camera, capture, gallery import, the capture flow.
   - `background.js`: background removal and the progress ring.
   - `review.js`: review (the reveal) and save.
@@ -82,4 +82,4 @@ Store listing text, privacy policy, Data safety answers and graphics are in `sto
   - `overlays.js`, `format.js`: overlay show/hide, date and HTML helpers.
   - `snackbar.js`, `textfield.js`: snackbar messages, the growing story field.
 - `src/native.js`: source of `vendor/native.js` (bundled by `npm run vendor`).
-- `assets/`: images and fonts (Bricolage Grotesque; OFL). `android/`: the Capacitor Android project. `www/`: build output.
+- `assets/`: images and fonts (Bricolage Grotesque, Instrument Sans; OFL). `android/`: the Capacitor Android project. `www/`: build output.

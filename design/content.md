@@ -16,7 +16,7 @@ things and takes them as seriously as you do.
 - **Short.** One idea per message. Questions are fine ("what is it?").
 - **Playful, never cringe.** No slang, no "bestie", no emoji, no exclamation marks,
   no ALL CAPS in the words (small caps in the overline style are typography, not copy).
-- **The archive vocabulary, lightly:** story, found, no. 007, collection. Don't
+- **The archive vocabulary, lightly:** story, found, collection. Don't
   say "museum" (a competitor's name is close to it).
 - **No blame, no jargon.** Errors say what happened and what to do next, often as a
   gentle question ("try again?"). Never show technical error text.
@@ -39,7 +39,7 @@ Platforms may only change a word where a platform term differs.
 | `home.title` | Home title (serif) | "collection" |
 | `home.date` | Home overline | "oct 11" (lowercase short month + day) |
 | `home.count` | Home subtitle | "1 object" / "{n} objects" |
-| `empty.title` | Empty state (serif) | "no objects yet" |
+| `empty.title` | Empty state | "start collecting" |
 | `empty.body` | Empty state | "every little thing has a story. add your first." |
 | `empty.cta` | Empty state | "add an object" |
 | `camera.blocked` | Camera permission off | "camera's off. turn it on in settings, or pick a photo instead." |
@@ -48,8 +48,9 @@ Platforms may only change a word where a platform term differs.
 | `review.name` | Review field | label "name", placeholder "what is it?" |
 | `review.retake` / `review.save` | Review actions | "retake" · "add to collection" |
 | `item.untitled` | Default name | "untitled object" |
-| `item.no` | Exhibit number (grid, placard) | "no. 007" (3 digits, zero-padded) |
-| `item.meta` | Placard meta line | "no. 007 · found oct 10, 2026" |
+| `item.date` | Grid date | "oct 11"; with the year when it isn't this year: "mar 3, 2025" |
+| `item.found` | Detail date | "found oct 11" (same year rule) |
+| `greeting` | Toast on the first open of each day (phone's local time, no location) | 5–12 "good morning" · 12–17 "good afternoon" · 17–22 "good evening" · otherwise "up late?" |
 | `detail.story` | Story field | label "story", placeholder "what's the story?" |
 | `remove.title` / `remove.body` | Delete confirmation | "remove this object?" · "this can't be undone." |
 | `remove.confirm` / `remove.cancel` | Delete actions | "remove" (destructive) / "keep it" |
@@ -61,7 +62,7 @@ Platforms may only change a word where a platform term differs.
 
 **Accessibility labels:** "add an object" (add), "close", "remove" (delete),
 "choose from gallery", "take photo", "retake", "name", "story". A grid tile reads
-"{name}, no. 007".
+"{name}, oct 11".
 
 **Dates:** records keep the date as saved ("October 10, 2026", en-US) so the data
 format never changes; it is shown lowercase with a short month ("oct 10, 2026").
