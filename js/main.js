@@ -10,6 +10,7 @@ import { autoGrow } from './textfield.js';
 import { copy, applyCopy } from './copy.js';
 import { objectCard, collectionCard, shareCard } from './share.js';
 
+window.__appReady = true; // the boot check in index.html stays quiet
 applyCopy(); // fills the static markup's words
 
 /* ════════════════════════════════════════════════
