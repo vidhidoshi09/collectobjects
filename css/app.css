@@ -108,8 +108,9 @@
   --space-40: 40px;
   --space-64: 64px;
   --screen-margin: var(--space-16); /* every screen's side margin */
-  --dot-size:    1.25px;
-  --dot-opacity: 0.55;
+  --dot-size:    1px;
+  --dot-opacity: 1;
+  --dot-hue:     30%; /* how much of the hue tints the grey dots */
   --dot-spacing: 28px;
 
   /* ── Shape ── */
@@ -221,7 +222,10 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
 /* The dots carry the hue: an orange-to-maroon wash seen only through the dot grid */
 #dots {
   position: fixed; inset: 0; z-index: 0;
-  background: linear-gradient(160deg, var(--hue), var(--hue-2));
+  /* mostly the old grey dot, with just a little of the hue mixed in */
+  background: linear-gradient(160deg,
+    color-mix(in srgb, var(--hue) var(--dot-hue), var(--color-dot)),
+    color-mix(in srgb, var(--hue-2) var(--dot-hue), var(--color-dot)));
   -webkit-mask: radial-gradient(circle, #000 var(--dot-size), transparent var(--dot-size)) 0 0 / var(--dot-spacing) var(--dot-spacing);
           mask: radial-gradient(circle, #000 var(--dot-size), transparent var(--dot-size)) 0 0 / var(--dot-spacing) var(--dot-spacing);
   opacity: var(--dot-opacity);
