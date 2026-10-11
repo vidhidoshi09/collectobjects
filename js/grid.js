@@ -81,7 +81,7 @@ async function openDetail(id) {
   document.getElementById('detail-sheen').style.setProperty('--sheen-mask', `url("${src}")`);
   document.getElementById('detail-name').value = m.name;
   document.getElementById('detail-note').value = m.note || '';
-  document.getElementById('detail-meta').textContent = copy.item.found(m.date, m.city);
+  document.getElementById('detail-meta').textContent = copy.item.dateLine(m.date, m.city);
   document.getElementById('detail-delete').dataset.id = m.id;
 
   showOverlay('detail-overlay');
@@ -128,7 +128,7 @@ export function closeDetail() {
 
 // Native Material 3 dialog on Android; plain confirm() in a desktop browser
 export async function confirmDelete() {
-  const { title, body: message, confirm: confirmLabel, cancel: cancelLabel } = copy.remove;
+  const { title, body: message, confirm: confirmLabel, cancel: cancelLabel } = copy.delete;
   if (!isNative) return confirm(`${title}\n\n${message}`);
 
   const { confirmed } = await NativeUi.confirm({
@@ -150,5 +150,5 @@ export async function deleteObject(id) {
   if (removed?.file) await deletePhoto(removed.file);
   closeDetail();
   await renderGrid();
-  showSnackbar(copy.toast.removed);
+  showSnackbar(copy.toast.deleted);
 }

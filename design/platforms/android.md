@@ -17,7 +17,7 @@ rules use no raw values (except the fixed sticker-outline offsets).
 | Primary button | 52 high pill, padding 32, `label` type, `on-accent` on `accent`, orange glow |
 | Secondary round button | 52 circle, `round` bg, 24 `text` icon |
 | Name field | `headline` (Bricolage 26, 700), no stroke, centred; 2px underline |
-| Detail text | centred, max 340, no box: name → 4 → `overline` "found oct 11" → 16 → story |
+| Detail text | centred, max 340, no box: name → 4 → `overline` "oct 11" (· city) → 16 → story |
 | Grid tile | square image, 8 → `name` + 4px white stroke, 4 → `overline` date ("oct 11") |
 | Progress | 96 ring, 6% stroke, `dot` track, `accent` bar with round cap, `title` % inside |
 | Snackbar | `toast` bg, `on-toast` `body` text, radius 20, padding 12/24, centred, 24 above the bottom + safe area; moves up above the FAB or review actions; 4s |
@@ -55,7 +55,7 @@ are removed when the detail closes. Reduce motion → fades only, no tilt or she
 | `res/values(-v28)/styles.xml` → `AppTheme.AlertDialog` | Brands the WebView's own alert dialogs (not used by the app) |
 | `AppTheme.NoActionBarLaunch` | Launch screen: `bg` + app icon |
 | `res/values/strings.xml` | `app_name` / `title_activity_main`: "collectobjects" (launcher; the one-word lowercase wordmark). |
-| `NativeUiPlugin.java` | `NativeUi.confirm(...)` → `MaterialAlertDialogBuilder` (theme-styled, destructive label in `error`). Used for delete ("remove this object?", "remove" / "keep it"); a desktop browser falls back to `confirm()`. Add `BottomSheetDialog` here when a screen needs a choice sheet. |
+| `NativeUiPlugin.java` | `NativeUi.confirm(...)` → `MaterialAlertDialogBuilder` (theme-styled, destructive label in `error`). Used for delete ("delete this object?", "Delete" / "Keep it"); a desktop browser falls back to `confirm()`. Add `BottomSheetDialog` here when a screen needs a choice sheet. |
 
 Every native component reads the theme, so **new native components get the brand
 colors and font automatically**; never style them per call.

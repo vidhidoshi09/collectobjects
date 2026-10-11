@@ -25,10 +25,12 @@ What changed, when, and why. Newest first. (Formerly "Memories".)
 - **Daily greeting** toast on the first open of the day (good morning / afternoon / evening / up late?), from the phone's clock, no location.
 
 **From review (round 2)**
-- Remove moved into a **⋯ menu** on the detail screen, so it's never one stray tap away.
+- Delete moved into a **⋯ menu** on the detail screen, so it's never one stray tap away.
 - Save screen back to the original centred layout; the name reads as a title (no form underline).
 - **Story when saving:** an optional "what's the story?" right under the name.
-- **City (optional):** "add city" on the save screen; camera photos fill it in once location is allowed. Approximate location only, city name only, shown as "found oct 11 in london".
+- **City (optional):** "add city" on the save screen; camera photos fill it in once location is allowed. Approximate location only, city name only, shown as "oct 11 · london".
+- **Buttons in Sentence case** ("Add to collection", "Delete", "Keep it"); "remove" is now "delete"; everything else stays lowercase.
+- The detail date is just the date ("oct 11"), no "found".
 
 **Planned next**
 - Camera framing guide ("one object, fully in frame") for cleaner cut-outs.

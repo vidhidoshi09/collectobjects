@@ -7,6 +7,7 @@ import { fmtDay, fmtShortDate } from './format.js';
    capacitor.config.json appName, android/app/src/main/res/values/strings.xml
    (app_name, title_activity_main), <title> in index.html, store/ and design docs.
    Voice: lowercase, warm, playful, brief. No exclamation marks, no emoji.
+   Button labels (buttons, menu items, dialog actions) are Sentence case: "Add to collection".
 ════════════════════════════════════════════════ */
 export const BRAND   = 'collectobjects';  // the wordmark: one word, lowercase, everywhere
 export const TAGLINE = 'for your trinkets'; // brand lockup: "collectobjects — for your trinkets"
@@ -16,7 +17,7 @@ export const AN_ITEM = 'an object';       // with its article
 export const COLLECTION = 'collection';   // what the home screen holds (its title)
 
 const exhibitNo = no => `no. ${String(no).padStart(3, '0')}`;
-const found     = (date, city) => `found ${fmtShortDate(date)}${city ? ` in ${city.toLowerCase()}` : ''}`;
+const dateLine  = (date, city) => `${fmtShortDate(date)}${city ? ` · ${city.toLowerCase()}` : ''}`;
 
 export const copy = {
   appName: BRAND,
@@ -30,7 +31,7 @@ export const copy = {
   empty: {
     title: 'start collecting',
     body: 'every little thing has a story. add your first.',
-    cta: `add ${AN_ITEM}`,
+    cta: `Add ${AN_ITEM}`,
   },
   camera: {
     label: 'camera',
@@ -50,9 +51,9 @@ export const copy = {
     photo: `your ${ITEM}`,
     storyPlaceholder: "what's the story? (optional)",
     retake: 'retake',
-    save: `add to ${COLLECTION}`,
+    save: `Add to ${COLLECTION}`,
     city: {
-      add: 'add city',
+      add: 'Add city',
       finding: 'finding city…',
       remove: city => `remove ${city.toLowerCase()}`, // accessibility label of a filled chip
     },
@@ -61,7 +62,7 @@ export const copy = {
     untitled: `untitled ${ITEM}`,
     no: exhibitNo,      // kept in the data, not shown
     date: fmtShortDate, // grid: "oct 11" (year only when not this year)
-    found,              // detail: "found oct 11", or "found oct 11 in london"
+    dateLine,           // detail: "oct 11", or "oct 11 · london"
   },
   detail: {
     label: ITEM,
@@ -69,13 +70,13 @@ export const copy = {
     story: 'story',
     storyPlaceholder: "what's the story?",
     more: 'more',
-    remove: 'remove',
+    delete: 'Delete', // menu item
   },
-  remove: {
-    title: `remove this ${ITEM}?`,
+  delete: {
+    title: `delete this ${ITEM}?`,
     body: "this can't be undone.",
-    confirm: 'remove',
-    cancel: 'keep it',
+    confirm: 'Delete',
+    cancel: 'Keep it',
   },
   common: { close: 'close' },
   // first open of the day, by the phone's local time (no location needed)
@@ -84,7 +85,7 @@ export const copy = {
     hour >= 12 && hour < 17 ? 'good afternoon' :
     hour >= 17 && hour < 22 ? 'good evening' : 'up late?',
   toast: {
-    removed: `${ITEM} removed`,
+    deleted: `${ITEM} deleted`,
     cutoutFailed: "couldn't cut this one out, so we kept the whole photo.",
     saveFailed: "couldn't save. try again?",
     photoUnreadable: "that photo didn't open. try another one?",

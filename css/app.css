@@ -40,7 +40,7 @@
   --color-on-accent:      #683f00; /* text + icons on orange (AA) */
   --color-round:          #e2dfdb; /* secondary round buttons, pressed menu item */
   --color-surface:        #faf9f7; /* menus */
-  --color-danger:         #b3261e; /* remove (AA on surface) */
+  --color-danger:         #b3261e; /* delete (AA on surface) */
   --color-sticker:        #ffffff; /* white outline round cut-outs and names */
   --color-scrim:          rgb(0 0 0 / 0.45); /* floating close button */
   --color-camera:         #000000;
@@ -122,7 +122,6 @@
   --card-image-inset:  5%;
   --review-image-width: 72%;
   --review-story-max:   120px; /* the story scrolls past this while saving */
-  --menu-min-width:     180px;
   --detail-image-width: 78%;
   --sample-width:      30%;
   --sample-scale:      1.25; /* teapot artwork has extra padding */
@@ -288,12 +287,11 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
   right: calc(var(--screen-margin) - (var(--touch-target) - var(--close-size)) / 2 + env(safe-area-inset-right, 0px));
 }
 
-/* Menu: a small sheet of paper under ⋯ */
+/* Menu: a small sheet of paper under ⋯, hugging its items */
 .menu {
   position: absolute; z-index: var(--z-close);
   top: calc(var(--space-16) + var(--close-size) + var(--space-8) + env(safe-area-inset-top, 0px));
   right: calc(var(--screen-margin) + env(safe-area-inset-right, 0px));
-  min-width: var(--menu-min-width);
   padding: var(--space-4);
   border-radius: var(--radius-md);
   background: var(--color-surface);
