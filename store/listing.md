@@ -59,7 +59,7 @@ no feeds, no likes, no followers. just your things and the stories that come wit
 
 | Asset | File | Spec |
 |---|---|---|
-| App icon | `store/icon-512.png` (source: `store/icon.svg`) | 512×512 PNG: the "c into o" line in paper (`#FAF9F7`), tilted 55° toward the bottom right so it reads "co", on a grainy burgundy wash (`#8E1B2D`) with an orange (`#F5A742`) glow and a cream haze, plus a sparkle |
+| App icon | `store/icon-512.png` (source: `store/icon.svg`) | 512×512 PNG: the "c into o" line in paper (`#FAF9F7`), tilted 40° toward the bottom right so it reads "co", on a grainy burgundy wash (`#8E1B2D`) with an orange (`#F5A742`) glow and a cream haze, plus a sparkle |
 | Feature graphic | `store/feature-graphic.png` | 1024×500 PNG: icon + "collectobjects" + "for your trinkets" on the page colour with tinted dots, croissant / teapot / duck stickers on the hue glow |
 | Phone screenshots | _take on a real phone_ | 2–8, PNG/JPEG, 9:16, min 1080px tall recommended |
 
