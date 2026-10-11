@@ -30,6 +30,18 @@ where Collect Objects is different.
 - **Long onboarding:** 4 intro screens + privacy screen + a 5-step guided tour before you've added anything.
 - **Receipt / archive metaphor:** ours must read as a *museum label*, not a receipt.
 
+## Kept.: teardown
+
+**What they do well (learn from it)**
+- **Editorial calm:** serif "Kept." wordmark, typewriter body copy ("Capture… bring it… let it stay."), lots of off-white space.
+- **A "Pool" instead of a grid:** objects pile up loosely, like things on a table. Physical, not a database.
+- **Collections as real containers:** *Pegboard*, *Grandma's* (a cookie tin), *Flipped* (an envelope). The container carries emotion.
+- **Flip to see the back:** objects turn like a polaroid; the story lives on the back.
+- **Reveal over the source:** the cut-out floats above a heavily blurred version of the original photo.
+- **Trip collage:** a dense flat-lay of everything from one place, very shareable.
+
+**Watch out:** Kept already owns *off-white dotted background + serif wordmark + white-outlined cut-outs*. Our distinct cues must be **the brand orange, the lowercase voice, motion (lift-off, holographic tilt) and the sharing wedge**, not the dots-and-serif look.
+
 ## Where Collect Objects wins
 
 | They | We |
@@ -48,3 +60,5 @@ where Collect Objects is different.
 - [x] Privacy policy in our voice, promise first
 - [ ] One privacy line on the empty state ("everything stays on your phone")
 - [ ] iPhone: Apple Vision cut-outs (quality parity)
+- [ ] Reveal over a blurred version of the original photo (Kept)
+- [ ] Later: collections as containers / eras ("grandma's tin", "uni era")
