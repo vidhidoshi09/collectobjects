@@ -25,11 +25,12 @@ export const copy = {
     title: COLLECTION,
     count: n => (n === 1 ? `1 ${ITEM}` : `${n} ${ITEMS}`),
     gridLabel: `your ${ITEMS}`,
-    add: `add ${AN_ITEM}`, // FAB accessibility label
+    add: `add ${AN_ITEM}`, // add tile accessibility label
+    addTile: 'Add', // label under the add tile, first in the grid
   },
   empty: {
     title: 'start collecting',
-    body: 'every little thing has a story. add your first.',
+    body: 'every little trinket has a story. add your first.',
     cta: `Add ${AN_ITEM}`,
   },
   camera: {
@@ -79,19 +80,20 @@ export const copy = {
   },
   common: { close: 'close' },
   // first open of the day, by the phone's local time (no location needed)
+  // toasts are Sentence case, each with an icon
   greeting: hour =>
-    hour >= 5 && hour < 12 ? 'good morning' :
-    hour >= 12 && hour < 17 ? 'good afternoon' :
-    hour >= 17 && hour < 22 ? 'good evening' : 'up late?',
+    hour >= 5 && hour < 12 ? { text: 'Good morning', icon: 'sunrise' } :
+    hour >= 12 && hour < 17 ? { text: 'Good afternoon', icon: 'sun' } :
+    hour >= 17 && hour < 22 ? { text: 'Good evening', icon: 'moon' } : { text: 'Up late?', icon: 'moon' },
   toast: {
-    added: `added to your ${COLLECTION}`, // after saving, as it drops in
-    deleted: `${ITEM} deleted`,
-    cutoutFailed: "couldn't cut this one out, so we kept the whole photo.",
-    saveFailed: "couldn't save. try again?",
-    photoUnreadable: "that photo didn't open. try another one?",
-    cityDenied: "location's off for collectobjects. you can turn it on in settings.",
-    cityFailed: "couldn't find your city right now.",
-    loadFailed: `couldn't load your ${ITEMS}. restart the app?`,
+    added: { text: `Added to your ${COLLECTION}`, icon: 'check' }, // after saving, as it drops in
+    deleted: { text: `${ITEM[0].toUpperCase()}${ITEM.slice(1)} deleted`, icon: 'delete' },
+    cutoutFailed: { text: "Couldn't cut this one out, so we kept the whole photo", icon: 'error' },
+    saveFailed: { text: "Couldn't save. Try again?", icon: 'error' },
+    photoUnreadable: { text: "That photo didn't open. Try another one?", icon: 'error' },
+    cityDenied: { text: `Location's off for ${BRAND}. You can turn it on in Settings`, icon: 'error' },
+    cityFailed: { text: "Couldn't find your city right now", icon: 'error' },
+    loadFailed: { text: `Couldn't load your ${ITEMS}. Restart the app?`, icon: 'error' },
   },
 };
 

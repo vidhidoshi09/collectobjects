@@ -13,14 +13,14 @@ rules use no raw values (except the fixed sticker-outline offsets).
 | Component | Metrics |
 |---|---|
 | Close | 40 circle, 45% black + 6px blur, white 24 icon; 48 touch target; 16 from top/left + safe area |
-| FAB | 56 circle, `accent`, 32 icon in `on-accent`, orange glow; 16 from the right edge of the column, 24 from the bottom + safe area |
+| Add tile | First grid cell: square, `round` bg, radius 20, inset like an object's image, 32 `add` icon; "Add" under it in the name position |
 | Primary button | 52 high pill, padding 32, `label` type, `on-accent` on `accent`, orange glow |
 | Secondary round button | 52 circle, `round` bg, 24 `text` icon |
 | Name field | `headline` (Bricolage 26, 700), no stroke, centred; 2px underline |
 | Detail text | centred, max 340, no box: name → 4 → `overline` "oct 11" (· city) → 16 → story |
 | Grid tile | square image, 8 → `name` + 4px white stroke, 4 → `overline` date ("oct 11") |
 | Progress | 96 ring, 6% stroke, `dot` track, `accent` bar with round cap, `title` % inside |
-| Snackbar | `toast` bg, `on-toast` `body` text, radius 20, padding 12/24, centred, 24 above the bottom + safe area; moves up above the FAB or review actions; 4s |
+| Snackbar | `toast` bg, `on-toast` `body` text, radius 20, padding 12/24, centred, 24 above the bottom + safe area; optional 18 icon; moves up above the review actions; 4s |
 | Camera | 72 white shutter with soft halo; 48 gallery circle (15% white) |
 
 **Fonts:** `assets/fonts/` holds Bricolage Grotesque (variable 200–800) and Instrument

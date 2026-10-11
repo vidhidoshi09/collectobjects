@@ -25,7 +25,7 @@ each platform maps them in [`platforms/`](platforms/).
 | `text` | `#111111` | Names, titles, body, icons |
 | `text-secondary` | `#636363` | Count, overlines (dates), placeholders (5.1:1 on `bg`) |
 | `line` | 10% black | Resting underline of an empty name field |
-| `accent` | `#F5A742` | **Brand orange.** FAB, primary buttons, progress ring, focused underline |
+| `accent` | `#F5A742` | **Brand orange.** Primary buttons, toast icons, progress ring, focused underline |
 | `on-accent` | `#683F00` | Text and icons on orange (4.6:1) |
 | `round` | `#E2DFDB` | Secondary round buttons (Retake, Delete) |
 | `sticker` | `#FFFFFF` | Outline round cut-outs and grid names |
@@ -78,7 +78,7 @@ the "sticker" feel. Serif text never does.
 - **Grid:** 2 columns, gutter 16, rows 32; tile = square image, 8 → name, 4 → number.
 - **Review:** image (fills what's left) → 24 → name → 24 → actions.
 - **Detail:** image → 24 → name → 4 → date → 16 → story → 24 → round delete. Centred, max width 340, no box.
-- **Shape:** round everything interactive: buttons, FAB and close are full circles/pills; snackbar radius 20.
+- **Shape:** round everything interactive: buttons and close are full circles/pills, the add tile is a rounded square like the objects; snackbar radius 20.
 - **Elevation:** orange glow under orange controls; soft dark shadow under the snackbar and cut-outs. Nothing else is raised.
 - **Touch targets:** ≥ 48 (close is a 40 circle in a 48 target).
 
@@ -112,7 +112,7 @@ Identical everywhere (grid, empty state, review, detail):
 ## 7. Iconography
 
 **Material Symbols Rounded**, weight 400, fill 0, inlined as an SVG sprite.
-Sizes: 24 (default), 32 (FAB), 40 (camera-off message). Concept map in
+Sizes: 18 (toast, city chip), 24 (default), 32 (add tile), 40 (camera-off message). Concept map in
 [`components.md`](components.md#icon-map). iOS uses SF Symbols.
 
 ---

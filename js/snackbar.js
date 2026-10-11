@@ -1,13 +1,14 @@
 /* ════════════════════════════════════════════════
    SNACKBAR — short messages at the bottom (replaces alert())
-   Centred 24px above the bottom, or above the FAB / any visible
-   .snackbar-anchor in the same band. Auto-dismisses after 4s.
+   An optional icon, then the message (Sentence case). Centred 24px above the
+   bottom, or above any visible .snackbar-anchor in the same band. Auto-dismisses after 4s.
 ════════════════════════════════════════════════ */
 const DURATION_MS = 4000;
 const GAP = 16; // px between the snackbar and what it sits above
 
 const bar    = document.getElementById('snackbar');
 const text   = document.getElementById('snackbar-text');
+const icon   = document.getElementById('snackbar-icon');
 const action = document.getElementById('snackbar-action');
 let timer = null, onAction = null;
 
@@ -19,12 +20,9 @@ action.addEventListener('click', () => {
 
 const isShown = el => el.getClientRects().length > 0;
 
-// Elements the snackbar must not cover: the FAB, and anchors in the open overlay
+// Elements the snackbar must not cover: anchors in the open overlay
 function anchors() {
-  const list = [...document.querySelectorAll('.overlay.active .snackbar-anchor')];
-  const fab = document.getElementById('fab');
-  if (!document.querySelector('.overlay.active') && isShown(fab)) list.push(fab);
-  return list.filter(isShown);
+  return [...document.querySelectorAll('.overlay.active .snackbar-anchor')].filter(isShown);
 }
 
 function place() {
@@ -44,9 +42,13 @@ function place() {
   }
 }
 
+// `message`: a string, or { text, icon } from copy.js (icon: "check" → #i-check in index.html's sprite)
 export function showSnackbar(message, { actionLabel = '', onAction: fn = null } = {}) {
   clearTimeout(timer);
-  text.textContent = message;
+  const { text: words, icon: iconName = '' } = typeof message === 'string' ? { text: message } : message;
+  text.textContent = words;
+  icon.toggleAttribute('hidden', !iconName); // SVG has no .hidden property
+  icon.querySelector('use').setAttribute('href', iconName ? `#i-${iconName}` : '');
   action.textContent = actionLabel;
   action.hidden = !actionLabel;
   bar.classList.toggle('snackbar--action', Boolean(actionLabel));

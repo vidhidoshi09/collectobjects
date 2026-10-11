@@ -32,6 +32,9 @@ What changed, when, and why. Newest first. (Formerly "Memories".)
 - **Buttons in Sentence case** ("Add to collection", "Delete", "Keep it"); "remove" is now "delete"; everything else stays lowercase.
 - **Saved toast:** "added to your collection" as a new object drops in.
 - No date above "collection" on the home screen.
+- **Add tile** replaces the orange round button: a quiet square + first in the grid, from the first object on.
+- First-time screen: no header, and "every little **trinket** has a story".
+- **Toasts** in Sentence case with a small icon (sunrise/sun/moon greetings, check on save).
 - The detail date is just the date ("oct 11"), no "found".
 
 **Planned next**

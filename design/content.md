@@ -12,7 +12,8 @@ Lowercase, warm, playful, brief. A friend who keeps a little archive of your
 things and takes them as seriously as you do.
 
 - **Always lowercase**, also titles and accessibility labels. **Button labels are
-  Sentence case** ("Add to collection", "Delete", "Keep it"). Names the person
+  Sentence case** ("Add to collection", "Delete", "Keep it"), and so are **toasts**,
+  each with a small icon ("Added to your collection"). Names the person
   types are kept exactly as typed.
 - **Short.** One idea per message. Questions are fine ("what is it?").
 - **Playful, never cringe.** No slang, no "bestie", no emoji, no exclamation marks,
@@ -40,7 +41,7 @@ Platforms may only change a word where a platform term differs.
 | `home.title` | Home title (serif) | "collection" |
 | `home.count` | Home subtitle | "1 object" / "{n} objects" |
 | `empty.title` | Empty state | "start collecting" |
-| `empty.body` | Empty state | "every little thing has a story. add your first." |
+| `empty.body` | Empty state | "every little trinket has a story. add your first." (ties to the tagline *for your trinkets*) |
 | `empty.cta` | Empty state | "Add an object" |
 | `camera.blocked` | Camera permission off | "camera's off. turn it on in settings, or pick a photo instead." |
 | `processing.cutting` | Processing | "framing it…" |
@@ -49,21 +50,21 @@ Platforms may only change a word where a platform term differs.
 | `review.storyPlaceholder` | Review story | "what's the story? (optional)" |
 | `review.city` | City chip | "Add city" · "finding city…" · the city; a11y "remove london" |
 | `item.dateLine` | Detail date line | "oct 11", or "oct 11 · london" (same year rule) |
-| `toast.cityDenied` / `toast.cityFailed` | City lookup | "location's off for collectobjects. you can turn it on in settings." · "couldn't find your city right now." |
+| `toast.cityDenied` / `toast.cityFailed` | City lookup | "Location's off for collectobjects. You can turn it on in Settings" · "Couldn't find your city right now" (error icon) |
 | `review.retake` / `review.save` | Review actions | "retake" (a11y) · "Add to collection" |
 | `item.untitled` | Default name | "untitled object" |
 | `item.date` | Grid date | "oct 11"; with the year when it isn't this year: "mar 3, 2025" |
-| `greeting` | Toast on the first open of each day (phone's local time, no location) | 5–12 "good morning" · 12–17 "good afternoon" · 17–22 "good evening" · otherwise "up late?" |
+| `greeting` | Toast on the first open of each day (phone's local time, no location) | 5–12 "Good morning" (sunrise) · 12–17 "Good afternoon" (sun) · 17–22 "Good evening" (moon) · otherwise "Up late?" (moon) |
 | `detail.story` | Story field | label "story", placeholder "what's the story?" |
 | `delete.title` / `delete.body` | Delete confirmation | "delete this object?" · "this can't be undone." |
 | `delete.confirm` / `delete.cancel` | Delete actions | "Delete" (destructive) / "Keep it" |
 | `detail.delete` | ⋯ menu item | "Delete" |
-| `toast.added` | After saving | "added to your collection" |
-| `toast.deleted` | After delete | "object deleted" |
-| `toast.cutoutFailed` | Cut-out failed | "couldn't cut this one out, so we kept the whole photo." |
-| `toast.saveFailed` | Save failed | "couldn't save. try again?" |
-| `toast.photoUnreadable` | Bad gallery photo | "that photo didn't open. try another one?" |
-| `toast.loadFailed` | Load failed | "couldn't load your objects. restart the app?" |
+| `toast.added` | After saving | "Added to your collection" (check) |
+| `toast.deleted` | After delete | "Object deleted" (delete) |
+| `toast.cutoutFailed` | Cut-out failed | "Couldn't cut this one out, so we kept the whole photo" (error) |
+| `toast.saveFailed` | Save failed | "Couldn't save. Try again?" (error) |
+| `toast.photoUnreadable` | Bad gallery photo | "That photo didn't open. Try another one?" (error) |
+| `toast.loadFailed` | Load failed | "Couldn't load your objects. Restart the app?" (error) |
 
 **Accessibility labels:** "add an object" (add), "close", "more" (⋯), "Delete" (menu item),
 "choose from gallery", "take photo", "retake", "name", "story". A grid tile reads

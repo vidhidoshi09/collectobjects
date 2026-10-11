@@ -9,7 +9,7 @@ the native v2. Metrics are in [`foundations.md`](foundations.md) and the platfor
 | Component | Behavior (all platforms) | Android (v1) | iOS (v2, SwiftUI) |
 |---|---|---|---|
 | **Screen header** | Title "collection", count | Brand: `display` title, `caption` count (no date) | `NavigationStack` large title + subtitle |
-| **Add button** | Starts a new object; hidden on the empty state | Brand FAB: 56 orange circle, 32 brown `add`, orange glow | Toolbar `plus` button or bottom glass button (`.glassProminent`, brand tint) |
+| **Add tile** | Starts a new object; first in the grid (top-left), from the first object on; the empty state uses its orange "Add an object" button instead | Brand: square tile like an object's, `round` bg, radius 20, 32 `add`, "Add" in `text-secondary` under it | Toolbar `plus` button or bottom glass button (`.glassProminent`, brand tint) |
 | **Primary button** (Add to collection, Add an object) | One per screen, brand orange | Brand pill: 52 high, `accent` bg, `on-accent` `label` text, orange glow | `.buttonStyle(.glassProminent)` tinted brand orange |
 | **Secondary button** (retake) | Lower emphasis, icon only | Brand round: 52 circle, `round` bg, 24 `text` icon | `.buttonStyle(.glass)` |
 | **Close** (camera, review, detail) | Leaves the screen | Brand: 40 translucent-dark circle (48 target), 16 from top-left, white 24 `close` | System navigation bar / toolbar item (Liquid Glass) |
@@ -21,7 +21,7 @@ the native v2. Metrics are in [`foundations.md`](foundations.md) and the platfor
 | **Progress** (processing) | Determinate %, label | Brand: 96 orange ring, `title` % inside, `label` text below | `ProgressView(value:)` circular, brand tint |
 | **Confirmation** (delete) | Title, body, destructive + cancel | **Native** `MaterialAlertDialogBuilder` via `NativeUi.confirm` (theme colors + brand font) | **Native** `.confirmationDialog` / `.alert` with `role: .destructive` |
 | **Choice sheet** | Pick between actions | **Native** M3 `BottomSheetDialog` (add to `NativeUi` when needed) | **Native** `.sheet` with detents / `.confirmationDialog` |
-| **Feedback message** | Short non-blocking message, 4s | Brand snackbar: `toast` pill, radius 20, `body` text, centred 24 above the bottom, moves above the FAB / review actions | Small glass toast/banner |
+| **Feedback message** | Short non-blocking message, 4s | Brand snackbar: `toast` pill, radius 20, `body` text, optional 18 icon in `toast-action` orange, Sentence-case text; centred 24 above the bottom, moves above the review actions | Small glass toast/banner |
 | **Photo picker** | Choose an existing photo | System picker (file input) | `PhotosPicker` |
 | **Camera** | Full-bleed preview, shutter, gallery, close | In-app camera (WebView `getUserMedia`), 72 white shutter, 48 gallery circle | `AVCaptureSession` view or system camera |
 | **Cut-out** | Remove background on device | ML Kit Subject Segmentation (`BackgroundRemoverPlugin`) | Vision `VNGenerateForegroundInstanceMaskRequest` |
@@ -44,8 +44,8 @@ the native v2. Metrics are in [`foundations.md`](foundations.md) and the platfor
 
 ## Screens
 
-1. **Home (grid):** header ("collection" / "4 objects"), 2-column grid of square tiles (name + "oct 11"), newest first, orange FAB. A just-saved object drops in.
-2. **Empty state:** three sample cut-outs (croissant, teapot, duck), centre raised; title "start collecting", body, "Add an object", centred vertically under the header. FAB hidden.
+1. **Home (grid):** header ("collection" / "4 objects"), 2-column grid of square tiles (name + "oct 11"): the add tile first, then newest first. A just-saved object drops in.
+2. **Empty state:** three sample cut-outs (croissant, teapot, duck), centre raised; title "start collecting", body, "Add an object", centred on the screen. No header (no "collection", no count) until the first object.
 3. **Camera:** full-bleed preview, close top-left, gallery + shutter at the bottom.
 4. **Processing:** orange ring with % inside, "framing it…", optional sub-label.
 5. **Review:** close; centred as one group: cut-out that lifts off the page (shrinks, never crops, when the keyboard opens), name "what is it?", optional story, city chip, round retake + "Add to collection" pill.

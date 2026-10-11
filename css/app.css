@@ -84,7 +84,7 @@
   /* ── Icons: Material Symbols Rounded, weight 400 ── */
   --icon-size:       24px;
   --icon-size-small: 18px; /* city chip */
-  --icon-size-large: 32px; /* FAB */
+  --icon-size-large: 32px; /* add tile */
   --icon-size-hero:  40px; /* camera-off message */
 
   /* ── Spacing, 4px grid ── */
@@ -112,7 +112,6 @@
   --close-size:        40px; /* visible circle; the hit area is --touch-target */
   --button-height:     52px; /* primary pill + secondary round */
   --primary-max-width: 200px;
-  --fab-size:          56px;
   --shutter-size:      72px;
   --progress-size:     96px;
   --progress-stroke:   6;    /* SVG user units of the 100-unit ring */
@@ -177,13 +176,10 @@
 
   /* ── Layers ── */
   --z-content:  1;
-  --z-fab:      50;
   --z-overlay:  200;
   --z-close:    10;
   --z-snackbar: 300;
 
-  /* Right gutter of the centred app column, safe area included (FAB) */
-  --gutter-right: max(calc(var(--screen-margin) + env(safe-area-inset-right, 0px)), calc(50vw - var(--app-max-width) / 2 + var(--screen-margin)));
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -217,10 +213,10 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
 .icon--hero { --icon-size: var(--icon-size-hero); }
 
 /* Press feedback: scale down, everywhere */
-.card, .fab, .btn-close, .btn-primary, .btn-round, #gallery-btn, #shutter-btn {
+.card, .btn-close, .btn-primary, .btn-round, #gallery-btn, #shutter-btn {
   transition: transform var(--duration-press) var(--easing), background-color var(--duration-press) var(--easing);
 }
-.card:active, .fab:active, .btn-close:active, .btn-primary:active, .btn-round:active,
+.card:active, .btn-close:active, .btn-primary:active, .btn-round:active,
 #gallery-btn:active, #shutter-btn:active { transform: scale(var(--press-scale)); }
 
 /* Cut-out objects everywhere: sticker outline + soft shadow */
@@ -324,10 +320,12 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
   padding:
     calc(var(--space-24) + env(safe-area-inset-top, 0px))
     calc(var(--screen-margin) + env(safe-area-inset-right, 0px))
-    calc(var(--fab-size) + var(--space-24) * 2 + env(safe-area-inset-bottom, 0px))
+    calc(var(--space-32) + env(safe-area-inset-bottom, 0px))
     calc(var(--screen-margin) + env(safe-area-inset-left, 0px));
 }
 
+/* first-time screen: no header, just the invitation */
+body.is-empty .header { display: none; }
 .header { margin-bottom: var(--space-32); }
 .header__count { font: var(--type-caption); color: var(--color-text-secondary); }
 .header__title { font: var(--type-display); letter-spacing: var(--tracking-display); margin-block: var(--space-4); }
@@ -363,23 +361,18 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
 }
 
 /* ═══════════════════════════════════════
-   FAB — round orange +
+   ADD TILE — first in the grid (top-left), a quiet square +
+   (the empty state has its own orange button instead)
 ═══════════════════════════════════════ */
-.fab {
-  position: fixed;
-  bottom: calc(var(--space-24) + env(safe-area-inset-bottom, 0px));
-  right: var(--gutter-right);
-  width: var(--fab-size); height: var(--fab-size);
-  border-radius: var(--radius-full);
-  background: var(--color-accent); color: var(--color-on-accent);
-  box-shadow: var(--shadow-accent);
+.card--add { font: inherit; color: inherit; }
+.add-tile {
+  position: absolute; inset: var(--card-image-inset);
   display: flex; align-items: center; justify-content: center;
-  z-index: var(--z-fab);
+  border-radius: var(--radius-lg);
+  background: var(--color-round); color: var(--color-text);
   --icon-size: var(--icon-size-large);
 }
-
-/* the empty state has its own button, so the floating + is hidden */
-body.is-empty #fab { display: none !important; }
+.add-tile__label { -webkit-text-stroke-width: 0; color: var(--color-text-secondary); }
 
 /* ═══════════════════════════════════════
    SHARED OVERLAY BASE
@@ -675,8 +668,8 @@ body.is-empty #grid { flex: 1; display: flex; align-items: center; justify-conte
 
 /* ═══════════════════════════════════════
    SNACKBAR — js/snackbar.js
-   Dark warm pill, centred above the bottom; moves up to clear the FAB or
-   any .snackbar-anchor on the open screen.
+   Dark warm pill: optional orange icon + Sentence-case message, centred above
+   the bottom; moves up to clear any .snackbar-anchor on the open screen.
 ═══════════════════════════════════════ */
 .snackbar {
   display: none;
@@ -700,6 +693,8 @@ body.is-empty #grid { flex: 1; display: flex; align-items: center; justify-conte
     display var(--duration-fade) allow-discrete;
 }
 .snackbar.visible { display: flex; opacity: 1; transform: none; }
+.snackbar__icon { --icon-size: var(--icon-size-small); color: var(--color-toast-action); }
+.snackbar__icon[hidden] { display: none; }
 @starting-style {
   .snackbar.visible { opacity: 0; transform: translateY(var(--toast-rise)); }
 }
@@ -725,7 +720,7 @@ body.is-empty #grid { flex: 1; display: flex; align-items: center; justify-conte
   @starting-style {
     .snackbar.visible { transform: none; }
   }
-  .card:active, .fab:active, .btn-close:active, .btn-primary:active, .btn-round:active,
+  .card:active, .btn-close:active, .btn-primary:active, .btn-round:active,
   #gallery-btn:active, #shutter-btn:active { transform: none; }
   .progress__indicator { transition: none; }
 }
