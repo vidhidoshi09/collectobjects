@@ -38,6 +38,7 @@ What changed, when, and why. Newest first. (Formerly "Memories".)
 - **Neutral app with a hue:** dark grey main button, light grey secondary; colour (an orange-to-maroon mix, or orange / maroon via `data-hue`) only in the dot texture, a soft glow behind your object (blooming in on save, with twinkling sparkles) and lightly on the empty screen, the progress ring, toast icons and the caret. Cut-outs no longer multiply into the page, so their white outline stays white over the glow.
 - The object count is set like the dates (small caps).
 - **Share cards** (the growth wedge): Share in an object's ⋯ menu makes a story-sized card (cut-out on the glow with sparkles, name, date, city, story, wordmark); the share button on the collection header makes a numbered "My collection" starter-pack card. Android share sheet via `@capacitor/share`; Web Share or a download in a browser.
+- **New app icon:** one line that loops "c" into "o", in paper on the app's orange-to-maroon gradient, with a sparkle. Adaptive icon (round, squircle, themed/monochrome), legacy icons, Play Store icon and a new feature graphic.
 - The + on the first screen is dark grey, the main action; the grid leaves room so a toast never traps the last row; the cutting-out screen shows your photo, blurred, behind the ring.
 - First screen: header back, "Start collecting" / "A little home for your trinkets and keepsakes.", and the + under it.
 - **Toasts** in Sentence case with a small icon (sunrise/sun/moon greetings, check on save).

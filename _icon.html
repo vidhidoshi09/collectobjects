@@ -1,0 +1,37 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="css/app.css">
+<style>body{max-width:none;overflow:visible;height:auto;background:transparent;margin:0;padding:0} #stage>*{display:block}</style></head><body>
+<div id="stage"></div>
+<script>
+// The mark: one line, "c" into "o" (traced from the reference), flat ends
+const MARK = 'M388 549 C 340 690, 440 846, 602 846 C 762 846, 870 700, 826 570 C 792 470, 720 376, 610 366 C 535 358, 492 392, 484 438 C 474 496, 520 548, 584 576 C 668 610, 770 598, 836 548 C 896 500, 928 446, 928 388';
+const SPARK = 'M0 -40 C3 -4 4 -3 40 0 C4 3 3 4 0 40 C-3 4 -4 3 -40 0 C-4 -3 -3 -4 0 -40Z';
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const C = { a: css('--hue') || '#f5a742', b: css('--hue-2') || '#8e1b2d', mark: css('--color-surface') || '#faf9f7' };
+const STROKE = 90;
+// measured outline of the stroked mark, so it can be centred exactly
+function markBox() {
+  const s = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); s.setAttribute('width', 0); s.setAttribute('height', 0);
+  s.innerHTML = `<path d="${MARK}"/>`; document.body.appendChild(s);
+  const p = s.querySelector('path'), len = p.getTotalLength();
+  let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+  for (let i = 0; i <= 600; i++) { const q = p.getPointAtLength(len * i / 600); x0 = Math.min(x0, q.x); y0 = Math.min(y0, q.y); x1 = Math.max(x1, q.x); y1 = Math.max(y1, q.y); }
+  s.remove(); const h = STROKE / 2; return { x0: x0 - h, y0: y0 - h, x1: x1 + h, y1: y1 + h };
+}
+const B = markBox();
+// size: px; frac: mark width as a fraction of the canvas; layers: which parts to draw; shape: 'square'|'round'|'none'
+window.draw = ({ size, frac = 0.5, bg = true, mark = true, shape = 'none', radius = 0.22, spark = true }) => {
+  const w = B.x1 - B.x0, h = B.y1 - B.y0, scale = size * frac / w;
+  const cx = (B.x0 + B.x1) / 2, cy = (B.y0 + B.y1) / 2;
+  const clip = shape === 'round' ? `<clipPath id="c"><circle cx="${size/2}" cy="${size/2}" r="${size/2}"/></clipPath>`
+    : shape === 'square' ? `<clipPath id="c"><rect width="${size}" height="${size}" rx="${size*radius}"/></clipPath>` : '';
+  // app gradient: linear 160deg from --hue to --hue-2
+  const g = `<linearGradient id="g" gradientUnits="userSpaceOnUse" x1="${size*0.33}" y1="0" x2="${size*0.67}" y2="${size}"><stop offset="0" stop-color="${C.a}"/><stop offset="1" stop-color="${C.b}"/></linearGradient>`;
+  const sparkAt = `translate(${size/2 + (B.x1 - cx) * scale + size*0.02} ${size/2 + (B.y0 - cy) * scale + size*0.01}) scale(${scale * 1.15})`;
+  document.getElementById('stage').innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+    <defs>${g}${clip}</defs><g ${clip ? 'clip-path="url(#c)"' : ''}>
+    ${bg ? `<rect width="${size}" height="${size}" fill="url(#g)"/>` : ''}
+    ${mark ? `<g transform="translate(${size/2} ${size/2}) scale(${scale}) translate(${-cx} ${-cy})"><path d="${MARK}" fill="none" stroke="${C.mark}" stroke-width="${STROKE}"/></g>
+      ${spark ? `<path d="${SPARK}" fill="${C.mark}" transform="${sparkAt}"/>` : ''}` : ''}</g></svg>`;
+  return document.querySelector('#stage svg').outerHTML;
+};
+</script></body></html>
