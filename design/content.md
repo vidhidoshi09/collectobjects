@@ -38,7 +38,6 @@ Platforms may only change a word where a platform term differs.
 | `appName` | Window title, launcher, store | "collectobjects" |
 | `TAGLINE` | Feature graphic, store, docs | "for your trinkets" |
 | `home.title` | Home title (serif) | "collection" |
-| `home.date` | Home overline | "oct 11" (lowercase short month + day) |
 | `home.count` | Home subtitle | "1 object" / "{n} objects" |
 | `empty.title` | Empty state | "start collecting" |
 | `empty.body` | Empty state | "every little thing has a story. add your first." |
@@ -59,6 +58,7 @@ Platforms may only change a word where a platform term differs.
 | `delete.title` / `delete.body` | Delete confirmation | "delete this object?" · "this can't be undone." |
 | `delete.confirm` / `delete.cancel` | Delete actions | "Delete" (destructive) / "Keep it" |
 | `detail.delete` | ⋯ menu item | "Delete" |
+| `toast.added` | After saving | "added to your collection" |
 | `toast.deleted` | After delete | "object deleted" |
 | `toast.cutoutFailed` | Cut-out failed | "couldn't cut this one out, so we kept the whole photo." |
 | `toast.saveFailed` | Save failed | "couldn't save. try again?" |

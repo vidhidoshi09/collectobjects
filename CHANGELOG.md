@@ -30,6 +30,8 @@ What changed, when, and why. Newest first. (Formerly "Memories".)
 - **Story when saving:** an optional "what's the story?" right under the name.
 - **City (optional):** "add city" on the save screen; camera photos fill it in once location is allowed. Approximate location only, city name only, shown as "oct 11 · london".
 - **Buttons in Sentence case** ("Add to collection", "Delete", "Keep it"); "remove" is now "delete"; everything else stays lowercase.
+- **Saved toast:** "added to your collection" as a new object drops in.
+- No date above "collection" on the home screen.
 - The detail date is just the date ("oct 11"), no "found".
 
 **Planned next**

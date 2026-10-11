@@ -45,8 +45,13 @@ export function showReview(photo, original = null, { fromCamera = false } = {}) 
     replay(backdrop, 'is-fading');
   }
 
-  // Auto-focus name input after short delay
-  setTimeout(() => document.getElementById('name-input').focus(), 300);
+  // Auto-focus the name after the screen settles, unless a field already has focus
+  setTimeout(() => {
+    const active = document.activeElement;
+    if (!active || active === document.body || !document.getElementById('review-overlay').contains(active)) {
+      document.getElementById('name-input').focus();
+    }
+  }, 300);
 }
 
 /* ════════════════════════════════════════════════
@@ -75,5 +80,6 @@ export async function saveObject() {
 
   state.justSaved = id; // the grid drops it in
   hideAll();
-  renderGrid();
+  await renderGrid();
+  showSnackbar(copy.toast.added);
 }

@@ -8,7 +8,7 @@ the native v2. Metrics are in [`foundations.md`](foundations.md) and the platfor
 
 | Component | Behavior (all platforms) | Android (v1) | iOS (v2, SwiftUI) |
 |---|---|---|---|
-| **Screen header** | Today's date, title "collection", count | Brand: `overline` date, `display` serif title, `caption` count | `NavigationStack` large title + subtitle |
+| **Screen header** | Title "collection", count | Brand: `display` title, `caption` count (no date) | `NavigationStack` large title + subtitle |
 | **Add button** | Starts a new object; hidden on the empty state | Brand FAB: 56 orange circle, 32 brown `add`, orange glow | Toolbar `plus` button or bottom glass button (`.glassProminent`, brand tint) |
 | **Primary button** (Add to collection, Add an object) | One per screen, brand orange | Brand pill: 52 high, `accent` bg, `on-accent` `label` text, orange glow | `.buttonStyle(.glassProminent)` tinted brand orange |
 | **Secondary button** (retake) | Lower emphasis, icon only | Brand round: 52 circle, `round` bg, 24 `text` icon | `.buttonStyle(.glass)` |
@@ -44,7 +44,7 @@ the native v2. Metrics are in [`foundations.md`](foundations.md) and the platfor
 
 ## Screens
 
-1. **Home (grid):** header ("oct 11" / "collection" / "4 objects"), 2-column grid of square tiles (name + "oct 11"), newest first, orange FAB. A just-saved object drops in.
+1. **Home (grid):** header ("collection" / "4 objects"), 2-column grid of square tiles (name + "oct 11"), newest first, orange FAB. A just-saved object drops in.
 2. **Empty state:** three sample cut-outs (croissant, teapot, duck), centre raised; title "start collecting", body, "Add an object", centred vertically under the header. FAB hidden.
 3. **Camera:** full-bleed preview, close top-left, gallery + shutter at the bottom.
 4. **Processing:** orange ring with % inside, "framing it…", optional sub-label.

@@ -19,7 +19,6 @@ export async function renderGrid() {
   const srcs = await Promise.all(objects.map(photoSrc));
   const grid = document.getElementById('grid');
 
-  document.getElementById('header-date').textContent  = copy.home.date(new Date());
   document.getElementById('header-count').textContent = copy.home.count(objects.length);
 
   document.body.classList.toggle('is-empty', objects.length === 0);

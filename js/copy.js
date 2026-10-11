@@ -1,4 +1,4 @@
-import { fmtDay, fmtShortDate } from './format.js';
+import { fmtShortDate } from './format.js';
 
 /* ════════════════════════════════════════════════
    COPY — every user-facing word lives here (mirrors design/content.md)
@@ -23,7 +23,6 @@ export const copy = {
   appName: BRAND,
   home: {
     title: COLLECTION,
-    date: d => fmtDay(d),
     count: n => (n === 1 ? `1 ${ITEM}` : `${n} ${ITEMS}`),
     gridLabel: `your ${ITEMS}`,
     add: `add ${AN_ITEM}`, // FAB accessibility label
@@ -85,6 +84,7 @@ export const copy = {
     hour >= 12 && hour < 17 ? 'good afternoon' :
     hour >= 17 && hour < 22 ? 'good evening' : 'up late?',
   toast: {
+    added: `added to your ${COLLECTION}`, // after saving, as it drops in
     deleted: `${ITEM} deleted`,
     cutoutFailed: "couldn't cut this one out, so we kept the whole photo.",
     saveFailed: "couldn't save. try again?",
