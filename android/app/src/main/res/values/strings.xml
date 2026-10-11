@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Memories</string>
-    <string name="title_activity_main">Memories</string>
-    <string name="package_name">com.vidhidoshi.memories</string>
-    <string name="custom_url_scheme">com.vidhidoshi.memories</string>
+    <string name="app_name">collectobjects</string>
+    <string name="title_activity_main">collectobjects</string>
+    <string name="package_name">com.vidhidoshi.collectobjects</string>
+    <string name="custom_url_scheme">com.vidhidoshi.collectobjects</string>
 </resources>

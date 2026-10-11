@@ -27,8 +27,8 @@
         <item name="android:statusBarColor">@color/md_surface</item>
         <item name="android:windowLightStatusBar">true</item>
         <!-- Brand typeface for every native component (dialogs, sheets) -->
-        <item name="fontFamily">@font/nunito_sans</item>
-        <item name="android:fontFamily">@font/nunito_sans</item>
+        <item name="fontFamily">@font/brand_font</item>
+        <item name="android:fontFamily">@font/brand_font</item>
         <item name="textAppearanceHeadlineSmall">@style/TextAppearance.App.HeadlineSmall</item>
         <item name="textAppearanceTitleLarge">@style/TextAppearance.App.TitleLarge</item>
         <item name="textAppearanceTitleMedium">@style/TextAppearance.App.TitleMedium</item>
@@ -39,31 +39,31 @@
         <item name="android:alertDialogTheme">@style/AppTheme.AlertDialog</item>
     </style>
 
-    <!-- Material 3 type scale with Nunito Sans (design/foundations.md §3: 400 / 600) -->
+    <!-- Material 3 type scale with the brand font (Bricolage Grotesque) (design/foundations.md §3: 400 / 600) -->
     <style name="TextAppearance.App.HeadlineSmall" parent="TextAppearance.Material3.HeadlineSmall">
-        <item name="fontFamily">@font/nunito_sans</item>
-        <item name="android:fontFamily">@font/nunito_sans</item>
+        <item name="fontFamily">@font/brand_font</item>
+        <item name="android:fontFamily">@font/brand_font</item>
         <item name="android:textStyle">normal</item>
     </style>
     <style name="TextAppearance.App.TitleLarge" parent="TextAppearance.Material3.TitleLarge">
-        <item name="fontFamily">@font/nunito_sans</item>
-        <item name="android:fontFamily">@font/nunito_sans</item>
+        <item name="fontFamily">@font/brand_font</item>
+        <item name="android:fontFamily">@font/brand_font</item>
     </style>
     <style name="TextAppearance.App.TitleMedium" parent="TextAppearance.Material3.TitleMedium">
-        <item name="fontFamily">@font/nunito_sans</item>
-        <item name="android:fontFamily">@font/nunito_sans</item>
+        <item name="fontFamily">@font/brand_font</item>
+        <item name="android:fontFamily">@font/brand_font</item>
     </style>
     <style name="TextAppearance.App.BodyLarge" parent="TextAppearance.Material3.BodyLarge">
-        <item name="fontFamily">@font/nunito_sans</item>
-        <item name="android:fontFamily">@font/nunito_sans</item>
+        <item name="fontFamily">@font/brand_font</item>
+        <item name="android:fontFamily">@font/brand_font</item>
     </style>
     <style name="TextAppearance.App.BodyMedium" parent="TextAppearance.Material3.BodyMedium">
-        <item name="fontFamily">@font/nunito_sans</item>
-        <item name="android:fontFamily">@font/nunito_sans</item>
+        <item name="fontFamily">@font/brand_font</item>
+        <item name="android:fontFamily">@font/brand_font</item>
     </style>
     <style name="TextAppearance.App.LabelLarge" parent="TextAppearance.Material3.LabelLarge">
-        <item name="fontFamily">@font/nunito_sans</item>
-        <item name="android:fontFamily">@font/nunito_sans</item>
+        <item name="fontFamily">@font/brand_font</item>
+        <item name="android:fontFamily">@font/brand_font</item>
     </style>
 
     <style name="AppTheme.NoActionBar" parent="AppTheme">
@@ -78,7 +78,7 @@
         <item name="android:colorBackground">@color/md_surface_container_high</item>
         <item name="android:textColorPrimary">@color/md_on_surface</item>
         <item name="android:textColorSecondary">@color/md_on_surface_variant</item>
-        <item name="android:fontFamily">@font/nunito_sans</item>
+        <item name="android:fontFamily">@font/brand_font</item>
     </style>
 
     <!-- Launch screen: brand background with the app icon -->

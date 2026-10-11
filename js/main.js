@@ -1,11 +1,14 @@
 import { App, isNative } from './platform.js';
-import { initStorage, loadMemories } from './storage.js';
+import { initStorage, loadObjects } from './storage.js';
 import { hideOverlay, hideAll } from './overlays.js';
-import { renderGrid, updateOpenMemory, closeDetail, confirmDelete, deleteMemory } from './grid.js';
+import { renderGrid, updateOpenObject, closeDetail, confirmDelete, deleteObject } from './grid.js';
 import { openCamera, stopCamera, onShutterPressed, onGalleryPicked } from './camera.js';
-import { saveMemory } from './review.js';
+import { saveObject } from './review.js';
 import { showSnackbar } from './snackbar.js';
 import { autoGrow } from './textfield.js';
+import { copy, applyCopy } from './copy.js';
+
+applyCopy(); // fills the static markup's words
 
 /* ════════════════════════════════════════════════
    EVENTS
@@ -28,35 +31,38 @@ document.getElementById('retake-btn').addEventListener('click', () => {
 });
 
 // Save
-document.getElementById('save-btn').addEventListener('click', saveMemory);
+document.getElementById('save-btn').addEventListener('click', saveObject);
 
 // Enter key in name field saves
 document.getElementById('name-input').addEventListener('keydown', e => {
-  if (e.key === 'Enter') { e.preventDefault(); saveMemory(); }
+  if (e.key === 'Enter') { e.preventDefault(); saveObject(); }
 });
 
 // Detail view
 document.getElementById('detail-close').addEventListener('click', closeDetail);
 document.getElementById('detail-name').addEventListener('change', e => {
   const name = e.target.value.trim();
-  if (name) updateOpenMemory({ name });
-  else e.target.value = loadMemories().find(m => String(m.id) === document.getElementById('detail-delete').dataset.id)?.name || '';
+  if (name) updateOpenObject({ name });
+  else e.target.value = loadObjects().find(m => String(m.id) === document.getElementById('detail-delete').dataset.id)?.name || '';
 });
 document.getElementById('detail-name').addEventListener('keydown', e => {
   if (e.key === 'Enter') e.target.blur();
 });
 document.getElementById('detail-note').addEventListener('input', e => autoGrow(e.target));
 document.getElementById('detail-note').addEventListener('change', e => {
-  updateOpenMemory({ note: e.target.value.trim() });
+  updateOpenObject({ note: e.target.value.trim() });
 });
 document.getElementById('detail-delete').addEventListener('click', async e => {
   const id = e.currentTarget.dataset.id;
-  if (await confirmDelete()) deleteMemory(id);
+  if (await confirmDelete()) deleteObject(id);
 });
 
-// Escape closes everything
+// Escape closes everything (the detail view through closeDetail, which stops the tilt)
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { stopCamera(); hideAll(); }
+  if (e.key !== 'Escape') return;
+  if (document.getElementById('detail-overlay').classList.contains('active')) closeDetail();
+  stopCamera();
+  hideAll();
 });
 
 // Android hardware back button
@@ -79,5 +85,5 @@ initStorage()
   .then(renderGrid)
   .catch(err => {
     console.error('[storage]', err);
-    showSnackbar("Couldn't load your memories. Please restart the app.");
+    showSnackbar(copy.toast.loadFailed);
   });

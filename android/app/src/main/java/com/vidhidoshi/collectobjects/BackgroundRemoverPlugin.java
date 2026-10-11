@@ -1,4 +1,4 @@
-package com.vidhidoshi.memories;
+package com.vidhidoshi.collectobjects;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

@@ -1,8 +1,20 @@
 /* ════════════════════════════════════════════════
    DATE HELPERS
+   Records keep the date as saved ("October 10, 2026", en-US) so the data
+   format never changes; it is reformatted for display (lowercase, short month).
 ════════════════════════════════════════════════ */
-export const fmtShort = d => d.toLocaleDateString('en-US', { month:'long', day:'numeric' });
-export const fmtFull  = d => d.toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
+export const fmtStored = d => d.toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
+
+const toDate = v => (v instanceof Date ? v : new Date(v));
+const lower = (d, opts) => d.toLocaleDateString('en-US', opts).toLowerCase();
+
+// "oct 11"
+export const fmtDay = v => lower(toDate(v), { month:'short', day:'numeric' });
+// "oct 10, 2026"; a stored date that can't be read is shown as written
+export function fmtDate(v) {
+  const d = toDate(v);
+  return isNaN(d) ? String(v).toLowerCase() : lower(d, { month:'short', day:'numeric', year:'numeric' });
+}
 
 /* ════════════════════════════════════════════════
    HTML ESCAPING

@@ -1,6 +1,6 @@
 {
-  "appId": "com.vidhidoshi.memories",
-  "appName": "Memories",
+  "appId": "com.vidhidoshi.collectobjects",
+  "appName": "collectobjects",
   "webDir": "www",
   "android": {
     "backgroundColor": "#edecea"

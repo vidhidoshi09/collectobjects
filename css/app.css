@@ -1,14 +1,14 @@
-/* ── Font: Nunito Sans (variable weight, OFL), bundled so it works offline ── */
+/* ── Font: Bricolage Grotesque (variable weight 200–800, OFL), bundled so it works offline ── */
 @font-face {
-  font-family: 'Nunito Sans';
-  font-style: normal; font-display: swap; font-weight: 200 1000;
-  src: url('../assets/fonts/nunito-sans-latin-ext-wght-normal.woff2') format('woff2-variations');
+  font-family: 'Bricolage Grotesque';
+  font-style: normal; font-display: swap; font-weight: 200 800;
+  src: url('../assets/fonts/bricolage-grotesque-latin-ext-wght-normal.woff2') format('woff2-variations');
   unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
 }
 @font-face {
-  font-family: 'Nunito Sans';
-  font-style: normal; font-display: swap; font-weight: 200 1000;
-  src: url('../assets/fonts/nunito-sans-latin-wght-normal.woff2') format('woff2-variations');
+  font-family: 'Bricolage Grotesque';
+  font-style: normal; font-display: swap; font-weight: 200 800;
+  src: url('../assets/fonts/bricolage-grotesque-latin-wght-normal.woff2') format('woff2-variations');
   unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
 }
 
@@ -38,20 +38,29 @@
   --color-on-toast:       #f4f2ef;
   --color-toast-action:   #ffb868;
   --color-focus:          #683f00;
+  --color-placard:        #f8f7f5; /* museum placard on the detail screen, a lighter warm white */
+  --color-sheen-light:    rgb(255 255 255 / 0.9);  /* holographic sheen on the tilting cut-out */
+  --color-sheen-warm:     rgb(255 196 232 / 0.75);
+  --color-sheen-cool:     rgb(170 226 255 / 0.75);
 
-  /* ── Typography: Nunito Sans, weights 400 + 900 ── */
-  --font-family: 'Nunito Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  /* ── Typography: Bricolage Grotesque only, 400 / 700 / 800 ── */
+  --font-family:  'Bricolage Grotesque', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: var(--font-family);
   --weight-regular: 400;
-  --weight-heavy:   900;
-  --type-display:  var(--weight-regular) 28px/1.15 var(--font-family); /* "Memories" */
-  --type-headline: var(--weight-heavy)   28px/1.15 var(--font-family); /* object name: detail, review */
-  --type-title:    var(--weight-heavy)   22px/1.25 var(--font-family); /* empty title, progress % */
+  --weight-bold:    700;
+  --weight-heavy:   800;
+  --type-display:  var(--weight-bold)    40px/1.05 var(--font-display);  /* home title "collection" */
+  --type-headline: var(--weight-bold)    30px/1.1  var(--font-display);  /* empty title, review name, placard name */
+  --type-title:    var(--weight-heavy)   22px/1.25 var(--font-family); /* progress % */
   --type-label:    var(--weight-heavy)   15px/1.2  var(--font-family); /* grid name, buttons, processing label */
   --type-body:     var(--weight-regular) 14px/1.5  var(--font-family); /* story, descriptions, snackbar */
-  --type-caption:  var(--weight-regular) 13px/1.4  var(--font-family); /* dates, subtitles */
-  --tracking-display: -0.5px;
-  --tracking-label:    0.2px;
-  --name-stroke: 4px; /* white "sticker" stroke behind object names */
+  --type-caption:  var(--weight-regular) 13px/1.4  var(--font-family); /* count, subtitles */
+  --type-overline: var(--weight-regular) 14px/1.3  var(--font-family); /* date, "no. 007": set in small caps */
+  --tracking-display:  -0.5px;
+  --tracking-headline: -0.3px;
+  --tracking-label:     0.2px;
+  --tracking-overline:  1.2px;
+  --name-stroke: 4px; /* white "sticker" stroke behind grid names (sans only, never the serif) */
 
   /* ── Icons: Material Symbols Rounded, weight 400 ── */
   --icon-size:       24px;
@@ -72,6 +81,7 @@
   --dot-spacing: 28px;
 
   /* ── Shape ── */
+  --radius-sm:   4px;  /* placard */
   --radius-lg:   20px;
   --radius-full: 9999px;
 
@@ -86,8 +96,9 @@
   --progress-size:     96px;
   --progress-stroke:   6;    /* SVG user units of the 100-unit ring */
   --underline:         2px;
+  --hairline:          1px;  /* placard rule */
   --text-measure:      280px; /* short centred copy */
-  --story-measure:     340px;
+  --placard-max-width: 340px; /* placard on the detail screen */
   --card-image-inset:  5%;
   --review-image-inset: 14%;
   --detail-image-width: 78%;
@@ -98,6 +109,7 @@
   /* ── Elevation ── */
   --shadow-accent: 0 6px 20px rgb(245 167 66 / 0.35);
   --shadow-toast:  0 6px 20px rgb(0 0 0 / 0.18);
+  --shadow-placard: 0 1px 2px rgb(0 0 0 / 0.04), 0 8px 24px rgb(0 0 0 / 0.06);
   --blur-scrim:    blur(6px);
 
   /* Signature cut-out: white sticker outline + soft shadow (outline offsets are fixed) */
@@ -111,6 +123,11 @@
     drop-shadow( 1.5px -1.5px  0 var(--color-sticker))
     drop-shadow(-1.5px -1.5px  0 var(--color-sticker))
     drop-shadow(0 6px 18px rgb(0 0 0 / 0.12));
+  /* the same list, flat: where the reveal starts (same functions, so it can animate) */
+  --sticker-filter-flat:
+    drop-shadow(0 0 0 transparent) drop-shadow(0 0 0 transparent) drop-shadow(0 0 0 transparent)
+    drop-shadow(0 0 0 transparent) drop-shadow(0 0 0 transparent) drop-shadow(0 0 0 transparent)
+    drop-shadow(0 0 0 transparent) drop-shadow(0 0 0 transparent) drop-shadow(0 0 0 transparent);
 
   /* ── Motion ── */
   --press-scale:      0.95; /* every tappable thing shrinks a little while pressed */
@@ -118,7 +135,24 @@
   --duration-fade:    250ms;
   --duration-progress: 150ms;
   --easing:           ease;
+  --easing-out:       cubic-bezier(0.2, 0.8, 0.2, 1);
+  --easing-overshoot: cubic-bezier(0.34, 1.56, 0.64, 1); /* reveal + drop only */
   --toast-rise:       var(--space-8);
+  --duration-reveal:  600ms; /* cut-out lifts off the page on review */
+  --delay-reveal:     150ms; /* lets the review screen fade in first */
+  --reveal-scale:     0.86;
+  --duration-backdrop: 800ms; /* the blurred original photo fades out behind the reveal */
+  --backdrop-filter:  blur(24px) saturate(0.6) brightness(0.9);
+  --backdrop-scale:   1.15;  /* hides the blur's soft edges */
+  --duration-drop:    500ms; /* a new object drops into the grid */
+  --delay-drop:       150ms;
+  --drop-rise:        calc(var(--space-24) * -1);
+  --drop-scale:       0.9;
+  --tilt-perspective: 520px; /* detail cut-out tilt (js/tilt.js) */
+  --sheen-opacity:    0.6;
+  --sheen-size:       200%;  /* gradient is twice the object, so the glint band can slide across */
+  --sheen-rest:       30%;   /* where the glint sits while the phone is still */
+  --sheen-travel:     50%;   /* how far it slides at full tilt */
 
   /* ── Layers ── */
   --z-content:  1;
@@ -175,13 +209,18 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
   filter: var(--sticker-filter);
 }
 
-/* Object names everywhere: heavy weight with a white "sticker" stroke */
-.card__name, .detail-name, .review-name {
+/* Grid names: heavy weight with a white "sticker" stroke (serif names carry none) */
+.card__name {
   -webkit-text-stroke: var(--name-stroke) var(--color-sticker);
   paint-order: stroke fill;
 }
-/* no stroke behind a placeholder */
-.name-field:placeholder-shown { -webkit-text-stroke-width: 0; }
+
+/* Overline: dates and exhibit numbers, small caps, letter-spaced */
+.overline {
+  font: var(--type-overline); letter-spacing: var(--tracking-overline);
+  font-variant-caps: all-small-caps; font-variant-numeric: tabular-nums;
+  color: var(--color-text-secondary);
+}
 
 /* ═══════════════════════════════════════
    BUTTONS
@@ -237,7 +276,7 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
 }
 
 .header { margin-bottom: var(--space-32); }
-.header__date, .header__count { font: var(--type-caption); color: var(--color-text-secondary); }
+.header__count { font: var(--type-caption); color: var(--color-text-secondary); }
 .header__title { font: var(--type-display); letter-spacing: var(--tracking-display); margin-block: var(--space-4); }
 
 .grid {
@@ -262,9 +301,12 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
   font: var(--type-label); letter-spacing: var(--tracking-label);
   text-align: center; max-width: 100%; overflow-wrap: anywhere;
 }
-.card__date {
-  margin-top: var(--space-4);
-  font: var(--type-caption); color: var(--color-text-secondary); text-align: center;
+.card__no { margin-top: var(--space-4); text-align: center; }
+
+/* The drop: a new object falls into place after saving (js/review.js) */
+.card--dropped { animation: drop var(--duration-drop) var(--easing-overshoot) var(--delay-drop) backwards; }
+@keyframes drop {
+  from { opacity: 0; transform: translateY(var(--drop-rise)) scale(var(--drop-scale)); }
 }
 
 /* ═══════════════════════════════════════
@@ -320,10 +362,10 @@ body.is-empty #fab { display: none !important; }
     calc(var(--screen-margin) + env(safe-area-inset-left, 0px));
 }
 
-/* Big centred object name, editable (review input, detail name) */
+/* Big object name in the serif, editable (review input, placard name) */
 .name-field {
   width: 100%;
-  font: var(--type-headline); letter-spacing: var(--tracking-display);
+  font: var(--type-headline); letter-spacing: var(--tracking-headline);
   text-align: center; color: var(--color-text);
   background: transparent; border: none; border-radius: 0; outline: none;
   border-bottom: var(--underline) solid transparent;
@@ -424,6 +466,32 @@ body.is-empty #fab { display: none !important; }
 }
 .review-img-wrap img { width: 100%; height: 100%; }
 
+/* Behind the reveal: the original photo, blurred and dimmed, fades to the page */
+#review-overlay { overflow: hidden; }
+#review-overlay .screen { position: relative; }
+.review-backdrop {
+  display: none;
+  position: absolute; inset: 0;
+  background: center / cover no-repeat;
+  filter: var(--backdrop-filter);
+  transform: scale(var(--backdrop-scale));
+  pointer-events: none;
+}
+.review-backdrop.is-fading {
+  display: block;
+  animation: backdrop-out var(--duration-backdrop) var(--easing-out) var(--delay-reveal) both;
+}
+@keyframes backdrop-out { to { opacity: 0; } }
+
+/* The reveal: the cut-out lifts off the page, its outline and shadow growing in */
+#review-img.is-revealing {
+  animation:
+    reveal-lift    var(--duration-reveal) var(--easing-overshoot) var(--delay-reveal) both,
+    reveal-outline var(--duration-reveal) var(--easing-out)       var(--delay-reveal) both;
+}
+@keyframes reveal-lift    { from { transform: scale(var(--reveal-scale)); } to { transform: none; } }
+@keyframes reveal-outline { from { filter: var(--sticker-filter-flat); } to { filter: var(--sticker-filter); } }
+
 .review-name {
   flex-shrink: 0;
   margin-top: var(--space-24);
@@ -450,25 +518,52 @@ body.is-empty #fab { display: none !important; }
 
 .detail-img-wrap {
   width: var(--detail-image-width); aspect-ratio: 1;
-  display: flex; align-items: center; justify-content: center;
+  perspective: var(--tilt-perspective);
 }
-.detail-img-wrap img { width: 100%; height: 100%; }
-
-.detail-name { margin-top: var(--space-24); }
-.detail-date {
-  margin-top: var(--space-4);
-  font: var(--type-caption); color: var(--color-text-secondary);
-  text-align: center;
+/* Tilts with the phone (js/tilt.js sets transform + --tilt-x/-y) */
+.tilt { position: relative; width: 100%; height: 100%; will-change: transform; }
+.tilt img { display: block; width: 100%; height: 100%; }
+/* Holographic sheen, clipped to the object by its own image (--sheen-mask) */
+.sheen {
+  position: absolute; inset: 0; pointer-events: none;
+  -webkit-mask: var(--sheen-mask, linear-gradient(transparent, transparent)) center / contain no-repeat;
+          mask: var(--sheen-mask, linear-gradient(transparent, transparent)) center / contain no-repeat;
+  /* a narrow glint band that rests off to one side and sweeps across as it tilts */
+  background: linear-gradient(115deg,
+    transparent 40%, var(--color-sheen-cool) 46%, var(--color-sheen-light) 50%,
+    var(--color-sheen-warm) 54%, transparent 60%);
+  background-size: var(--sheen-size) var(--sheen-size);
+  background-position:
+    calc(var(--sheen-rest) + var(--tilt-x, 0) * var(--sheen-travel))
+    calc(var(--sheen-rest) + var(--tilt-y, 0) * var(--sheen-travel));
+  mix-blend-mode: overlay;
+  opacity: var(--sheen-opacity);
 }
 
-/* Story: centred body text, underline only while editing */
-.story {
-  display: block; width: 100%; max-width: var(--story-measure);
+/* Placard: a gallery wall label under the object */
+.placard {
+  width: 100%; max-width: var(--placard-max-width);
   margin-top: var(--space-24);
+  padding: var(--space-16) var(--space-24) var(--space-24);
+  border-radius: var(--radius-sm);
+  background: var(--color-placard);
+  box-shadow: var(--shadow-placard);
+  text-align: left;
+}
+.placard__name { text-align: left; padding-inline: 0; }
+.placard__meta { margin-top: var(--space-4); }
+.placard__rule {
+  border: none; border-top: var(--hairline) solid var(--color-line);
+  margin-block: var(--space-16) var(--space-12);
+}
+
+/* Story: body text, underline only while editing */
+.story {
+  display: block; width: 100%;
   padding: var(--space-4) 0;
   background: none; border: none; border-radius: 0; outline: none; resize: none; overflow: hidden;
   border-bottom: var(--underline) solid transparent;
-  font: var(--type-body); color: var(--color-text); text-align: center;
+  font: var(--type-body); color: var(--color-text);
   caret-color: var(--color-accent);
   transition: border-color var(--duration-press) var(--easing);
 }
@@ -494,7 +589,7 @@ body.is-empty #fab { display: none !important; }
 .empty__samples img:not(:nth-child(2)) { margin-top: var(--space-32); }
 .empty__samples img:nth-child(2) { transform: scale(var(--sample-scale)); }
 
-.empty__title { font: var(--type-title); }
+.empty__title { font: var(--type-headline); letter-spacing: var(--tracking-headline); }
 .empty__sub {
   margin-top: var(--space-8);
   font: var(--type-body); color: var(--color-text-secondary);
@@ -544,9 +639,13 @@ body.is-empty #fab { display: none !important; }
 }
 
 /* ═══════════════════════════════════════
-   REDUCED MOTION — fades only, no scaling
+   REDUCED MOTION — fades only: no scaling, overshoot, tilt or sheen
 ═══════════════════════════════════════ */
 @media (prefers-reduced-motion: reduce) {
+  #review-img.is-revealing { animation: reveal-outline var(--duration-reveal) var(--easing) both; }
+  .card--dropped { animation-name: fade-in; animation-timing-function: var(--easing); }
+  @keyframes fade-in { from { opacity: 0; } }
+  .sheen, .review-backdrop.is-fading { display: none; }
   @starting-style {
     .snackbar.visible { transform: none; }
   }

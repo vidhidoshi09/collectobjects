@@ -1,24 +1,29 @@
-import { loadMemories, saveMemories, deletePhoto, photoSrc } from './storage.js';
-import { fmtShort, esc } from './format.js';
+import { loadObjects, saveObjects, deletePhoto, photoSrc } from './storage.js';
+import { esc } from './format.js';
+import { copy } from './copy.js';
+import { state } from './state.js';
 import { showOverlay, hideOverlay } from './overlays.js';
 import { NativeUi, isNative } from './platform.js';
 import { showSnackbar } from './snackbar.js';
 import { autoGrow } from './textfield.js';
+import { success } from './haptics.js';
+import { startTilt } from './tilt.js';
 
 /* ════════════════════════════════════════════════
    RENDER GRID
+   Newest first. Each tile: cut-out, name, exhibit number.
+   A just-saved object drops into place (css .card--dropped).
 ════════════════════════════════════════════════ */
 export async function renderGrid() {
-  const memories = loadMemories().slice().reverse();
-  const srcs = await Promise.all(memories.map(photoSrc));
+  const objects = loadObjects().slice().reverse();
+  const srcs = await Promise.all(objects.map(photoSrc));
   const grid = document.getElementById('grid');
 
-  document.getElementById('header-date').textContent  = fmtShort(new Date());
-  document.getElementById('header-count').textContent =
-    memories.length === 1 ? '1 memory' : `${memories.length} memories`;
+  document.getElementById('header-date').textContent  = copy.home.date(new Date());
+  document.getElementById('header-count').textContent = copy.home.count(objects.length);
 
-  document.body.classList.toggle('is-empty', memories.length === 0);
-  if (memories.length === 0) {
+  document.body.classList.toggle('is-empty', objects.length === 0);
+  if (objects.length === 0) {
     grid.innerHTML = `
       <div class="empty" style="grid-column:1/-1">
         <div class="empty__samples" aria-hidden="true">
@@ -26,24 +31,27 @@ export async function renderGrid() {
           <img class="sticker" src="assets/teapot.png" alt="" />
           <img class="sticker" src="assets/duck.png" alt="" />
         </div>
-        <p class="empty__title">Keep the little things</p>
-        <p class="empty__sub">Snap an object that matters to you. We'll cut it out and keep it in your collection.</p>
+        <p class="empty__title">${esc(copy.empty.title)}</p>
+        <p class="empty__sub">${esc(copy.empty.body)}</p>
         <button class="empty__cta btn-primary" id="empty-cta" type="button">
           <svg class="icon" aria-hidden="true"><use href="#i-photo-camera"/></svg>
-          Create now
+          ${esc(copy.empty.cta)}
         </button>
       </div>`;
     document.getElementById('empty-cta').addEventListener('click', () => document.getElementById('fab').click());
     return;
   }
 
-  grid.innerHTML = memories.map((m, i) => `
-    <div class="card" role="button" tabindex="0" aria-label="${esc(m.name)}" data-id="${m.id}">
+  const dropped = state.justSaved;
+  state.justSaved = null;
+  grid.innerHTML = objects.map((m, i) => `
+    <div class="card${m.id === dropped ? ' card--dropped' : ''}" role="button" tabindex="0"
+         aria-label="${esc(`${m.name}, ${copy.item.no(m.no)}`)}" data-id="${m.id}">
       <div class="card__img-wrap">
-        <img class="sticker" src="${srcs[i]}" alt="${esc(m.name)}" loading="lazy" decoding="async" />
+        <img class="sticker" src="${srcs[i]}" alt="" loading="lazy" decoding="async" />
       </div>
       <p class="card__name">${esc(m.name)}</p>
-      <p class="card__date">${m.date}</p>
+      <p class="card__no overline">${esc(copy.item.no(m.no))}</p>
     </div>
   `).join('');
 
@@ -54,35 +62,43 @@ export async function renderGrid() {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openDetail(card.dataset.id); }
     });
   });
+  // the success haptic lands with the drop
+  grid.querySelector('.card--dropped')?.addEventListener('animationstart', success, { once: true });
 }
 
 /* ════════════════════════════════════════════════
-   DETAIL VIEW
+   DETAIL VIEW — floating cut-out (tilts) + placard
 ════════════════════════════════════════════════ */
+let stopTilt = () => {};
+
 async function openDetail(id) {
-  const m = loadMemories().find(x => String(x.id) === String(id));
+  const m = loadObjects().find(x => String(x.id) === String(id));
   if (!m) return;
 
-  document.getElementById('detail-img').src   = await photoSrc(m);
-  document.getElementById('detail-img').alt   = m.name;
+  const src = await photoSrc(m);
+  document.getElementById('detail-img').src = src;
+  document.getElementById('detail-img').alt = m.name;
+  document.getElementById('detail-sheen').style.setProperty('--sheen-mask', `url("${src}")`);
   document.getElementById('detail-name').value = m.name;
   document.getElementById('detail-note').value = m.note || '';
-  document.getElementById('detail-date').textContent = m.date;
+  document.getElementById('detail-meta').textContent = copy.item.meta(m.no, m.date);
   document.getElementById('detail-delete').dataset.id = m.id;
 
   showOverlay('detail-overlay');
   autoGrow(document.getElementById('detail-note'));
+  stopTilt();
+  stopTilt = startTilt(document.getElementById('detail-tilt'));
 }
 
-// Saves an edited name or story for the memory open in the detail view
-export async function updateOpenMemory(changes) {
+// Saves an edited name or story for the object open in the detail view
+export async function updateOpenObject(changes) {
   const id = document.getElementById('detail-delete').dataset.id;
-  const updated = loadMemories().map(m => String(m.id) === String(id) ? { ...m, ...changes } : m);
+  const updated = loadObjects().map(m => String(m.id) === String(id) ? { ...m, ...changes } : m);
   try {
-    await saveMemories(updated);
+    await saveObjects(updated);
   } catch (err) {
     console.error('[storage]', err);
-    showSnackbar("Couldn't save. Please try again.");
+    showSnackbar(copy.toast.saveFailed);
     return;
   }
   renderGrid();
@@ -90,34 +106,37 @@ export async function updateOpenMemory(changes) {
 
 export function closeDetail() {
   document.activeElement?.blur(); // commits an in-progress name/story edit
+  stopTilt();
+  stopTilt = () => {};
   hideOverlay('detail-overlay');
   document.getElementById('fab').style.display = 'flex';
   document.getElementById('detail-img').src = '';
+  document.getElementById('detail-sheen').style.removeProperty('--sheen-mask');
 }
 
 // Native Material 3 dialog on Android; plain confirm() in a desktop browser
 export async function confirmDelete() {
-  const title = 'Delete this memory?';
-  const message = "This can't be undone.";
+  const { title, body: message, confirm: confirmLabel, cancel: cancelLabel } = copy.remove;
   if (!isNative) return confirm(`${title}\n\n${message}`);
 
   const { confirmed } = await NativeUi.confirm({
-    title, message, confirmLabel: 'Delete', cancelLabel: 'Cancel', destructive: true,
+    title, message, confirmLabel, cancelLabel, destructive: true,
   });
   return confirmed;
 }
 
-export async function deleteMemory(id) {
-  const removed = loadMemories().find(m => String(m.id) === String(id));
+// Removing never renumbers: the other objects keep their exhibit numbers
+export async function deleteObject(id) {
+  const removed = loadObjects().find(m => String(m.id) === String(id));
   try {
-    await saveMemories(loadMemories().filter(m => m !== removed));
+    await saveObjects(loadObjects().filter(m => m !== removed));
   } catch (err) {
     console.error('[storage]', err);
-    showSnackbar("Couldn't save. Please try again.");
+    showSnackbar(copy.toast.saveFailed);
     return;
   }
   if (removed?.file) await deletePhoto(removed.file);
   closeDetail();
   await renderGrid();
-  showSnackbar('Memory deleted');
+  showSnackbar(copy.toast.removed);
 }

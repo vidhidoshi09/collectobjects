@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Brand typeface (design/foundations.md §3) for native Android components: dialogs, sheets -->
+<!-- Brand typeface: Bricolage Grotesque 400 + 600 (design/foundations.md) for native Android components: dialogs, sheets -->
 <font-family xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <font
-        android:font="@font/nunito_sans_regular"
+        android:font="@font/brand_font_regular"
         android:fontStyle="normal"
         android:fontWeight="400"
-        app:font="@font/nunito_sans_regular"
+        app:font="@font/brand_font_regular"
         app:fontStyle="normal"
         app:fontWeight="400" />
     <font
-        android:font="@font/nunito_sans_semibold"
+        android:font="@font/brand_font_semibold"
         android:fontStyle="normal"
         android:fontWeight="600"
-        app:font="@font/nunito_sans_semibold"
+        app:font="@font/brand_font_semibold"
         app:fontStyle="normal"
         app:fontWeight="600" />
 </font-family>

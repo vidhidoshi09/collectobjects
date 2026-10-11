@@ -1,8 +1,8 @@
 {
-  "name": "memories",
+  "name": "collectobjects",
   "version": "1.0.0",
   "private": true,
-  "description": "Memories \u2014 object collection app (web + Android via Capacitor)",
+  "description": "collectobjects — for your trinkets (web + Android via Capacitor)",
   "scripts": {
     "start": "npm run vendor && browser-sync start --server --files \"index.html, css/**, js/**, assets/**\" --port 8000 --no-open --no-notify --no-ui",
     "vendor": "node scripts/build-vendor.js",
@@ -18,7 +18,8 @@
     "@capacitor/android": "^8.5.3",
     "@capacitor/app": "^8.1.2",
     "@capacitor/core": "^8.5.3",
-    "@capacitor/filesystem": "^8.1.4"
+    "@capacitor/filesystem": "^8.1.4",
+    "@capacitor/haptics": "^8.0.2"
   },
   "devDependencies": {
     "@capacitor/cli": "^8.5.3",

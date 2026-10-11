@@ -1,6 +1,8 @@
-# Memories
+# collectobjects — for your trinkets
 
-A minimal app for collecting everyday objects as memories. It runs as a web app (`index.html`), and Capacitor packages the same app as an Android app (`android/`).
+Snap an object, it's cut out like a sticker, gets a permanent exhibit number ("no. 007") and a placard for its story. It runs as a web app (`index.html`), and Capacitor packages the same app as an Android app (`android/`).
+
+Design system: [`design.md`](design.md). All user-facing words: [`js/copy.js`](js/copy.js) (mirrors [`design/content.md`](design/content.md)).
 
 ## Run locally
 
@@ -39,10 +41,10 @@ After editing `index.html`, `css/`, `js/` or `assets/`, run `npm run sync` again
 
 ### Release build for the Play Store
 1. Create an upload key once (keep it and its passwords safe, outside git):
-   `keytool -genkeypair -v -keystore ~/memories-upload.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload`
+   `keytool -genkeypair -v -keystore ~/collectobjects-upload.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload`
 2. Create `android/keystore.properties` (git-ignored):
    ```
-   storeFile=/Users/<you>/memories-upload.jks
+   storeFile=/Users/<you>/collectobjects-upload.jks
    storePassword=...
    keyAlias=upload
    keyPassword=...
@@ -53,10 +55,12 @@ After editing `index.html`, `css/`, `js/` or `assets/`, run `npm run sync` again
 Store listing text, privacy policy, Data safety answers and graphics are in `store/`.
 
 ### Notes
-- App ID: `com.vidhidoshi.memories` (set in `capacitor.config.json`).
+- App ID: `com.vidhidoshi.collectobjects` (set in `capacitor.config.json`).
 - The camera uses the `CAMERA` permission. Android asks for it the first time you tap **+**.
 - The hardware back button closes the open screen. On the grid, it exits the app.
-- Memories are saved as files in the app's private storage on the device (`memories.json` plus `photos/`). Uninstalling the app deletes them.
+- Objects are saved as files in the app's private storage on the device (`objects.json` plus `objects/`). Each record is `{ id, no, name, date, file, note? }`; `no` is the permanent exhibit number. Uninstalling the app deletes them.
+- Data from earlier versions moves in by itself on first launch: `memories.json` + `photos/` (before the rename) and base64 images in localStorage (the first versions). Objects saved without a number are numbered once, oldest first.
+- Haptics (`@capacitor/haptics`): a light tap when a new cut-out lifts off the page, a success buzz when it lands in the grid.
 - Background removal runs on the device with Google ML Kit (`BackgroundRemoverPlugin.java`); no API key or internet service. The model is a Google Play services module: Play Store installs download it with the app, otherwise it downloads on first use. In a desktop browser (`npm start`) the photo is kept as is.
 
 ## Project structure
@@ -65,14 +69,17 @@ Store listing text, privacy policy, Data safety answers and graphics are in `sto
 - `css/app.css`: all styles; tokens follow `design/tokens.json` (design system: `design.md`).
 - `js/`: the app as ES modules.
   - `main.js`: event wiring, Android back button, startup.
-  - `platform.js`: Capacitor and plugins (App, Filesystem, BackgroundRemover, NativeUi) from `window.Native`.
-  - `state.js`: shared mutable state (memories, camera stream, pending photo).
-  - `storage.js`: files on the device, legacy migration, photo URLs.
-  - `grid.js`: grid, detail view, editing, delete.
+  - `copy.js`: every user-facing string; rename the app by changing its constants.
+  - `platform.js`: Capacitor and plugins (App, Filesystem, Haptics, BackgroundRemover, NativeUi) from `window.Native`.
+  - `state.js`: shared mutable state (objects, camera stream, pending photo, just-saved id).
+  - `storage.js`: files on the device, exhibit numbers, migrations, photo URLs.
+  - `grid.js`: grid, detail view (placard), editing, delete.
   - `camera.js`: camera, capture, gallery import, the capture flow.
   - `background.js`: background removal and the progress ring.
-  - `review.js`: review and save.
+  - `review.js`: review (the reveal) and save.
+  - `tilt.js`: holographic tilt of the detail cut-out.
+  - `motion.js`, `haptics.js`: restart CSS animations, reduce-motion check; the two haptic moments.
   - `overlays.js`, `format.js`: overlay show/hide, date and HTML helpers.
   - `snackbar.js`, `textfield.js`: snackbar messages, the growing story field.
 - `src/native.js`: source of `vendor/native.js` (bundled by `npm run vendor`).
-- `assets/`: images. `android/`: the Capacitor Android project. `www/`: build output.
+- `assets/`: images and fonts (Bricolage Grotesque; OFL). `android/`: the Capacitor Android project. `www/`: build output.

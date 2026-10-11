@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#edecea" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <title>Memories</title>
+  <title>collectobjects</title>
   <link rel="stylesheet" href="css/app.css" />
 </head>
 <body>
@@ -16,11 +16,11 @@
 <!-- HOME ─────────────────────────────────── -->
 <main id="home">
   <header class="header">
-    <p class="header__date" id="header-date"></p>
-    <h1 class="header__title">Memories</h1>
+    <p class="header__date overline" id="header-date"></p>
+    <h1 class="header__title" data-copy="home.title"></h1>
     <p class="header__count" id="header-count"></p>
   </header>
-  <section class="grid" id="grid" aria-label="Memory collection"></section>
+  <section class="grid" id="grid" data-copy-aria="home.gridLabel"></section>
 </main>
 
 <!-- Material Symbols Rounded, weight 400, grade 0, fill 0 (Apache-2.0, @material-symbols/svg-400),
@@ -34,19 +34,19 @@
   <symbol id="i-photo-camera" viewBox="0 -960 960 960"><path d="M479.5-267q72.5 0 121.5-49t49-121.5q0-72.5-49-121T479.5-607q-72.5 0-121 48.5t-48.5 121q0 72.5 48.5 121.5t121 49Zm0-60q-47.5 0-78.5-31.5t-31-79q0-47.5 31-78.5t78.5-31q47.5 0 79 31t31.5 78.5q0 47.5-31.5 79t-79 31.5ZM140-120q-24 0-42-18t-18-42v-513q0-23 18-41.5t42-18.5h147l55-66q8-11 20-16t26-5h184q14 0 26 5t20 16l55 66h147q23 0 41.5 18.5T880-693v513q0 24-18.5 42T820-120H140Zm0-60h680v-513H645l-73-87H388l-73 87H140v513Zm340-257Z"/></symbol>
 </svg>
 
-<button class="fab" id="fab" type="button" aria-label="New memory"><svg class="icon" aria-hidden="true"><use href="#i-add"/></svg></button>
+<button class="fab" id="fab" type="button" data-copy-aria="home.add"><svg class="icon" aria-hidden="true"><use href="#i-add"/></svg></button>
 
 <!-- STEP 1 — CAMERA ──────────────────────── -->
-<div id="camera-overlay" class="overlay" role="dialog" aria-label="Camera">
-  <button class="btn-close" id="camera-close" type="button" aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
+<div id="camera-overlay" class="overlay" role="dialog" data-copy-aria="camera.label">
+  <button class="btn-close" id="camera-close" type="button" data-copy-aria="common.close"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
   <video id="camera-video" autoplay playsinline muted poster="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"></video>
   <div class="cam-denied" id="cam-denied">
     <svg class="icon icon--hero" aria-hidden="true"><use href="#i-photo-camera"/></svg>
-    <p>Camera is off. Turn it on in Settings, or choose a photo instead.</p>
+    <p data-copy="camera.blocked"></p>
   </div>
   <div class="cam-controls">
-    <button id="gallery-btn" type="button" aria-label="Choose from gallery"><svg class="icon" aria-hidden="true"><use href="#i-photo-library"/></svg></button>
-    <button id="shutter-btn" type="button" aria-label="Take photo"></button>
+    <button id="gallery-btn" type="button" data-copy-aria="camera.gallery"><svg class="icon" aria-hidden="true"><use href="#i-photo-library"/></svg></button>
+    <button id="shutter-btn" type="button" data-copy-aria="camera.shutter"></button>
     <span class="cam-spacer"></span>
   </div>
   <input type="file" id="gallery-input" accept="image/*" hidden />
@@ -62,41 +62,51 @@
     </svg>
     <span class="progress__pct" id="progress-pct" aria-hidden="true">0%</span>
   </div>
-  <p class="processing-label" id="processing-label">Cutting it out…</p>
+  <p class="processing-label" id="processing-label" data-copy="processing.cutting"></p>
   <p class="processing-sub" id="processing-sub"></p>
 </div>
 
 <!-- STEP 3 — REVIEW ──────────────────────── -->
-<div id="review-overlay" class="overlay" role="dialog" aria-label="Name your memory">
-  <button class="btn-close" id="review-close" type="button" aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
+<div id="review-overlay" class="overlay" role="dialog" data-copy-aria="review.label">
+  <!-- the original photo, blurred, fading away as the cut-out lifts off it -->
+  <div class="review-backdrop" id="review-backdrop" aria-hidden="true"></div>
+  <button class="btn-close" id="review-close" type="button" data-copy-aria="common.close"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
   <div class="screen">
     <div class="review-img-wrap">
-      <img class="sticker" id="review-img" src="" alt="Your photo" />
+      <img class="sticker" id="review-img" src="" data-copy-alt="review.photo" />
     </div>
-    <input class="name-field review-name" id="name-input" type="text" placeholder="Name it…" aria-label="Name"
+    <input class="name-field review-name" id="name-input" type="text" data-copy-placeholder="review.namePlaceholder" data-copy-aria="review.name"
            maxlength="40" autocomplete="off" autocorrect="off"
-           autocapitalize="words" spellcheck="false" />
+           autocapitalize="none" spellcheck="false" />
     <div class="review-actions snackbar-anchor">
-      <button class="btn-round" id="retake-btn" type="button" aria-label="Retake"><svg class="icon" aria-hidden="true"><use href="#i-refresh"/></svg></button>
-      <button class="btn-primary review-save" id="save-btn" type="button">Save</button>
+      <button class="btn-round" id="retake-btn" type="button" data-copy-aria="review.retake"><svg class="icon" aria-hidden="true"><use href="#i-refresh"/></svg></button>
+      <button class="btn-primary review-save" id="save-btn" type="button" data-copy="review.save"></button>
     </div>
   </div>
 </div>
 
 <!-- DETAIL VIEW ──────────────────────────── -->
-<div id="detail-overlay" class="overlay" role="dialog" aria-label="Memory">
-  <button class="btn-close" id="detail-close" type="button" aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
+<div id="detail-overlay" class="overlay" role="dialog" data-copy-aria="detail.label">
+  <button class="btn-close" id="detail-close" type="button" data-copy-aria="common.close"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
   <div class="screen screen--scroll">
     <div class="screen__content">
+      <!-- the cut-out tilts with the phone (js/tilt.js); the sheen is clipped to its shape -->
       <div class="detail-img-wrap">
-        <img class="sticker" id="detail-img" src="" alt="" />
+        <div class="tilt" id="detail-tilt">
+          <img class="sticker" id="detail-img" src="" alt="" />
+          <div class="sheen" id="detail-sheen" aria-hidden="true"></div>
+        </div>
       </div>
-      <input class="name-field detail-name" id="detail-name" aria-label="Name" maxlength="60"
-             autocomplete="off" spellcheck="false" />
-      <p class="detail-date" id="detail-date"></p>
-      <textarea class="story" id="detail-note" rows="1" maxlength="1000"
-                placeholder="Add the story behind it…" aria-label="Story"></textarea>
-      <button class="btn-round detail-delete snackbar-anchor" id="detail-delete" type="button" aria-label="Delete"><svg class="icon" aria-hidden="true"><use href="#i-delete"/></svg></button>
+      <!-- placard, like a gallery wall label: name, exhibit number + date found, the story -->
+      <div class="placard">
+        <input class="name-field placard__name" id="detail-name" data-copy-aria="detail.name" maxlength="60"
+               autocomplete="off" spellcheck="false" />
+        <p class="placard__meta overline" id="detail-meta"></p>
+        <hr class="placard__rule" />
+        <textarea class="story" id="detail-note" rows="1" maxlength="1000"
+                  data-copy-placeholder="detail.storyPlaceholder" data-copy-aria="detail.story"></textarea>
+      </div>
+      <button class="btn-round detail-delete snackbar-anchor" id="detail-delete" type="button" data-copy-aria="detail.remove"><svg class="icon" aria-hidden="true"><use href="#i-delete"/></svg></button>
     </div>
   </div>
 </div>

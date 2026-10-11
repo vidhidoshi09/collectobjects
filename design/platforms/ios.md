@@ -12,16 +12,18 @@ Liquid Glass for everything else.
 `tokens.json` (`bg`, `text`, `accent`, …). The brand orange is
 the app `tint`, so system controls (buttons, toggles, progress, glass tints) pick it up.
 
-**Type:** register Nunito Sans (400, 900) in the app and use it through Dynamic Type
-so it scales with the user's text size:
-`Font.custom("NunitoSans-Black", size: 28, relativeTo: .title)`. Names keep the white
-sticker stroke (draw the text twice: stroked white behind, filled on top).
+**Type:** register Bricolage Grotesque (variable, or 400/700/800 instances) and use it
+through Dynamic Type so it scales with the user's text size:
+`Font.custom("BricolageGrotesque", size: 30, relativeTo: .title).weight(.bold)`. Grid
+names keep the white sticker stroke (draw the text twice: stroked white behind,
+filled on top). The overline uses `.smallCaps()` + tracking.
 
 | Brand token | iOS text style it scales with |
 |---|---|
-| `display` (28, 400) | `.title` (large-title nav uses the system's own size) |
-| `headline` (28, 900) | `.title` |
+| `display` (serif 44, 400) | `.largeTitle` (home title "collection") |
+| `headline` (serif 34, 400) | `.title` |
 | `title` (22, 900) | `.title3` |
+| `overline` (14, 400, small caps) | `.footnote` |
 | `label` (15, 900) | `.subheadline` (buttons, grid names) |
 | `body` (14, 400) | `.callout` |
 | `caption` (13, 400) | `.footnote` |
@@ -43,7 +45,8 @@ sticker stroke (draw the text twice: stroked white behind, filled on top).
 |---|---|
 | Alerts / confirmation dialogs | System font only (Apple doesn't allow restyling); brand shows only via tint. Use custom `.sheet`s for branded moments. |
 | Back navigation | Swipe-from-edge + system back button; no in-app back arrow. |
-| Feedback | Haptics (`.sensoryFeedback`) alongside the press scale. |
+| Feedback | Haptics (`.sensoryFeedback`): light impact on the reveal, success on save, like Android. |
+| Tilt | `CMMotionManager` device attitude → `rotation3DEffect` (±12°), glint masked to the object. |
 | Messages | Small toast/banner (iOS has no snackbar). |
 | Motion | System springs (`.smooth`, `.snappy`) instead of CSS ease. |
 | Cut-out | Vision foreground-mask request (on-device, no download). |
@@ -53,10 +56,12 @@ sticker stroke (draw the text twice: stroked white behind, filled on top).
 - **3D scan of an object** with Apple **Object Capture** (`ObjectCaptureSession`, on-device), producing a USDZ model the user can spin and zoom in the detail view and place in their room with AR Quick Look.
 - Requires **LiDAR**: iPhone 12 Pro and later **Pro / Pro Max** models (and iPad Pro). Check `ObjectCaptureSession.isSupported`; on other iPhones, offer the 2.5D holographic tilt instead.
 - The flat cut-out stays the grid thumbnail; a small 3D badge marks scanned pieces.
-- Store the model next to the photo (`photos/<id>.usdz`) and add an optional `model` field to the memory record.
+- Store the model next to the photo (`objects/<id>.usdz`) and add an optional `model` field to the object record.
 
 ## Shared beyond design
 
-Keep the **data format** identical (`memories.json` with `id`, `name`, `date`,
-`file`, `note`; photos as PNG cut-outs) so a future backup or export/import works
-across both apps.
+Keep the **data format** identical (`objects.json` with `id`, `no`, `name`, `date`,
+`file`, `note`; photos as PNG cut-outs in `objects/`) so a future backup or
+export/import works across both apps. `no` is the permanent exhibit number
+(highest + 1 at save, never reused); `date` is stored as "October 10, 2026" (en-US)
+and only formatted for display.

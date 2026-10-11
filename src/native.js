@@ -3,10 +3,11 @@
 import { Capacitor, registerPlugin } from '@capacitor/core';
 import { App } from '@capacitor/app';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+import { Haptics } from '@capacitor/haptics';
 
-// Implemented in android/app/src/main/java/com/vidhidoshi/memories/BackgroundRemoverPlugin.java
+// Implemented in android/app/src/main/java/com/vidhidoshi/collectobjects/BackgroundRemoverPlugin.java
 const BackgroundRemover = registerPlugin('BackgroundRemover');
-// Implemented in android/app/src/main/java/com/vidhidoshi/memories/NativeUiPlugin.java
+// Implemented in android/app/src/main/java/com/vidhidoshi/collectobjects/NativeUiPlugin.java
 const NativeUi = registerPlugin('NativeUi');
 
-window.Native = { Capacitor, App, Filesystem, Directory, Encoding, BackgroundRemover, NativeUi };
+window.Native = { Capacitor, App, Filesystem, Directory, Encoding, Haptics, BackgroundRemover, NativeUi };

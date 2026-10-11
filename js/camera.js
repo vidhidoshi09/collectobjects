@@ -3,6 +3,7 @@ import { showOverlay, hideOverlay, hideAll } from './overlays.js';
 import { progress, removeBackground } from './background.js';
 import { showReview } from './review.js';
 import { showSnackbar } from './snackbar.js';
+import { copy } from './copy.js';
 
 /* ════════════════════════════════════════════════
    STEP 1 — CAMERA
@@ -90,7 +91,7 @@ export async function onGalleryPicked(file) {
   } catch (err) {
     console.error('[gallery]', err);
     hideAll();
-    showSnackbar("That photo couldn't be opened. Try another one.");
+    showSnackbar(copy.toast.photoUnreadable);
     return;
   }
   await processPhoto(jpegDataURL);
@@ -107,13 +108,13 @@ async function processPhoto(jpegDataURL) {
     progress.finish();
     await new Promise(r => setTimeout(r, 250)); // let 100% register
 
-    // 4. Show review screen
-    showReview(photo);
+    // 4. Show review screen, the original photo blurred behind the reveal
+    showReview(photo, jpegDataURL);
   } catch (err) {
     progress.finish();
     console.error('[bg-removal]', err.message || err); // details stay in the log, not the UI
     // Fallback: keep the original photo
     showReview({ base64: jpegDataURL.split(',')[1], mime: 'image/jpeg' });
-    showSnackbar("Couldn't cut this one out, so we kept the full photo.");
+    showSnackbar(copy.toast.cutoutFailed);
   }
 }

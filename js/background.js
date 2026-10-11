@@ -1,4 +1,5 @@
 import { BackgroundRemover, isNative } from './platform.js';
+import { copy } from './copy.js';
 
 /* ════════════════════════════════════════════════
    STEP 2 — BACKGROUND REMOVAL, on the device
@@ -30,7 +31,7 @@ export const progress = (() => {
   }
   function estimate() {
     startedAt = performance.now();
-    label.textContent = 'Cutting it out…';
+    label.textContent = copy.processing.cutting;
     sub.textContent = '';
   }
 
@@ -48,8 +49,8 @@ export const progress = (() => {
     },
     download(p) {
       downloading = p < 100;
-      label.textContent = 'Getting ready…';
-      sub.textContent = 'One-time setup';
+      label.textContent = copy.processing.setup;
+      sub.textContent = copy.processing.setupSub;
       set(p);
       if (!downloading) { set(0); estimate(); } // download done → cutting starts
     },

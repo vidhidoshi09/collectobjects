@@ -16,26 +16,46 @@ rules use no raw values (except the fixed sticker-outline offsets).
 | FAB | 56 circle, `accent`, 32 icon in `on-accent`, orange glow; 16 from the right edge of the column, 24 from the bottom + safe area |
 | Primary button | 52 high pill, padding 32, `label` type, `on-accent` on `accent`, orange glow |
 | Secondary round button | 52 circle, `round` bg, 24 `text` icon |
-| Name field | `headline` + 4px white stroke, centred, 2px underline |
+| Name field | `headline` (Bricolage 30, 700), no stroke; centred on review, left on the placard; 2px underline |
+| Placard | `placard` bg, radius 4, `placard` shadow, padding 16/24/24, max 340; name → 4 → `overline` meta → 16 → 1px `line` rule → 12 → story |
+| Grid tile | square image, 8 → `label` name + 4px white stroke, 4 → `overline` "no. 007" |
 | Progress | 96 ring, 6% stroke, `dot` track, `accent` bar with round cap, `title` % inside |
 | Snackbar | `toast` bg, `on-toast` `body` text, radius 20, padding 12/24, centred, 24 above the bottom + safe area; moves up above the FAB or review actions; 4s |
 | Camera | 72 white shutter with soft halo; 48 gallery circle (15% white) |
 
+**Fonts:** `assets/fonts/` holds Bricolage Grotesque (variable 200–800, latin +
+latin-ext, from `@fontsource-variable/bricolage-grotesque`, OFL in
+`OFL-bricolage-grotesque.txt`), loaded with `@font-face` in `css/app.css`.
+
+**Words:** every string comes from `js/copy.js` ([`../content.md`](../content.md));
+static markup carries `data-copy*` attributes that `applyCopy()` fills at startup.
+
 **Icons:** Material Symbols Rounded, weight 400, fill 0 (`@material-symbols/svg-400`), inlined as an SVG sprite in `index.html`.
 
 **Feedback and motion:** scale to 0.95 on press (200ms ease), no ripple. Overlays
-fade (250ms); snackbar fades + rises 8px. Reduce motion → fades only.
+fade (250ms); snackbar fades + rises 8px. The reveal (`#review-img.is-revealing`,
+keyframes `reveal-lift` + `reveal-outline`) and the drop (`.card--dropped`) are CSS
+keyframes restarted by `js/motion.js`. The tilt (`js/tilt.js`) reads
+`deviceorientation` (pointer on desktop), lerps every animation frame, writes
+`transform` + `--tilt-x/-y` on `.tilt` (perspective on `.detail-img-wrap`); the
+`.sheen` overlay is masked with the object's own image (`--sheen-mask`). Listeners
+are removed when the detail closes. Reduce motion → fades only, no tilt or sheen.
+
+**Haptics:** `@capacitor/haptics` via `js/haptics.js`, Android only, never throws:
+`Haptics.impact({ style: 'LIGHT' })` when the reveal starts,
+`Haptics.notification({ type: 'SUCCESS' })` when the drop starts.
 
 ## Native system moments (Android theme)
 
 | File | What it does |
 |---|---|
 | `res/values/colors.xml` | Material 3 color roles from the brand (`md_*`, `tokens.json` → `native`) |
-| `res/values/styles.xml` | `AppTheme` = `Theme.Material3.Light.NoActionBar` with those roles, Nunito Sans as `fontFamily`, M3 text appearances in Nunito Sans |
-| `res/font/nunito_sans.xml` | `nunito_sans_regular.ttf` (400), `nunito_sans_semibold.ttf` (600) |
+| `res/values/styles.xml` | `AppTheme` = `Theme.Material3.Light.NoActionBar` with those roles, the brand font as `fontFamily`, M3 text appearances in the brand font |
+| `res/font/brand_font.xml` | Bricolage Grotesque `brand_font_regular.ttf` (400), `brand_font_semibold.ttf` (600) for native dialogs and sheets. Swap these two files to change the native font. |
 | `res/values(-v28)/styles.xml` → `AppTheme.AlertDialog` | Brands the WebView's own alert dialogs (not used by the app) |
 | `AppTheme.NoActionBarLaunch` | Launch screen: `bg` + app icon |
-| `NativeUiPlugin.java` | `NativeUi.confirm(...)` → `MaterialAlertDialogBuilder` (theme-styled, destructive label in `error`). Used for delete; a desktop browser falls back to `confirm()`. Add `BottomSheetDialog` here when a screen needs a choice sheet. |
+| `res/values/strings.xml` | `app_name` / `title_activity_main`: "collectobjects" (launcher; the one-word lowercase wordmark). |
+| `NativeUiPlugin.java` | `NativeUi.confirm(...)` → `MaterialAlertDialogBuilder` (theme-styled, destructive label in `error`). Used for delete ("remove this object?", "remove" / "keep it"); a desktop browser falls back to `confirm()`. Add `BottomSheetDialog` here when a screen needs a choice sheet. |
 
 Every native component reads the theme, so **new native components get the brand
 colors and font automatically**; never style them per call.
