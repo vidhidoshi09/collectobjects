@@ -21,10 +21,16 @@ export async function renderGrid() {
 
   document.getElementById('header-count').textContent = copy.home.count(objects.length);
 
+  const addTile = `
+    <button class="card card--add" id="add-tile" type="button" aria-label="${esc(copy.home.add)}">
+      <span class="card__img-wrap"><span class="add-tile"><svg class="icon" aria-hidden="true"><use href="#i-add"/></svg></span></span>
+    </button>`;
+
   document.body.classList.toggle('is-empty', objects.length === 0);
   if (objects.length === 0) {
-    grid.innerHTML = `
-      <div class="empty" style="grid-column:1/-1">
+    // the same add tile, then the invitation under it
+    grid.innerHTML = addTile + `
+      <div class="empty">
         <div class="empty__samples" aria-hidden="true">
           <img class="sticker" src="assets/croissant.png" alt="" />
           <img class="sticker" src="assets/teapot.png" alt="" />
@@ -32,21 +38,13 @@ export async function renderGrid() {
         </div>
         <p class="empty__title">${esc(copy.empty.title)}</p>
         <p class="empty__sub">${esc(copy.empty.body)}</p>
-        <button class="empty__cta btn-primary" id="empty-cta" type="button">
-          <svg class="icon" aria-hidden="true"><use href="#i-photo-camera"/></svg>
-          ${esc(copy.empty.cta)}
-        </button>
       </div>`;
     return;
   }
 
   const dropped = state.justSaved;
   state.justSaved = null;
-  grid.innerHTML = `
-    <button class="card card--add" id="add-tile" type="button" aria-label="${esc(copy.home.add)}">
-      <span class="card__img-wrap"><span class="add-tile"><svg class="icon" aria-hidden="true"><use href="#i-add"/></svg></span></span>
-      <span class="card__name add-tile__label" aria-hidden="true">${esc(copy.home.addTile)}</span>
-    </button>` + objects.map((m, i) => `
+  grid.innerHTML = addTile + objects.map((m, i) => `
     <div class="card${m.id === dropped ? ' card--dropped' : ''}" role="button" tabindex="0"
          aria-label="${esc(`${m.name}, ${copy.item.date(m.date)}`)}" data-id="${m.id}" data-no="${m.no}">
       <div class="card__img-wrap">

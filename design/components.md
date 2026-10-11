@@ -9,7 +9,7 @@ the native v2. Metrics are in [`foundations.md`](foundations.md) and the platfor
 | Component | Behavior (all platforms) | Android (v1) | iOS (v2, SwiftUI) |
 |---|---|---|---|
 | **Screen header** | Title "collection", count | Brand: `display` title, `caption` count (no date) | `NavigationStack` large title + subtitle |
-| **Add tile** | Starts a new object; first in the grid (top-left), from the first object on; the empty state uses its orange "Add an object" button instead | Brand: square tile like an object's, `round` bg, radius 20, 32 `add`, "Add" in `text-secondary` under it | Toolbar `plus` button or bottom glass button (`.glassProminent`, brand tint) |
+| **Add tile** | Starts a new object; always first in the grid (top-left), on the empty screen too | Brand: small square (56% of a cell) centred where a cut-out would sit, `round` bg, radius 16, 24 `add`; no label (a11y "add an object") | Toolbar `plus` button or bottom glass button (`.glassProminent`, brand tint) |
 | **Primary button** (Add to collection, Add an object) | One per screen, brand orange | Brand pill: 52 high, `accent` bg, `on-accent` `label` text, orange glow | `.buttonStyle(.glassProminent)` tinted brand orange |
 | **Secondary button** (retake) | Lower emphasis, icon only | Brand round: 52 circle, `round` bg, 24 `text` icon | `.buttonStyle(.glass)` |
 | **Close** (camera, review, detail) | Leaves the screen | Brand: 40 translucent-dark circle (48 target), 16 from top-left, white 24 `close` | System navigation bar / toolbar item (Liquid Glass) |
@@ -45,7 +45,7 @@ the native v2. Metrics are in [`foundations.md`](foundations.md) and the platfor
 ## Screens
 
 1. **Home (grid):** header ("collection" / "4 objects"), 2-column grid of square tiles (name + "oct 11"): the add tile first, then newest first. A just-saved object drops in.
-2. **Empty state:** three sample cut-outs (croissant, teapot, duck), centre raised; title "start collecting", body, "Add an object", centred on the screen. No header (no "collection", no count) until the first object.
+2. **Empty state:** header ("collection" / "0 objects") and the add tile as usual; below, centred: three sample cut-outs, "Start collecting", "Snap a trinket, cut it out, keep its story." No orange button.
 3. **Camera:** full-bleed preview, close top-left, gallery + shutter at the bottom.
 4. **Processing:** orange ring with % inside, "framing it…", optional sub-label.
 5. **Review:** close; centred as one group: cut-out that lifts off the page (shrinks, never crops, when the keyboard opens), name "what is it?", optional story, city chip, round retake + "Add to collection" pill.

@@ -119,6 +119,7 @@
   --text-measure:      280px; /* short centred copy */
   --text-measure-wide: 340px; /* name + story column on the detail screen */
   --card-image-inset:  5%;
+  --add-tile-size:     56%; /* of a grid cell: a small square where a cut-out would sit */
   --review-image-width: 72%;
   --review-story-max:   120px; /* the story scrolls past this while saving */
   --detail-image-width: 78%;
@@ -242,23 +243,23 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
 /* ═══════════════════════════════════════
    BUTTONS
 ═══════════════════════════════════════ */
-/* Primary: orange pill (Save, Create now) */
+/* Primary: orange rounded rectangle (Add to collection), the add tile's shape */
 .btn-primary {
   display: inline-flex; align-items: center; justify-content: center; gap: var(--space-8);
   height: var(--button-height);
   padding: 0 var(--space-32);
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-md);
   background: var(--color-accent); color: var(--color-on-accent);
   font: var(--type-label); letter-spacing: var(--tracking-label);
   white-space: nowrap;
   box-shadow: var(--shadow-accent);
 }
 
-/* Secondary: grey circle (Retake, Delete) */
+/* Secondary: grey rounded square (Retake), the add tile's shape */
 .btn-round {
   width: var(--button-height); height: var(--button-height); flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-md);
   background: var(--color-round); color: var(--color-text);
 }
 
@@ -324,8 +325,6 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
     calc(var(--screen-margin) + env(safe-area-inset-left, 0px));
 }
 
-/* first-time screen: no header, just the invitation */
-body.is-empty .header { display: none; }
 .header { margin-bottom: var(--space-32); }
 .header__count { font: var(--type-caption); color: var(--color-text-secondary); }
 .header__title { font: var(--type-display); letter-spacing: var(--tracking-display); margin-block: var(--space-4); }
@@ -361,18 +360,17 @@ body.is-empty .header { display: none; }
 }
 
 /* ═══════════════════════════════════════
-   ADD TILE — first in the grid (top-left), a quiet square +
-   (the empty state has its own orange button instead)
+   ADD TILE — first in the grid (top-left), a small quiet square +,
+   centred where an object's cut-out would sit (on the empty screen too)
 ═══════════════════════════════════════ */
 .card--add { font: inherit; color: inherit; }
 .add-tile {
-  position: absolute; inset: var(--card-image-inset);
+  position: absolute; inset: 0; margin: auto;
+  width: var(--add-tile-size); height: var(--add-tile-size);
   display: flex; align-items: center; justify-content: center;
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   background: var(--color-round); color: var(--color-text);
-  --icon-size: var(--icon-size-large);
 }
-.add-tile__label { -webkit-text-stroke-width: 0; color: var(--color-text-secondary); }
 
 /* ═══════════════════════════════════════
    SHARED OVERLAY BASE
@@ -637,11 +635,13 @@ body.is-empty .header { display: none; }
 
 
 /* ═══════════════════════════════════════
-   EMPTY STATE: centred in the space under the header
+   EMPTY STATE: header + add tile as usual, the invitation centred in the
+   space below
 ═══════════════════════════════════════ */
 body.is-empty #home { display: flex; flex-direction: column; }
-body.is-empty #grid { flex: 1; display: flex; align-items: center; justify-content: center; }
+body.is-empty #grid { flex: 1; grid-template-rows: auto 1fr; }
 .empty {
+  grid-column: 1 / -1;
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
   padding: 0 var(--space-16) var(--space-64);
@@ -664,7 +664,6 @@ body.is-empty #grid { flex: 1; display: flex; align-items: center; justify-conte
   max-width: var(--text-measure);
   text-wrap: balance;
 }
-.empty__cta { margin-top: var(--space-24); }
 
 /* ═══════════════════════════════════════
    SNACKBAR — js/snackbar.js

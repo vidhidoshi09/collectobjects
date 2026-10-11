@@ -40,9 +40,7 @@ Platforms may only change a word where a platform term differs.
 | `TAGLINE` | Feature graphic, store, docs | "for your trinkets" |
 | `home.title` | Home title (serif) | "collection" |
 | `home.count` | Home subtitle | "1 object" / "{n} objects" |
-| `empty.title` | Empty state | "start collecting" |
-| `empty.body` | Empty state | "every little trinket has a story. add your first." (ties to the tagline *for your trinkets*) |
-| `empty.cta` | Empty state | "Add an object" |
+| `empty.title` / `empty.body` | Empty state | "Start collecting" · "Snap a trinket, cut it out, keep its story." (echoes the Play Store line) |
 | `camera.blocked` | Camera permission off | "camera's off. turn it on in settings, or pick a photo instead." |
 | `processing.cutting` | Processing | "framing it…" |
 | `processing.setup` | First-time model download | "getting ready…" + "one-time setup" |

@@ -26,12 +26,10 @@ export const copy = {
     count: n => (n === 1 ? `1 ${ITEM}` : `${n} ${ITEMS}`),
     gridLabel: `your ${ITEMS}`,
     add: `add ${AN_ITEM}`, // add tile accessibility label
-    addTile: 'Add', // label under the add tile, first in the grid
   },
   empty: {
-    title: 'start collecting',
-    body: 'every little trinket has a story. add your first.',
-    cta: `Add ${AN_ITEM}`,
+    title: 'Start collecting',
+    body: 'Snap a trinket, cut it out, keep its story.', // echoes the Play Store line
   },
   camera: {
     label: 'camera',

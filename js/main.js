@@ -14,9 +14,9 @@ applyCopy(); // fills the static markup's words
 /* ════════════════════════════════════════════════
    EVENTS
 ════════════════════════════════════════════════ */
-// the add tile (first in the grid) and the empty state's button open the camera
+// the add tile (first in the grid, also on the empty screen) opens the camera
 document.getElementById('grid').addEventListener('click', e => {
-  if (e.target.closest('#add-tile, #empty-cta')) openCamera();
+  if (e.target.closest('#add-tile')) openCamera();
 });
 document.getElementById('camera-close').addEventListener('click', () => { stopCamera(); hideAll(); });
 document.getElementById('shutter-btn').addEventListener('click', onShutterPressed);
