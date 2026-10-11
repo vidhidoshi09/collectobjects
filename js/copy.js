@@ -28,6 +28,7 @@ export const copy = {
     count: n => (n === 1 ? `1 ${ITEM}` : `${n} ${ITEMS}`),
     gridLabel: `your ${ITEMS}`,
     add: `add ${AN_ITEM}`, // add tile accessibility label
+    share: `share your ${COLLECTION}`, // header share button accessibility label
   },
   empty: {
     title: 'Start collecting',
@@ -70,6 +71,7 @@ export const copy = {
     story: 'story',
     storyPlaceholder: "What's the story?",
     more: 'more',
+    share: 'Share', // menu item
     delete: 'Delete', // menu item
   },
   delete: {
@@ -77,6 +79,10 @@ export const copy = {
     body: "This can't be undone.",
     confirm: 'Delete',
     cancel: 'Keep it',
+  },
+  share: {
+    collectionTitle: `My ${COLLECTION}`, // the collection card's title
+    dialogTitle: 'Share',
   },
   common: { close: 'close' },
   // first open of the day, by the phone's local time (no location needed)
@@ -93,6 +99,7 @@ export const copy = {
     photoUnreadable: { text: "That photo didn't open. Try another one?", icon: 'error' },
     cityDenied: { text: `Location's off for ${BRAND}. You can turn it on in Settings`, icon: 'error' },
     cityFailed: { text: "Couldn't find your city right now", icon: 'error' },
+    shareFailed: { text: "Couldn't share. Try again?", icon: 'error' },
     loadFailed: { text: `Couldn't load your ${ITEMS}. Restart the app?`, icon: 'error' },
   },
 };

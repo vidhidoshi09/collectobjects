@@ -8,6 +8,7 @@ import { showSnackbar } from './snackbar.js';
 import { greetOncePerDay } from './greeting.js';
 import { autoGrow } from './textfield.js';
 import { copy, applyCopy } from './copy.js';
+import { objectCard, collectionCard, shareCard } from './share.js';
 
 applyCopy(); // fills the static markup's words
 
@@ -64,6 +65,15 @@ document.getElementById('detail-more').addEventListener('click', e => {
 });
 document.addEventListener('click', e => {
   if (isDetailMenuOpen() && !e.target.closest('#detail-menu')) toggleDetailMenu(false);
+});
+document.getElementById('detail-share').addEventListener('click', () => {
+  const m = loadObjects().find(x => String(x.id) === document.getElementById('detail-delete').dataset.id);
+  toggleDetailMenu(false);
+  if (m) shareCard(objectCard(m), m.name);
+});
+document.getElementById('share-collection').addEventListener('click', () => {
+  const objects = loadObjects();
+  if (objects.length) shareCard(collectionCard(objects), copy.share.collectionTitle);
 });
 document.getElementById('detail-delete').addEventListener('click', async e => {
   const id = e.currentTarget.dataset.id;

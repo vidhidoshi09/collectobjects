@@ -131,6 +131,8 @@
   --text-measure-wide: 340px; /* name + story column on the detail screen */
   --card-image-inset:  5%;
   --chip-height:       40px; /* city chip */
+  --processing-wash:   0.55;
+  --toast-clearance:   112px; /* grid bottom padding: a toast never covers the last row */
   --add-tile-solo:     64px; /* the add tile on the empty screen */
   --add-tile-size:     56%; /* of a grid cell: a small square where a cut-out would sit */
   --review-image-width: 72%;
@@ -344,11 +346,14 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
   padding:
     calc(var(--space-24) + env(safe-area-inset-top, 0px))
     calc(var(--screen-margin) + env(safe-area-inset-right, 0px))
-    calc(var(--space-32) + env(safe-area-inset-bottom, 0px))
+    calc(var(--toast-clearance) + env(safe-area-inset-bottom, 0px))
     calc(var(--screen-margin) + env(safe-area-inset-left, 0px));
 }
 
-.header { margin-bottom: var(--space-32); }
+.header { position: relative; margin-bottom: var(--space-32); }
+/* share the collection: the close button's circle, top-right of the header */
+.header__share { position: absolute; top: 0; right: calc((var(--touch-target) - var(--close-size)) / -2); left: auto; }
+body.is-empty .header__share { display: none; }
 /* the count reads like the dates: overline small caps ("4 OBJECTS", "OCT 11") */
 .header__count { margin-top: var(--space-4); }
 .header__title { font: var(--type-display); letter-spacing: var(--tracking-display); margin-block: var(--space-4); }
@@ -396,7 +401,7 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
   background: var(--color-round); color: var(--color-text);
 }
 /* on the empty screen: the same tile, under the invitation */
-.add-tile--solo { position: static; width: var(--add-tile-solo); height: var(--add-tile-solo); margin: var(--space-24) 0 0; /* not the grid tile's auto margins, which would eat the centring */ transition: transform var(--duration-press) var(--easing); }
+.add-tile--solo { background: var(--color-ink); color: var(--color-on-ink); position: static; width: var(--add-tile-solo); height: var(--add-tile-solo); margin: var(--space-24) 0 0; /* not the grid tile's auto margins, which would eat the centring */ transition: transform var(--duration-press) var(--easing); }
 .add-tile--solo:active { transform: scale(var(--press-scale)); }
 
 /* ═══════════════════════════════════════
@@ -500,12 +505,21 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
    STEP 2 — PROCESSING (orange progress ring)
 ═══════════════════════════════════════ */
 #processing-overlay {
+  isolation: isolate; overflow: hidden;
   align-items: center;
   justify-content: center;
   padding: var(--space-24);
   text-align: center;
 }
 
+.processing-backdrop {
+  position: absolute; inset: 0; z-index: -1;
+  background: center / cover no-repeat;
+  filter: var(--backdrop-filter);
+  transform: scale(var(--backdrop-scale));
+}
+/* a wash of the page colour keeps the ring and label readable */
+.processing-backdrop::after { content: ''; position: absolute; inset: 0; background: var(--color-bg); opacity: var(--processing-wash); }
 .progress { position: relative; width: var(--progress-size); height: var(--progress-size); }
 .progress svg { width: 100%; height: 100%; transform: rotate(-90deg); display: block; }
 .progress__track, .progress__indicator { fill: none; stroke-width: var(--progress-stroke); }

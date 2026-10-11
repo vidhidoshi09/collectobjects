@@ -100,6 +100,8 @@ export async function onGalleryPicked(file) {
 async function processPhoto(jpegDataURL, { fromCamera = false } = {}) {
   // 2. Show processing overlay with the progress ring
   progress.start();
+  const backdrop = document.getElementById('processing-backdrop');
+  backdrop.style.backgroundImage = `url("${jpegDataURL}")`;
   showOverlay('processing-overlay');
 
   try {
@@ -110,11 +112,13 @@ async function processPhoto(jpegDataURL, { fromCamera = false } = {}) {
 
     // 4. Show review screen, the original photo blurred behind the reveal
     showReview(photo, jpegDataURL, { fromCamera });
+    backdrop.style.removeProperty('background-image');
   } catch (err) {
     progress.finish();
     console.error('[bg-removal]', err.message || err); // details stay in the log, not the UI
     // Fallback: keep the original photo
     showReview({ base64: jpegDataURL.split(',')[1], mime: 'image/jpeg' }, null, { fromCamera });
+    backdrop.style.removeProperty('background-image');
     showSnackbar(copy.toast.cutoutFailed);
   }
 }

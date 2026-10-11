@@ -57,6 +57,8 @@ Platforms may only change a word where a platform term differs.
 | `delete.title` / `delete.body` | Delete confirmation | "delete this object?" · "this can't be undone." |
 | `delete.confirm` / `delete.cancel` | Delete actions | "Delete" (destructive) / "Keep it" |
 | `detail.delete` | ⋯ menu item | "Delete" |
+| `detail.share` / `share.collectionTitle` | ⋯ menu item · collection card title | "Share" · "My collection" (a11y for the header button: "share your collection") |
+| `toast.shareFailed` | Share failed | "Couldn't share. Try again?" (error) |
 | `toast.added` | After saving | "Added to your collection" (check) |
 | `toast.deleted` | After delete | "Object deleted" (delete) |
 | `toast.cutoutFailed` | Cut-out failed | "Couldn't cut this one out, so we kept the whole photo" (error) |

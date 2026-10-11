@@ -50,5 +50,6 @@ The app does **not** contain ads.
 | Permission | Why |
 |---|---|
 | `CAMERA` | Photograph objects |
+| (share sheet) | Sharing a card is the person's own action through Android's share sheet; the app sends nothing itself |
 | `ACCESS_COARSE_LOCATION` | Optional: the city an object was found in (city name only) |
 | `INTERNET` | Included by the app framework (Capacitor) and used for development live reload; the app itself makes no network requests |

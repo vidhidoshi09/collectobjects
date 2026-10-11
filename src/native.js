@@ -4,6 +4,7 @@ import { Capacitor, registerPlugin } from '@capacitor/core';
 import { App } from '@capacitor/app';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { Haptics } from '@capacitor/haptics';
+import { Share } from '@capacitor/share';
 
 // Implemented in android/app/src/main/java/com/vidhidoshi/collectobjects/BackgroundRemoverPlugin.java
 const BackgroundRemover = registerPlugin('BackgroundRemover');
@@ -12,4 +13,4 @@ const NativeUi = registerPlugin('NativeUi');
 // Implemented in android/app/src/main/java/com/vidhidoshi/collectobjects/PlacePlugin.java
 const Place = registerPlugin('Place');
 
-window.Native = { Capacitor, App, Filesystem, Directory, Encoding, Haptics, BackgroundRemover, NativeUi, Place };
+window.Native = { Capacitor, App, Filesystem, Directory, Encoding, Haptics, BackgroundRemover, NativeUi, Place, Share };
