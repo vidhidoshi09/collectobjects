@@ -1,48 +1,61 @@
-# Privacy Policy — Memories: Keep little things
+# privacy policy · collect objects
 
-_Last updated: [date you publish]_
+_last updated: [date you publish]_
 
-This policy explains how the Memories app ("the app") handles your information.
-The app is made by [your name] ("I", "me").
+## the short version
 
-## The short version
+**your things stay on your phone. we never see them.**
 
-Your memories stay on your phone. I don't collect, store or sell any of your
-photos, names or stories, and the app has no account, ads or analytics.
+no account. no ads. no tracking. no servers of ours holding your stuff.
+collect objects is made by [your name] ("we", "us"), and this page explains
+exactly what happens with your photos and words.
 
-## What the app stores, and where
+---
 
-- **Photos, names, stories and dates** you add are saved only in the app's private
-  storage on your device. I cannot access them.
-- If your phone's **Android backup** is turned on, Android may include the app's
-  data in your personal Google backup (managed by Google under your Google
-  account, not by me). You can turn this off in your phone's settings.
-- Uninstalling the app deletes everything it stored on your device.
+## 01 · what the app keeps, and where
 
-## Camera and photos
+- **your objects:** the photos you take or pick, their cut-outs, names, stories
+  and dates are saved **only inside the app on your phone**, in storage other
+  apps can't read. we can't access them.
+- **uninstalling the app deletes all of it.** there's no copy anywhere else that
+  we control.
+- **phone backups:** if android backup is on for your phone, android may include
+  the app's data in your **own** google account backup. that's managed by google
+  under your account, not by us, and you can switch it off in your phone's settings.
 
-- The app asks for **camera** access only to let you photograph objects.
-- When you choose a photo from your gallery, the app reads only the photo you pick.
-- Photos are processed on your device and never uploaded by the app.
+## 02 · camera and photos
 
-## Background removal
+- we ask for **camera** access only so you can photograph objects. you can say no
+  and still add photos from your gallery.
+- when you pick a photo from your gallery, the app reads **only the photo you choose**.
+- photos are never uploaded by the app.
 
-Background removal runs **on your device** using Google ML Kit (part of Google
-Play services). Your photos are not sent to me or used to train anything. To work,
-ML Kit may download its model from Google and may send Google limited technical
-information about how the feature performs (for example device model, OS version
-and app version), as described in Google's ML Kit terms. This information does
-not include your photos.
+## 03 · cutting out your objects
 
-## Children
+background removal happens **on your phone**, using google's ml kit (part of
+google play services). your photos aren't sent to us and aren't used to train
+anything.
 
-The app is not directed at children under 13.
+to work, ml kit may download its model from google, and may send google basic
+technical info about how the feature performs (like device model, android
+version and app version), as described in google's ml kit terms. **this never
+includes your photos.**
 
-## Changes
+## 04 · what we don't do
 
-If this policy changes, the updated version will be posted at this address with a
-new date.
+- no accounts or sign-in
+- no ads
+- no analytics or tracking
+- no selling or sharing of your data, ever
 
-## Contact
+## 05 · kids
 
-Questions: [your support email]
+collect objects isn't made for children under 13.
+
+## 06 · changes
+
+if this policy changes, we'll update this page and the date at the top.
+
+## 07 · say hi
+
+questions about your privacy: [your support email]
