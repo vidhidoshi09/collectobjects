@@ -1,5 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
     <defs><linearGradient id="g" gradientUnits="userSpaceOnUse" x1="337.92" y1="0" x2="686.08" y2="1024"><stop offset="0" stop-color="#f5a742"></stop><stop offset="1" stop-color="#8e1b2d"></stop></linearGradient></defs><g>
-    <rect width="1024" height="1024" fill="url(#g)"></rect>
-    <g transform="translate(512 512) scale(0.8931138797934722) translate(-651.9659118652344 -605.4146575927734)"><path d="M388 549 C 340 690, 440 846, 602 846 C 762 846, 870 700, 826 570 C 792 470, 720 376, 610 366 C 535 358, 492 392, 484 438 C 474 496, 520 548, 584 576 C 668 610, 770 598, 836 548 C 896 500, 928 446, 928 388" fill="none" stroke="#faf9f7" stroke-width="90"></path></g>
-      <path d="M0 -40 C3 -4 4 -3 40 0 C4 3 3 4 0 40 C-3 4 -4 3 -40 0 C-4 -3 -3 -4 0 -40Z" fill="#faf9f7" transform="translate(819.2 267.18189277299757) scale(1.027080961762493)"></path></g></svg>
+    
+    <defs>
+    <filter id="blur" filterUnits="userSpaceOnUse" x="-1024" y="-1024" width="3072" height="3072"><feGaussianBlur stdDeviation="143.36"></feGaussianBlur></filter>
+    <filter id="grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.3515625" numOctaves="2" seed="7" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix><feComponentTransfer><feFuncA type="table" tableValues="0 0.3"></feFuncA></feComponentTransfer></filter>
+  </defs>
+  <rect width="1024" height="1024" fill="#8e1b2d"></rect>
+  <g filter="url(#blur)">
+    <ellipse cx="204.8" cy="143.36" rx="430.08" ry="348.16" fill="#f5a742" opacity=".85"></ellipse>
+    <ellipse cx="901.12" cy="61.44" rx="348.16" ry="225.28" fill="#f6e3d6" opacity=".9"></ellipse>
+    <ellipse cx="-40.96" cy="716.8000000000001" rx="204.8" ry="409.6" fill="#f3d9cc" opacity=".55"></ellipse>
+    <ellipse cx="716.8000000000001" cy="983.04" rx="512" ry="266.24" fill="#5e0f1e" opacity=".75"></ellipse>
+  </g>
+  <rect width="1024" height="1024" filter="url(#grain)"></rect>
+    <g transform="translate(573.44 583.6800000000001) rotate(55) scale(0.8293200312367955) translate(-651.9659118652344 -605.4146575927734)"><path d="M388 549 C 340 690, 440 846, 602 846 C 762 846, 870 700, 826 570 C 792 470, 720 376, 610 366 C 535 358, 492 392, 484 438 C 474 496, 520 548, 584 576 C 668 610, 770 598, 836 548 C 896 500, 928 446, 928 388" fill="none" stroke="#faf9f7" stroke-width="90"></path></g>
+      <path d="M0 -40 C3 -4 4 -3 40 0 C4 3 3 4 0 40 C-3 4 -4 3 -40 0 C-4 -3 -3 -4 0 -40Z" fill="#faf9f7" transform="translate(757.76 245.76) scale(1.024)"></path></g></svg>
