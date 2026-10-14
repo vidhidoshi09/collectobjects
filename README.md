@@ -1,6 +1,12 @@
 # collectobjects — for your trinkets
 
-Snap an object, it's cut out like a sticker, and carries its story. It runs as a web app (`index.html`), and Capacitor packages the same app as an Android app (`android/`).
+A little home for your trinkets and keepsakes: snap something you love, it's cut out on your phone, and it keeps its story.
+
+- **Live web preview:** https://collectobjects.vercel.app (the on-device cut-out and city are Android-only)
+- **Android APK:** the latest green run under **Actions** → artifact `collectobjects-debug-apk`
+- **Play Store assets:** [`store/`](store) (listing, screenshots, feature graphic) and [`assets/logo/`](assets/logo)
+
+It runs as a web app (`index.html`), and Capacitor packages the same app as an Android app (`android/`). Vercel builds it with `npm run build` (see `vercel.json`).
 
 Design system: [`design.md`](design.md). All user-facing words: [`js/copy.js`](js/copy.js) (mirrors [`design/content.md`](design/content.md)).
 
