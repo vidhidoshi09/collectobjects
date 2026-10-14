@@ -1,40 +1,53 @@
 # collectobjects — for your trinkets
 
+*Made by Vidhi*
+
 ![collectobjects](store/feature-graphic.png)
 
 **A little home for your trinkets and keepsakes.** Snap something you love, it's cut out on your phone, and it keeps the story behind it: where it's from, who gave it to you, why it stays.
 
-### Try it
+## Try it
 - **Live web preview:** **https://collectobjects.vercel.app**
-  The full design and flow. The on-device cut-out and "add city" run in the Android app only, so on the web a photo stays a photo.
-- **Android app:** open the latest green run under [**Actions**](../../actions), download `collectobjects-debug-apk`, unzip it and install `app-debug.apk`.
+- **Android app (the full experience):** open the latest green run under [**Actions**](../../actions), download `collectobjects-debug-apk`, unzip it and install `app-debug.apk` on an Android phone.
 
-### Screens
+> **Why the web preview isn't the full experience.** The heart of the app, cutting your object out of the photo, runs **on the phone** with **Google ML Kit Subject Segmentation**, an on-device machine-learning model that ships with Google Play services. It finds the main object in the photo and returns a soft-edged mask, so the cut-out looks clean and **your photo never leaves the phone**. Browsers can't use that Android model, so on the web a photo is kept whole. "Add city" (Android's geocoder), haptics and the native share sheet are Android-only too. The web preview is there to show the design and the flow; install the APK to see the cut-out.
 
-| | | | |
-|---|---|---|---|
-| ![Collection](store/screenshots/01-collection.png) | ![Snap](store/screenshots/02-camera.png) | ![Cut out](store/screenshots/03-review.png) | ![Its story](store/screenshots/04-detail.png) |
+## Screens
 
-### What it does
-- **Snap or pick a photo.** The object is cut out on the device (Google ML Kit) and lifts off the page with a soft glow, sparkles and a haptic tap.
+| Your collection | Snap it | Cut out | Its story | Share |
+|---|---|---|---|---|
+| ![Collection](store/screenshots/01-collection.png) | ![Snap](store/screenshots/02-camera.png) | ![Cut out](store/screenshots/03-review.png) | ![Its story](store/screenshots/04-detail.png) | ![Share](store/screenshots/05-share.png) |
+
+## Product updates
+
+### Now (v1, Android)
+- **Snap or pick a photo.** The object is cut out on the device (ML Kit Subject Segmentation) and lifts off the page with a soft glow, sparkles and a haptic tap.
 - **Name it and keep its story,** with an optional city (approximate location, city name only).
-- **Your collection,** newest first, with a close-up that tilts with the phone.
-- **Share cards:** one object or your whole collection as a story-sized image.
-- **Private by design:** no account, no ads, no tracking. Photos never leave the phone; everything is stored on the device.
+- **Your collection,** newest first, with a close-up that tilts with the phone and catches the light.
+- **Share cards:** one object, or your whole collection as a numbered "starter pack", story-sized for Instagram and friends.
+- **Little touches:** a time-of-day greeting, toasts with icons, a quiet ⋯ menu for delete.
+- **Private by design:** no account, no ads, no tracking. Photos and stories are stored only on the device.
+- **Play Store ready:** icon, store listing, screenshots, privacy policy and Data safety answers in [`store/`](store).
 
-### Design
+### Next
+- **iPhone app:** native SwiftUI with Liquid Glass, cut-outs with **Apple's Vision framework** (`VNGenerateForegroundInstanceMaskRequest`, on-device, the same lift-the-subject tech as the Photos app), and **3D scans** of objects with Object Capture on LiDAR iPhones.
+- Play Store launch (closed testing, then production).
+- Backup and export, gallery photos keeping their original date, and "on this day" memories.
+
+## Design
 I designed and built this end to end, from research to a Play-Store-ready Android app.
-- **Research:** a teardown of similar apps (Trinket, Kept, Museeum, Loot, CapWords) and what to learn from each, in [`design/research/competitors.md`](design/research/competitors.md).
-- **Design system:** colour, type (Bricolage Grotesque + Instrument Sans), components, motion and voice, documented in [`design.md`](design.md) and [`design/`](design), with tokens in [`design/tokens.json`](design/tokens.json). Iterated from a CapWords-like look to its own: a neutral app with an orange-to-maroon hue in a few places.
-- **Brand:** the "c into o" mark, icon and store graphics in [`assets/logo/`](assets/logo) and [`store/`](store).
-- **Content:** every word in the app lives in one place, [`js/copy.js`](js/copy.js) (mirrors [`design/content.md`](design/content.md)).
-- **Changelog:** how it evolved, review by review, in [`CHANGELOG.md`](CHANGELOG.md).
+- **Research:** a teardown of similar apps (Trinket, Kept, Museeum, Loot, CapWords) and what to learn from each: [`design/research/competitors.md`](design/research/competitors.md).
+- **Design system:** colour, type (Bricolage Grotesque + Instrument Sans), components, motion and voice, documented in [`design.md`](design.md) and [`design/`](design), with tokens in [`design/tokens.json`](design/tokens.json). It moved from a CapWords-like look to its own: a neutral app with an orange-to-maroon hue in a few chosen places.
+- **Brand:** the "c into o" mark, app icon and store graphics: [`assets/logo/`](assets/logo), [`store/`](store).
+- **Content:** every word in the app lives in one file, [`js/copy.js`](js/copy.js) (mirrors [`design/content.md`](design/content.md)).
+- **How it evolved,** review by review: [`CHANGELOG.md`](CHANGELOG.md).
 
-### Built with
-Web UI (HTML, CSS, JavaScript modules) packaged as a native Android app with **Capacitor**; native Java plugins for the on-device cut-out (ML Kit Subject Segmentation), dialogs and city lookup; deployed to the web on **Vercel**; Android builds on **GitHub Actions**.
+## Built with
+Web UI (HTML, CSS, JavaScript modules) packaged as a native Android app with **Capacitor**. Native Java plugins for the on-device cut-out (**ML Kit Subject Segmentation**), dialogs and city lookup. Web preview on **Vercel**; Android builds on **GitHub Actions**.
 
-### What's next
-Play Store closed testing, then an iPhone version (SwiftUI, Apple Vision cut-outs, 3D scans on LiDAR iPhones), backup and export, and "on this day" memories.
+---
+
+*Made by Vidhi* · [github.com/vidhidoshi09](https://github.com/vidhidoshi09)
 
 ---
 
