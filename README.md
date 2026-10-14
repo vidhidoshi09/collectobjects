@@ -1,14 +1,46 @@
 # collectobjects — for your trinkets
 
-A little home for your trinkets and keepsakes: snap something you love, it's cut out on your phone, and it keeps its story.
+![collectobjects](store/feature-graphic.png)
 
-- **Live web preview:** https://collectobjects.vercel.app (the on-device cut-out and city are Android-only)
-- **Android APK:** the latest green run under **Actions** → artifact `collectobjects-debug-apk`
-- **Play Store assets:** [`store/`](store) (listing, screenshots, feature graphic) and [`assets/logo/`](assets/logo)
+**A little home for your trinkets and keepsakes.** Snap something you love, it's cut out on your phone, and it keeps the story behind it: where it's from, who gave it to you, why it stays.
 
-It runs as a web app (`index.html`), and Capacitor packages the same app as an Android app (`android/`). Vercel builds it with `npm run build` (see `vercel.json`).
+### Try it
+- **Live web preview:** **https://collectobjects.vercel.app**
+  The full design and flow. The on-device cut-out and "add city" run in the Android app only, so on the web a photo stays a photo.
+- **Android app:** open the latest green run under [**Actions**](../../actions), download `collectobjects-debug-apk`, unzip it and install `app-debug.apk`.
 
-Design system: [`design.md`](design.md). All user-facing words: [`js/copy.js`](js/copy.js) (mirrors [`design/content.md`](design/content.md)).
+### Screens
+
+| | | | |
+|---|---|---|---|
+| ![Collection](store/screenshots/01-collection.png) | ![Snap](store/screenshots/02-camera.png) | ![Cut out](store/screenshots/03-review.png) | ![Its story](store/screenshots/04-detail.png) |
+
+### What it does
+- **Snap or pick a photo.** The object is cut out on the device (Google ML Kit) and lifts off the page with a soft glow, sparkles and a haptic tap.
+- **Name it and keep its story,** with an optional city (approximate location, city name only).
+- **Your collection,** newest first, with a close-up that tilts with the phone.
+- **Share cards:** one object or your whole collection as a story-sized image.
+- **Private by design:** no account, no ads, no tracking. Photos never leave the phone; everything is stored on the device.
+
+### Design
+I designed and built this end to end, from research to a Play-Store-ready Android app.
+- **Research:** a teardown of similar apps (Trinket, Kept, Museeum, Loot, CapWords) and what to learn from each, in [`design/research/competitors.md`](design/research/competitors.md).
+- **Design system:** colour, type (Bricolage Grotesque + Instrument Sans), components, motion and voice, documented in [`design.md`](design.md) and [`design/`](design), with tokens in [`design/tokens.json`](design/tokens.json). Iterated from a CapWords-like look to its own: a neutral app with an orange-to-maroon hue in a few places.
+- **Brand:** the "c into o" mark, icon and store graphics in [`assets/logo/`](assets/logo) and [`store/`](store).
+- **Content:** every word in the app lives in one place, [`js/copy.js`](js/copy.js) (mirrors [`design/content.md`](design/content.md)).
+- **Changelog:** how it evolved, review by review, in [`CHANGELOG.md`](CHANGELOG.md).
+
+### Built with
+Web UI (HTML, CSS, JavaScript modules) packaged as a native Android app with **Capacitor**; native Java plugins for the on-device cut-out (ML Kit Subject Segmentation), dialogs and city lookup; deployed to the web on **Vercel**; Android builds on **GitHub Actions**.
+
+### What's next
+Play Store closed testing, then an iPhone version (SwiftUI, Apple Vision cut-outs, 3D scans on LiDAR iPhones), backup and export, and "on this day" memories.
+
+---
+
+## For developers
+
+It runs as a web app (`index.html`), and Capacitor packages the same app as an Android app (`android/`). Vercel builds it with `npm run build` (see `vercel.json`). Design system: [`design.md`](design.md).
 
 ## Run locally
 
@@ -30,7 +62,7 @@ Saving `index.html` or a file in `css/` or `js/` now refreshes the app on the em
 ## Android app
 
 ### Get an APK without installing anything
-Each push runs the **Android APK** GitHub Action. Open the run under the repo's **Actions** tab, download the `memories-debug-apk` artifact, unzip it, and install `app-debug.apk` on your phone. To install it, allow "Install unknown apps" for your browser or file manager.
+Each push runs the **Android APK** GitHub Action. Open the run under the repo's **Actions** tab, download the `collectobjects-debug-apk` artifact, unzip it, and install `app-debug.apk` on your phone. To install it, allow "Install unknown apps" for your browser or file manager.
 
 ### Build locally
 Requirements: Node 20+, JDK 21, Android Studio (with the Android SDK).
