@@ -2,7 +2,7 @@
 
 Everything we decided, how to work on the app, and what's next. Start here in any new session (or hand this to a new collaborator).
 
-Owner: Vidhi. Branch: `claude/blissful-hypatia-ww0fmk` (make it the repo's default branch so the README shows on GitHub).
+Branch: `claude/blissful-hypatia-ww0fmk` (make it the repo's default branch so the README shows on GitHub).
 
 ---
 
@@ -13,7 +13,7 @@ Owner: Vidhi. Branch: `claude/blissful-hypatia-ww0fmk` (make it the repo's defau
 | Live web preview | https://collectobjects.vercel.app (Vercel project `collectobjects`, Production tracks this branch; every push deploys) |
 | Android APK | GitHub → **Actions** → newest green run → artifact `collectobjects-debug-apk` |
 | Repo | https://github.com/vidhidoshi09/collectobjects (renamed from `pictureapp`) |
-| Portfolio page | `README.md` (feature graphic, 5 screens, the ML Kit explanation, product updates, "Made by Vidhi") |
+| Portfolio page | `README.md` (feature graphic, 5 screens, the ML Kit explanation, product updates) |
 | Design system | `design.md`, `design/` (foundations, components, content, tokens, platforms), `design/research/competitors.md` |
 | Every word in the app | `js/copy.js` (mirrors `design/content.md`) |
 | What changed and why | `CHANGELOG.md` |
@@ -28,7 +28,6 @@ Owner: Vidhi. Branch: `claude/blissful-hypatia-ww0fmk` (make it the repo's defau
 - **Cut-out:** Google **ML Kit Subject Segmentation**, on the device (`BackgroundRemoverPlugin.java`): confidence mask → soft edges, stray islands removed, cropped. Photos never leave the phone. Not available in browsers, so the web preview keeps the whole photo.
 - **Features (v1):** camera + gallery, cut-out reveal (lift, glow, sparkles, haptic), name + optional story + optional city (`PlacePlugin.java`: coarse location → Android Geocoder → city name only), collection grid (add tile first), close-up that tilts with a holographic sheen, ⋯ menu (Share, Delete with native confirm), share cards (one object / numbered "My collection" starter pack, 1080×1920, `js/share.js`), daily greeting toast, toasts with icons, on-screen boot error card (if the app fails to start it says why).
 - **Privacy:** no account, no ads, no analytics. Data lives in app storage (`objects.json` + `objects/`). Uninstall deletes everything.
-- **Users so far:** Vidhi's dad (his tool collection) and partner (his tech gear).
 
 ## 3. Decisions (and why)
 
@@ -87,7 +86,7 @@ In Android Studio: File → Sync Project with Gradle Files → Build → Clean P
 4. ☐ Host the privacy policy (`store/privacy-policy.md`; fill name, email, date) on a public page (Notion/Google Sites, or GitHub Pages while the repo is public).
 5. ☐ Store listing from `store/listing.md`; screenshots `store/screenshots/` (plan to redo: 4 images, a title image with objects + logo and no phone, fewer teapots, no "sticker" wording; references: CapWords' scattered objects, Trinket's "Keep the little things"); feature graphic `store/feature-graphic.png`.
 6. ☐ Data safety (`store/data-safety.md`; verify the ML Kit and Geocoder notes against Google's guidance).
-7. ☐ Closed test: 12+ testers for 14 days (friends/family; dad and partner count), then apply for production.
+7. ☐ Closed test: 12+ testers for 14 days, then apply for production.
 8. ☐ Launch posts: Product Hunt/Peerlist, short videos ("my desk starter pack" made with the share card), and the portfolio case study.
 
 ## 6. Backlog

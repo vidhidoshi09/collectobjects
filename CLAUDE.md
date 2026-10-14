@@ -3,7 +3,7 @@
 Read **`docs/HANDOFF.md`** first: product, decisions, how to run/build/deploy, launch plan, backlog.
 
 ## Ground rules
-- Owner: Vidhi, a product designer (not a developer). Explain steps **one at a time**, plainly; show a picture/mock-up before building UI, then apply to code, then send screenshots of the whole app.
+- Explain steps **one at a time**, plainly; show a picture/mock-up before building UI, then apply to code, then send screenshots of the whole app.
 - Work on branch `claude/blissful-hypatia-ww0fmk` (Vercel Production tracks it, so every push goes live at https://collectobjects.vercel.app; GitHub Actions builds the APK).
 - Never commit the upload keystore, `android/keystore.properties` or any API key; never ask for the keystore password.
 - Copy: every user-facing word lives in `js/copy.js`. Sentence case for everything the app says; the wordmark is always `collectobjects`; never "lore", "sticker" or "museum".
