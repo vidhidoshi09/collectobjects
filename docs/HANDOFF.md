@@ -72,7 +72,7 @@ In Android Studio: File → Sync Project with Gradle Files → Build → Clean P
 
 **APK without Android Studio:** Releases → latest → download the `.apk` on the phone and open it. Or Actions → newest green run → `collectobjects-debug-apk` → unzip → install `app-debug.apk` (allow unknown apps; Samsung: turn off Auto Blocker while installing).
 
-**Release for testers (GitHub, free):** bump `versionName`/`versionCode` in `android/app/build.gradle`, then `git tag vX.Y.Z && git push origin vX.Y.Z`; the Action publishes a GitHub Release with the APK. Each CI build is signed with a fresh debug key, so testers must uninstall the old version (which deletes their objects) before installing a new one, until we sign with a fixed key.
+**Release for testers (GitHub, free):** bump `versionName`/`versionCode` in `android/app/build.gradle`, then `git tag vX.Y.Z && git push origin vX.Y.Z` (or Actions → Android APK → Run workflow → type the version); the Action publishes a GitHub Release with the APK. Each CI build is signed with a fresh debug key, so testers must uninstall the old version (which deletes their objects) before installing a new one, until we sign with a fixed key.
 
 **Release (Play Store):** see README "Release build": create the upload key (never commit it or share the password), `android/keystore.properties`, `npm run release` → `.aab`. Bump `versionCode` each upload.
 

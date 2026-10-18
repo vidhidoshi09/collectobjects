@@ -79,7 +79,7 @@ The easiest way: download `collectobjects-vX.Y.Z.apk` from the [**latest release
 
 Each push also runs the **Android APK** GitHub Action: open the run under the repo's **Actions** tab, download the `collectobjects-debug-apk` artifact, unzip it, and install `app-debug.apk`.
 
-**Publish a new release:** bump `versionName` (and `versionCode`) in `android/app/build.gradle`, then push a matching tag, e.g. `git tag v1.0.1 && git push origin v1.0.1`. The Action builds the APK and publishes the release with it attached.
+**Publish a new release:** bump `versionName` (and `versionCode`) in `android/app/build.gradle`, then push a matching tag (`git tag v1.0.1 && git push origin v1.0.1`), or on GitHub open **Actions → Android APK → Run workflow** and type the version. The Action builds the APK and publishes the release with it attached.
 
 ### Build locally
 Requirements: Node 20+, JDK 21, Android Studio (with the Android SDK).

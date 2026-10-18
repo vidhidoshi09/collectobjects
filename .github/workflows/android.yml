@@ -1,10 +1,19 @@
 name: Android APK
 
-# Every push builds a debug APK (artifact). Pushing a version tag (v1.0.0, …)
-# also publishes a GitHub Release with the APK attached, for testers.
+# Every push builds a debug APK (artifact). A GitHub Release with the APK
+# attached, for testers, is published by pushing a version tag (v1.0.0, …) or
+# by running this workflow by hand with a version (it creates the tag).
 on:
   push:
   workflow_dispatch:
+    inputs:
+      release:
+        description: 'Publish a release with this version, e.g. v1.0.0 (leave empty to only build)'
+        required: false
+        default: ''
+
+env:
+  RELEASE: ${{ startsWith(github.ref, 'refs/tags/v') && github.ref_name || inputs.release }}
 
 jobs:
   build:
@@ -37,20 +46,22 @@ jobs:
           path: android/app/build/outputs/apk/debug/app-debug.apk
 
       - name: Name the APK for the release
-        if: startsWith(github.ref, 'refs/tags/v')
-        run: cp android/app/build/outputs/apk/debug/app-debug.apk "collectobjects-${GITHUB_REF_NAME}.apk"
+        if: env.RELEASE != ''
+        run: cp android/app/build/outputs/apk/debug/app-debug.apk "collectobjects-${RELEASE}.apk"
 
       - name: Publish the GitHub Release
-        if: startsWith(github.ref, 'refs/tags/v')
+        if: env.RELEASE != ''
         uses: softprops/action-gh-release@v2
         with:
-          name: collectobjects ${{ github.ref_name }}
-          files: collectobjects-${{ github.ref_name }}.apk
+          tag_name: ${{ env.RELEASE }}
+          target_commitish: ${{ github.sha }}
+          name: collectobjects ${{ env.RELEASE }}
+          files: collectobjects-${{ env.RELEASE }}.apk
           body: |
             **collectobjects — for your trinkets.** A test build for Android.
 
             **Install**
-            1. On your Android phone, download `collectobjects-${{ github.ref_name }}.apk` below.
+            1. On your Android phone, download `collectobjects-${{ env.RELEASE }}.apk` below.
             2. Open it. If asked, allow "Install unknown apps" for your browser or Files app (Samsung: turn off Auto Blocker while installing).
             3. Open collectobjects and snap something you love.
 
