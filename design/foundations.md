@@ -21,7 +21,8 @@ each platform maps them in [`platforms/`](platforms/).
 | Role | Value | Use |
 |---|---|---|
 | `bg` | `#EDECEA` | Background of every brand screen |
-| `dot` | `#CCC8C2` | Dot texture (1px every 28px), progress track |
+| `dot` | `#CCC8C2` | Progress track |
+| `wash` | hue 16% → hue-2 10% | Soft hue wash behind every screen: orange light from the top, a hint of maroon at the bottom (replaced the dot texture) |
 | `text` | `#111111` | Names, titles, body, icons |
 | `text-secondary` | `#636363` | Count, overlines (dates), placeholders (5.1:1 on `bg`) |
 | `line` | 10% black | Resting underline of an empty name field |
@@ -90,7 +91,7 @@ the "sticker" feel. Serif text never does.
 Identical everywhere (grid, empty state, review, detail):
 - Object cut out with a transparent background, trimmed to its edges with a ~4% margin.
 - **No outline:** just a soft shadow `0 6px 18px rgba(0,0,0,0.12)` (the white sticker outline was removed so the object itself shines).
-- Floats directly on `bg` with the dot texture; never placed in a card or box.
+- Floats directly on `bg` with the soft hue wash; never placed in a card or box.
 
 **Exhibit number:** every object still gets a permanent number when saved (highest so far + 1, never reused), kept in the data for future use (e.g. sharing cards) but not shown in the UI.
 

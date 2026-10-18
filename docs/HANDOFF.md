@@ -38,7 +38,7 @@ Branch: `claude/blissful-hypatia-ww0fmk` (make it the repo's default branch so t
 
 **Visual system (v1)**
 - Neutral app with one hue: page `#EDECEA`, fill `#E2DFDB` (tiles, secondary, chips, close), paper `#FAF9F7` (menu, toasts), text `#111`, secondary `#636363`, primary button dark grey `#1F1F1F`.
-- Hue = orange `#F5A742` → maroon `#8E1B2D` mix. Only in: dot texture (mostly grey, 30% tint), soft glow behind the object (save + close-up, with sparkles), lightly on the empty screen, progress ring, toast icons, caret. Switch with `<html data-hue="orange|maroon">`.
+- Hue = orange `#F5A742` → maroon `#8E1B2D` mix. Only in: the soft hue wash behind the screens (orange from the top, maroon at the bottom; replaced the dots), soft glow behind the object (save + close-up, with sparkles), lightly on the empty screen, progress ring, toast icons, caret. Switch with `<html data-hue="orange|maroon">`.
 - Type: **Bricolage Grotesque** (titles, object names) + **Instrument Sans** (body, buttons, dates). Native dialogs use Instrument Sans.
 - Shape: radius 16 for everything tappable; circles only for close and chips; one shadow (menu/toast).
 - Cut-outs: soft shadow only (the white outline was removed); real cut-outs never multiply into the page.

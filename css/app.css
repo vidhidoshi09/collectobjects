@@ -32,7 +32,7 @@
 :root {
   /* ── Color ── */
   --color-bg:             #edecea; /* warm grey, every brand screen */
-  --color-dot:            #ccc8c2; /* dot texture + progress track */
+  --color-dot:            #ccc8c2; /* progress track */
   --color-text:           #111111; /* names, titles, body, icons */
   --color-text-secondary: #636363; /* dates, subtitles, placeholders (AA on bg) */
   /* Neutral app, one hue. The hue only appears as a soft glow (home, empty, behind
@@ -108,10 +108,8 @@
   --space-40: 40px;
   --space-64: 64px;
   --screen-margin: var(--space-16); /* every screen's side margin */
-  --dot-size:    1px;
-  --dot-opacity: 1;
-  --dot-hue:     30%; /* how much of the hue tints the grey dots */
-  --dot-spacing: 28px;
+  --wash-top:    color-mix(in srgb, var(--hue) 16%, transparent);   /* the hue's orange, glowing in from the top */
+  --wash-bottom: color-mix(in srgb, var(--hue-2) 10%, transparent); /* a whisper of maroon at the bottom */
 
   /* ── Shape ── */
   --radius-md:   16px;
@@ -222,15 +220,12 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
 :focus-visible { outline: var(--underline) solid var(--color-focus); outline-offset: var(--underline); }
 
 /* The dots carry the hue: an orange-to-maroon wash seen only through the dot grid */
-#dots {
+#wash {
   position: fixed; inset: 0; z-index: 0;
-  /* mostly the old grey dot, with just a little of the hue mixed in */
-  background: linear-gradient(160deg,
-    color-mix(in srgb, var(--hue) var(--dot-hue), var(--color-dot)),
-    color-mix(in srgb, var(--hue-2) var(--dot-hue), var(--color-dot)));
-  -webkit-mask: radial-gradient(circle, #000 var(--dot-size), transparent var(--dot-size)) 0 0 / var(--dot-spacing) var(--dot-spacing);
-          mask: radial-gradient(circle, #000 var(--dot-size), transparent var(--dot-size)) 0 0 / var(--dot-spacing) var(--dot-spacing);
-  opacity: var(--dot-opacity);
+  /* soft hue wash: warm light from the top, a hint of maroon at the bottom, no pattern */
+  background:
+    radial-gradient(120% 60% at 50% 0%, var(--wash-top), transparent 60%),
+    radial-gradient(100% 50% at 50% 100%, var(--wash-bottom), transparent 65%);
   pointer-events: none;
 }
 

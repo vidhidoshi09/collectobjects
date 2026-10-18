@@ -4,6 +4,7 @@ What changed, when, and why. Newest first. (Formerly "Memories".)
 
 ## Tab bar, Liquid Glass, objects that shine
 
+- **Soft hue wash** replaces the dotted background: orange light from the top, a hint of maroon at the bottom, no pattern.
 - **Tab bar:** a Liquid Glass capsule floating over the collection, on Android and iPhone: **Collection** and **Capture** (opens the camera). The grey add tile left the grid; the empty screen keeps its own.
 - **Liquid Glass buttons:** close, share, ⋯ and retake are see-through glass with a bright rim.
 - **Objects shine:** no name or date under the grid tiles (both live in the close-up), rows sit closer, and cut-outs lost the white outline (soft shadow only, in the share cards too).
