@@ -7,10 +7,13 @@ import { Haptics } from '@capacitor/haptics';
 import { Share } from '@capacitor/share';
 
 // Implemented in android/app/src/main/java/com/vidhidoshi/collectobjects/BackgroundRemoverPlugin.java
+// and ios/App/App/BackgroundRemoverPlugin.swift
 const BackgroundRemover = registerPlugin('BackgroundRemover');
 // Implemented in android/app/src/main/java/com/vidhidoshi/collectobjects/NativeUiPlugin.java
+// and ios/App/App/NativeUiPlugin.swift
 const NativeUi = registerPlugin('NativeUi');
 // Implemented in android/app/src/main/java/com/vidhidoshi/collectobjects/PlacePlugin.java
+// and ios/App/App/PlacePlugin.swift
 const Place = registerPlugin('Place');
 
 window.Native = { Capacitor, App, Filesystem, Directory, Encoding, Haptics, BackgroundRemover, NativeUi, Place, Share };

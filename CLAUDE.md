@@ -8,6 +8,6 @@ Read **`docs/HANDOFF.md`** first: product, decisions, how to run/build/deploy, l
 - Never commit the upload keystore, `android/keystore.properties` or any API key; never ask for the keystore password.
 - Copy: every user-facing word lives in `js/copy.js`. Sentence case for everything the app says; the wordmark is always `collectobjects`; never "lore", "sticker" or "museum".
 - Design tokens are CSS variables at the top of `css/app.css` (source of truth: `design/tokens.json`, `design.md`). Keep the system: neutral UI, one orange→maroon hue in a few places, radius 16, one shadow, Bricolage Grotesque + Instrument Sans.
-- After web changes: `npm run build` (Vercel) / `npm run sync` (Android). New Capacitor plugins also need `npm run sync` committed (`android/capacitor.settings.gradle`, `android/app/capacitor.build.gradle`).
+- After web changes: `npm run build` (Vercel) / `npm run sync` (Android) / `npm run sync:ios` (iPhone). Native plugins exist twice: Java in `android/…/collectobjects/`, Swift in `ios/App/App/`; change both. New Capacitor plugins also need `npm run sync` committed (`android/capacitor.settings.gradle`, `android/app/capacitor.build.gradle`).
 - Verify in a browser (`npm start`, http://localhost:8000) with Playwright; the browser preview has no on-device cut-out (photos stay whole), no city, no haptics.
 - Keep `README.md` (portfolio page), `CHANGELOG.md` and `design/` in step with changes.

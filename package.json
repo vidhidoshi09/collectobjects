@@ -9,6 +9,8 @@
     "build": "npm run vendor && node scripts/build-web.js",
     "sync": "npm run build && cap sync android",
     "open:android": "cap open android",
+    "sync:ios": "npm run build && cap sync ios",
+    "open:ios": "cap open ios",
     "apk": "npm run sync && cd android && ./gradlew assembleDebug",
     "dev:android": "cap run android --live-reload --host localhost --port 8000 --forwardPorts 8000:8000",
     "postinstall": "npm run vendor",
@@ -20,6 +22,7 @@
     "@capacitor/core": "^8.5.3",
     "@capacitor/filesystem": "^8.1.4",
     "@capacitor/haptics": "^8.0.2",
+    "@capacitor/ios": "^8.5.3",
     "@capacitor/share": "^8.0.3"
   },
   "devDependencies": {

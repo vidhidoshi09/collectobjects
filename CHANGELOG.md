@@ -2,6 +2,13 @@
 
 What changed, when, and why. Newest first. (Formerly "Memories".)
 
+## iPhone app (in testing)
+
+- Added the **iOS app** (`ios/`), the same web UI through Capacitor, so collectobjects can run on iPhone.
+- Swift twins of the three Android plugins: **cut-out with Apple Vision** on the phone (iOS 17+; same soft edges, stray-piece removal and crop as Android), **city** from approximate location and Apple's geocoder (city name only), and the native **Delete** confirmation.
+- iPhone permission texts in the app's voice, the collectobjects icon, a plain launch screen in the page colour, portrait only.
+- `npm run sync:ios` / `npm run open:ios`.
+
 ## v1.0.0: first GitHub Release
 
 - Pushing a version tag (`v1.0.0`, …) now publishes a **GitHub Release** with the APK attached (`collectobjects-v1.0.0.apk`), so testers and portfolio visitors can download it on their phone without unzipping an Actions artifact.

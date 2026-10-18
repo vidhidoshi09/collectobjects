@@ -3,7 +3,8 @@ import { copy } from './copy.js';
 
 /* ════════════════════════════════════════════════
    STEP 2 — BACKGROUND REMOVAL, on the device
-   Android: ML Kit via BackgroundRemoverPlugin. Returns { base64, mime }.
+   Android: ML Kit via BackgroundRemoverPlugin.java; iPhone: Apple Vision via
+   BackgroundRemoverPlugin.swift (iOS 17+). Returns { base64, mime }.
    Desktop browser preview: no on-device model, so the photo is kept as is.
 ════════════════════════════════════════════════ */
 const BG_TIMEOUT_MS = 90_000;

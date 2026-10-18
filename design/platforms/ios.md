@@ -1,4 +1,20 @@
-# iOS (v2, planned): native SwiftUI with Liquid Glass
+# iOS
+
+## v1 on iPhone (now): the same app through Capacitor
+
+The Android app's web UI runs unchanged in an iOS web view (`ios/`). The three
+native pieces have Swift twins in `ios/App/App/`, registered in `MainViewController.swift`:
+
+| Android (Java) | iPhone (Swift) | What it uses |
+|---|---|---|
+| `BackgroundRemoverPlugin` | `BackgroundRemoverPlugin.swift` | Apple Vision `VNGenerateForegroundInstanceMaskRequest` (iOS 17+, on the device), then the same soft edges, island removal and crop |
+| `PlacePlugin` | `PlacePlugin.swift` | approximate location (`NSLocationDefaultAccuracyReduced`) → `CLGeocoder` → city name only |
+| `NativeUiPlugin` | `NativeUiPlugin.swift` | `UIAlertController` (Delete in red) |
+
+Permission texts live in `ios/App/App/Info.plist`, in the app's voice. Portrait only.
+Below iOS 17, and in the Simulator, the cut-out is not available and the photo stays whole.
+
+## v2 (planned): native SwiftUI with Liquid Glass
 
 A separate, fully native app, written in SwiftUI. It shares the **brand layer**
 ([`../foundations.md`](../foundations.md), [`../content.md`](../content.md),

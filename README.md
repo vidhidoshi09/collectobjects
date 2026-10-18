@@ -29,8 +29,10 @@
 - **Private by design:** no account, no ads, no tracking. Photos and stories are stored only on the device.
 - **Play Store ready:** icon, store listing, screenshots, privacy policy and Data safety answers in [`store/`](store).
 
+- **iPhone (in testing):** the same app on iOS through Capacitor, with the cut-out done by **Apple's Vision framework** on the phone (iOS 17+) and the city by Apple's geocoder.
+
 ### Next
-- **iPhone app:** native SwiftUI with Liquid Glass, cut-outs with **Apple's Vision framework** (`VNGenerateForegroundInstanceMaskRequest`, on-device, the same lift-the-subject tech as the Photos app), and **3D scans** of objects with Object Capture on LiDAR iPhones.
+- **Native iPhone app (v2):** SwiftUI with Liquid Glass, cut-outs with **Apple's Vision framework** (`VNGenerateForegroundInstanceMaskRequest`, on-device, the same lift-the-subject tech as the Photos app), and **3D scans** of objects with Object Capture on LiDAR iPhones.
 - Play Store launch (closed testing, then production).
 - Backup and export, gallery photos keeping their original date, and "on this day" memories.
 
@@ -117,6 +119,20 @@ Store listing text, privacy policy, Data safety answers and graphics are in `sto
 - Data from earlier versions moves in by itself on first launch: `memories.json` + `photos/` (before the rename) and base64 images in localStorage (the first versions). Objects saved without a number are numbered once, oldest first.
 - Haptics (`@capacitor/haptics`): a light tap when a new cut-out lifts off the page, a success buzz when it lands in the grid.
 - Background removal runs on the device with Google ML Kit (`BackgroundRemoverPlugin.java`); no API key or internet service. The model is a Google Play services module: Play Store installs download it with the app, otherwise it downloads on first use. In a desktop browser (`npm start`) the photo is kept as is.
+
+## iPhone app
+
+Requirements: a Mac with Xcode, Node 20+. The cut-out needs iOS 17 or newer and a real iPhone (the Simulator keeps the photo whole).
+
+```bash
+npm install
+npm run sync:ios   # copy the web app into the Xcode project
+npm run open:ios   # open in Xcode
+```
+
+In Xcode: select the **App** target → **Signing & Capabilities** → tick *Automatically manage signing* and pick your **Team** (your Apple ID works for free). Plug in the iPhone, pick it at the top, press ▶. The first time, on the iPhone: **Settings → General → VPN & Device Management** → trust your developer profile, and turn on **Developer Mode** if asked. With a free Apple ID the app runs for 7 days, then press ▶ again. TestFlight and the App Store need the Apple Developer Program ($99/year).
+
+The Swift twins of the Android plugins are in `ios/App/App/` (see [`design/platforms/ios.md`](design/platforms/ios.md)).
 
 ## Project structure
 

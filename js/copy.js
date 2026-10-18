@@ -5,7 +5,8 @@ import { fmtShortDate } from './format.js';
    To rename the app, change BRAND (and TAGLINE), the noun (ITEM / ITEMS / AN_ITEM) and COLLECTION below;
    every other string is built from them. Outside the web UI, also rename
    capacitor.config.json appName, android/app/src/main/res/values/strings.xml
-   (app_name, title_activity_main), <title> in index.html, store/ and design docs.
+   (app_name, title_activity_main), ios/App/App/Info.plist (CFBundleDisplayName and the
+   permission texts), <title> in index.html, store/ and design docs.
    Voice: warm, playful, brief. No exclamation marks, no emoji.
    Case: everything the app says is Sentence case ("Add to collection", "What is it?").
    What the person writes stays as typed; dates are small caps; the wordmark is always collectobjects.

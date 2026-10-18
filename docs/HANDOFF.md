@@ -24,7 +24,7 @@ Branch: `claude/blissful-hypatia-ww0fmk` (make it the repo's default branch so t
 
 **collectobjects — for your trinkets.** A little home for your trinkets and keepsakes: snap something you love, it's cut out on your phone, and it keeps the story behind it.
 
-- Android app (Capacitor: web UI + native Java plugins). Web preview on Vercel.
+- Android app (Capacitor: web UI + native Java plugins). iPhone app in testing (same web UI + Swift twins of the plugins in `ios/App/App/`, Apple Vision cut-out, iOS 17+). Web preview on Vercel.
 - **Cut-out:** Google **ML Kit Subject Segmentation**, on the device (`BackgroundRemoverPlugin.java`): confidence mask → soft edges, stray islands removed, cropped. Photos never leave the phone. Not available in browsers, so the web preview keeps the whole photo.
 - **Features (v1):** camera + gallery, cut-out reveal (lift, glow, sparkles, haptic), name + optional story + optional city (`PlacePlugin.java`: coarse location → Android Geocoder → city name only), collection grid (add tile first), close-up that tilts with a holographic sheen, ⋯ menu (Share, Delete with native confirm), share cards (one object / numbered "My collection" starter pack, 1080×1920, `js/share.js`), daily greeting toast, toasts with icons, on-screen boot error card (if the app fails to start it says why).
 - **Privacy:** no account, no ads, no analytics. Data lives in app storage (`objects.json` + `objects/`). Uninstall deletes everything.
@@ -72,6 +72,8 @@ In Android Studio: File → Sync Project with Gradle Files → Build → Clean P
 
 **APK without Android Studio:** Releases → latest → download the `.apk` on the phone and open it. Or Actions → newest green run → `collectobjects-debug-apk` → unzip → install `app-debug.apk` (allow unknown apps; Samsung: turn off Auto Blocker while installing).
 
+**iPhone on your Mac:** `npm ci && npm run sync:ios && npm run open:ios` → in Xcode, App target → Signing & Capabilities → pick your Team (free Apple ID) → plug in the iPhone → ▶ Run. First time on the phone: Settings → General → VPN & Device Management → trust; turn on Developer Mode. Free signing lasts 7 days; TestFlight/App Store need the $99/year Apple Developer Program. The Simulator has no Vision cut-out (photo stays whole).
+
 **Release for testers (GitHub, free):** bump `versionName`/`versionCode` in `android/app/build.gradle`, then `git tag vX.Y.Z && git push origin vX.Y.Z` (or Actions → Android APK → Run workflow → type the version); the Action publishes a GitHub Release with the APK. Each CI build is signed with a fresh debug key, so testers must uninstall the old version (which deletes their objects) before installing a new one, until we sign with a fixed key.
 
 **Release (Play Store):** see README "Release build": create the upload key (never commit it or share the password), `android/keystore.properties`, `npm run release` → `.aab`. Bump `versionCode` each upload.
@@ -101,7 +103,7 @@ In Android Studio: File → Sync Project with Gradle Files → Build → Clean P
 - Camera framing guide ("one object, fully in frame").
 - Edit affordance on the close-up (pencil when the story is empty).
 - **Web cut-out (optional):** a Vercel function `api/remove-bg.js` that holds a remove.bg key in env `REMOVE_BG_API_KEY` (size `preview` is free), checks the request comes from our own site, posts `image_file_b64` to `https://api.remove.bg/v1.0/removebg`, and returns the PNG as base64; the web client calls it only when not native and quietly keeps the photo if it returns 404/501. The old remove.bg key is visible in git history (commit `d3e3c66`): revoke it in the remove.bg dashboard.
-- iPhone app: SwiftUI + Liquid Glass, Apple Vision cut-outs (`VNGenerateForegroundInstanceMaskRequest`), 3D scans with Object Capture on LiDAR iPhones.
+- iPhone v1 (Capacitor) is built; to do: test on a real iPhone (cut-out, city, share, haptics, camera permission), then TestFlight ($99/year). Native v2 later: SwiftUI + Liquid Glass, Apple Vision cut-outs (`VNGenerateForegroundInstanceMaskRequest`), 3D scans with Object Capture on LiDAR iPhones.
 - Dark mode (same palette flipped: deep cola background, cream text, the same glow).
 
 ## 7. Competitors (summary)
