@@ -1,0 +1,15 @@
+:root {
+  --color-bg: #0b0908; --color-text: #f3ece4; --color-text-secondary: #a89d93;
+  --color-round: #1e1a18; --color-surface: #171312; --color-dot: #3a302c;
+  --color-ink: #f3ece4; --color-on-ink: #16110f; --hue-ink: #f5a742;
+  --glass-fill: rgb(38 33 31 / 0.55); --glass-edge: rgb(255 255 255 / 0.14);
+  --glass-shine: inset 0 1px 0 rgb(255 255 255 / 0.18), inset 0 -1px 0 rgb(255 255 255 / 0.05);
+  --glass-pressed: rgb(255 255 255 / 0.08);
+  --wash-top: color-mix(in srgb, var(--hue) 9%, transparent); --wash-bottom: color-mix(in srgb, var(--hue-2) 12%, transparent);
+  --shadow-menu: 0 8px 28px rgb(0 0 0 / 0.5);
+  --sticker-filter: drop-shadow(0 8px 20px rgb(0 0 0 / 0.5));
+  --hue-glow-1: rgb(245 167 66 / 0.16); --hue-glow-2: rgb(142 27 45 / 0.22);
+  color-scheme: dark;
+}
+body { background: var(--color-bg); }
+.btn-primary { background: color-mix(in srgb, #f3ece4 92%, transparent); color: #16110f; }
