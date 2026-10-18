@@ -34,7 +34,9 @@ public class FeelPlugin: CAPPlugin, CAPBridgedPlugin {
         if engine == nil {
             engine = try? CHHapticEngine()
             engine?.isAutoShutdownEnabled = true // sleeps when idle, wakes on the next play
-            engine?.resetHandler = { [weak self] in try? self?.engine?.start() }
+            engine?.resetHandler = { [weak self] in
+                do { try self?.engine?.start() } catch { CAPLog.print("[Feel] haptic engine restart failed: \(error)") }
+            }
         }
         try? engine?.start()
         return engine
