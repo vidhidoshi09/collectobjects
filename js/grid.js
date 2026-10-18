@@ -6,8 +6,10 @@ import { showOverlay, hideOverlay } from './overlays.js';
 import { NativeUi, isNative } from './platform.js';
 import { showSnackbar } from './snackbar.js';
 import { autoGrow } from './textfield.js';
-import { success } from './haptics.js';
+import { success, tapLight, warning } from './haptics.js';
+import { fly, poof } from './flight.js';
 import { startTilt } from './tilt.js';
+import { replay } from './motion.js';
 
 /* ════════════════════════════════════════════════
    RENDER GRID
@@ -18,7 +20,8 @@ import { startTilt } from './tilt.js';
 // The name as the person wrote it; '' when they skipped it (older saves stored "untitled object")
 export const nameOf = m => (m.name && m.name !== copy.item.untitled ? m.name : '');
 
-export async function renderGrid() {
+// `enter`: the first render after launch, when the objects rise in one after another
+export async function renderGrid({ enter = false } = {}) {
   const objects = loadObjects().slice().reverse();
   const srcs = await Promise.all(objects.map(photoSrc));
   const grid = document.getElementById('grid');
@@ -47,7 +50,7 @@ export async function renderGrid() {
   const dropped = state.justSaved;
   state.justSaved = null;
   grid.innerHTML = objects.map((m, i) => `
-    <div class="card${m.id === dropped ? ' card--dropped' : ''}" role="button" tabindex="0"
+    <div class="card${m.id === dropped ? ' card--dropped' : ''}${enter ? ' card--enter' : ''}" style="--i: ${Math.min(i, 12)}" role="button" tabindex="0"
          aria-label="${esc(`${nameOf(m) || copy.item.untitled}, ${copy.item.date(m.date)}`)}" data-id="${m.id}" data-no="${m.no}">
       <div class="card__img-wrap">
         <img class="sticker${m.file?.endsWith('.jpg') ? ' sticker--photo' : ''}" src="${srcs[i]}" alt="" loading="lazy" decoding="async" />
@@ -71,23 +74,38 @@ export async function renderGrid() {
 ════════════════════════════════════════════════ */
 let stopTilt = () => {};
 
+const tileImg = id => document.querySelector(`#grid .card[data-id="${id}"] img`);
+
 async function openDetail(id) {
   const m = loadObjects().find(x => String(x.id) === String(id));
   if (!m) return;
+  tapLight();
 
   const src = await photoSrc(m);
-  document.getElementById('detail-img').src = src;
+  const img = document.getElementById('detail-img');
+  img.src = src;
+  await img.decode().catch(() => {}); // ready before it flies
   document.getElementById('detail-img').alt = nameOf(m) || copy.item.untitled;
   document.getElementById('detail-img').classList.toggle('sticker--photo', Boolean(m.file?.endsWith('.jpg')));
-  document.getElementById('detail-sheen').style.setProperty('--sheen-mask', `url("${src}")`);
+  // absolute, so a bundled sample's relative path isn't read from css/ (where the variable is used)
+  document.getElementById('detail-sheen').style.setProperty('--sheen-mask', `url("${new URL(src, location.href).href}")`);
   document.getElementById('detail-name').value = nameOf(m);
   document.getElementById('detail-note').value = m.note || '';
   document.getElementById('detail-meta').textContent = copy.item.dateLine(m.date, m.city);
   document.getElementById('detail-delete').dataset.id = m.id;
 
+  // the object flies from its tile into the close-up; the glow blooms in behind it
+  const tile = tileImg(m.id);
+  const from = tile?.getBoundingClientRect();
+  img.style.visibility = 'hidden';
+  if (tile) tile.style.visibility = 'hidden';
   showOverlay('detail-overlay');
   autoGrow(document.getElementById('detail-note'));
+  replay(document.querySelector('.detail-img-wrap'), 'is-opening');
   stopTilt();
+  await fly(img, from, img, { opening: true });
+  img.style.visibility = '';
+  if (tile) tile.style.visibility = '';
   stopTilt = startTilt(document.getElementById('detail-tilt'));
 }
 
@@ -116,15 +134,35 @@ export function toggleDetailMenu(open = menu.hidden, { refocus = false } = {}) {
   else if (refocus) moreBtn.focus();
 }
 
-export function closeDetail() {
+// `flyBack`: the object flies home to its tile (not after a delete: it's gone)
+export async function closeDetail({ flyBack = true } = {}) {
   toggleDetailMenu(false);
   document.activeElement?.blur(); // commits an in-progress name/story edit
   stopTilt();
   stopTilt = () => {};
+  const img = document.getElementById('detail-img');
+  const tile = flyBack ? tileImg(document.getElementById('detail-delete').dataset.id) : null;
+  const from = img.getBoundingClientRect();
+  if (tile && img.src) img.style.visibility = 'hidden'; // only the flyer travels home
   hideOverlay('detail-overlay');
-  document.getElementById('detail-img').src = '';
+  if (tile && img.src) {
+    const to = tile.getBoundingClientRect();
+    const onScreen = to.bottom > 0 && to.top < innerHeight;
+    if (onScreen) {
+      tile.style.visibility = 'hidden';
+      // flies from the close-up's box to the tile's (fly() moves "from → to", so run it closing)
+      await fly(img, to, flyerTarget(from), { opening: false });
+      tile.style.visibility = '';
+    }
+  }
+  img.src = '';
+  img.style.removeProperty('visibility');
+  img.style.removeProperty('opacity'); img.style.removeProperty('transform'); img.style.removeProperty('filter');
   document.getElementById('detail-sheen').style.removeProperty('--sheen-mask');
 }
+
+// fly() measures its target element; on close the close-up is fading out, so give it the box it had
+const flyerTarget = rect => ({ getBoundingClientRect: () => rect });
 
 // Native Material 3 dialog on Android; plain confirm() in a desktop browser
 export async function confirmDelete() {
@@ -148,7 +186,9 @@ export async function deleteObject(id) {
     return;
   }
   if (removed?.file) await deletePhoto(removed.file);
-  closeDetail();
+  warning();
+  await poof(document.getElementById('detail-img')); // the object shrinks away
+  closeDetail({ flyBack: false });
   await renderGrid();
   showSnackbar(copy.toast.deleted);
 }

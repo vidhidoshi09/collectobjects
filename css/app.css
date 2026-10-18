@@ -195,6 +195,7 @@
   --z-content:  1;
   --z-tabbar:   100;
   --z-overlay:  200;
+  --z-flyer:    250; /* above the screens, under toasts */
   --z-close:    10;
   --z-snackbar: 300;
 
@@ -376,6 +377,15 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
   position: absolute; inset: var(--card-image-inset);
   width: calc(100% - var(--card-image-inset) * 2); height: calc(100% - var(--card-image-inset) * 2);
 }
+
+/* Arrival: on launch the objects rise in one after another (--i is the tile's order) */
+.card--enter { animation: rise var(--duration-reveal) var(--easing-out) calc(var(--i) * 45ms) backwards; }
+@keyframes rise { from { opacity: 0; transform: translateY(var(--space-16)) scale(0.96); } }
+
+/* Flight: the copy of a cut-out that flies between its tile and the close-up (js/flight.js) */
+.flyer { position: fixed; z-index: var(--z-flyer); pointer-events: none; margin: 0; transform-origin: center; will-change: transform; }
+/* the close-up's glow blooms in as the object lands */
+.detail-img-wrap.is-opening::before { animation: glow-bloom var(--duration-bloom) var(--easing-out) 120ms both; }
 
 /* The drop: a new object falls into place after saving (js/review.js) */
 .card--dropped { animation: drop var(--duration-drop) var(--easing-overshoot) var(--delay-drop) backwards; }
@@ -728,6 +738,10 @@ body.is-empty #grid { flex: 1; grid-template-rows: 1fr; }
 .tabbar__tab[aria-current="page"] { color: var(--hue-ink); background: var(--glass-pressed); }
 .tabbar .icon { --icon-size: 26px; }
 body:has(.overlay.active) .tabbar { visibility: hidden; }
+/* scrolled down: the bar shrinks to its icons (js/main.js); scrolling up brings the labels back */
+.tabbar, .tabbar__tab, .tabbar__tab span { transition-property: transform, background-color, width, height, opacity, font-size; transition-duration: var(--duration-fade); transition-timing-function: var(--easing-out); }
+.tabbar-min .tabbar__tab { width: 64px; height: 44px; }
+.tabbar-min .tabbar__tab span { opacity: 0; font-size: 0; }
 
 /* ═══════════════════════════════════════
    SNACKBAR — js/snackbar.js
@@ -833,7 +847,8 @@ body.is-empty #home::before {
 ═══════════════════════════════════════ */
 @media (prefers-reduced-motion: reduce) {
   #review-img.is-revealing { animation: reveal-outline var(--duration-reveal) var(--easing) both; }
-  .card--dropped { animation-name: fade-in; animation-timing-function: var(--easing); }
+  .card--dropped, .card--enter { animation-name: fade-in; animation-timing-function: var(--easing); }
+  .detail-img-wrap.is-opening::before { animation: none; }
   @keyframes fade-in { from { opacity: 0; } }
   .sheen, .review-backdrop.is-fading { display: none; }
   .sparkle, .review-img-wrap.is-revealing .sparkle, .review-img-wrap.is-revealing::before { animation: none; }

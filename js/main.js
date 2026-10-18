@@ -6,6 +6,7 @@ import { openCamera, stopCamera, onShutterPressed, onGalleryPicked } from './cam
 import { saveObject } from './review.js';
 import { showSnackbar } from './snackbar.js';
 import { greetOncePerDay } from './greeting.js';
+import { tapLight, tapMedium } from './haptics.js';
 import { autoGrow } from './textfield.js';
 import { copy, applyCopy } from './copy.js';
 import { objectCard, shareCard } from './share.js';
@@ -20,13 +21,25 @@ applyCopy(); // fills the static markup's words
 document.getElementById('grid').addEventListener('click', e => {
   if (e.target.closest('#add-tile')) openCamera();
 });
-document.getElementById('tab-capture').addEventListener('click', openCamera);
+document.getElementById('tab-capture').addEventListener('click', () => { tapMedium(); openCamera(); });
 // Collection is the open tab: tapping it again scrolls back to the top
 document.getElementById('tab-collection').addEventListener('click', () => {
+  tapLight();
   document.getElementById('home').scrollTo({ top: 0, behavior: 'smooth' });
 });
+// Scrolling down shrinks the tab bar to its icons; scrolling up brings the labels back (like iOS 26)
+{
+  const home = document.getElementById('home');
+  let last = 0;
+  home.addEventListener('scroll', () => {
+    const y = home.scrollTop;
+    if (Math.abs(y - last) < 8) return;
+    document.body.classList.toggle('tabbar-min', y > last && y > 80);
+    last = y;
+  }, { passive: true });
+}
 document.getElementById('camera-close').addEventListener('click', () => { stopCamera(); hideAll(); });
-document.getElementById('shutter-btn').addEventListener('click', onShutterPressed);
+document.getElementById('shutter-btn').addEventListener('click', () => { tapMedium(); onShutterPressed(); });
 document.getElementById('gallery-btn').addEventListener('click', () => document.getElementById('gallery-input').click());
 document.getElementById('gallery-input').addEventListener('change', e => {
   const file = e.target.files[0];
@@ -66,6 +79,7 @@ document.getElementById('detail-note').addEventListener('change', e => {
 // ⋯ opens the menu; a tap anywhere else closes it
 document.getElementById('detail-more').addEventListener('click', e => {
   e.stopPropagation();
+  tapLight();
   toggleDetailMenu();
 });
 document.addEventListener('click', e => {
@@ -74,6 +88,7 @@ document.addEventListener('click', e => {
 document.getElementById('detail-share').addEventListener('click', () => {
   const m = loadObjects().find(x => String(x.id) === document.getElementById('detail-delete').dataset.id);
   toggleDetailMenu(false);
+  tapLight();
   if (m) shareCard(objectCard({ ...m, name: nameOf(m) }), nameOf(m));
 });
 document.getElementById('detail-delete').addEventListener('click', async e => {
@@ -109,7 +124,7 @@ if (isNative) {
    INIT
 ════════════════════════════════════════════════ */
 initStorage()
-  .then(renderGrid)
+  .then(() => renderGrid({ enter: true }))
   .then(() => greetOncePerDay())
   .catch(err => {
     console.error('[storage]', err);

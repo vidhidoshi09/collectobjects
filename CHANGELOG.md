@@ -2,6 +2,15 @@
 
 What changed, when, and why. Newest first. (Formerly "Memories".)
 
+## Micro-animations and haptics
+
+- **Flight:** tapping an object flies it from its tile into the close-up (with a soft landing and the glow blooming in); closing flies it home.
+- **Arrival:** objects rise in one after another when the app opens.
+- **Poof:** a deleted object shrinks and fades away.
+- **Tab bar** shrinks to icons while scrolling down, like iOS 26.
+- **Haptics** on Android and iPhone: tabs, opening an object, ⋯, Share, Capture and the shutter, save and delete.
+- Fixed: the close-up's sheen looked for sample pictures in the wrong folder.
+
 ## Tab bar, Liquid Glass, objects that shine
 
 - **Soft hue wash** replaces the dotted background: orange light from the top, a hint of maroon at the bottom, no pattern.

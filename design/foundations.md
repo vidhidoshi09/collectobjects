@@ -107,7 +107,12 @@ Identical everywhere (grid, empty state, review, detail):
 - **Holographic tilt** (detail): the cut-out tilts with the phone, up to 12° each way, smoothed; a soft white/pink/blue glint clipped to the object's shape slides across it. On a desktop it follows the pointer. Stops when the detail closes.
 - Overshoot easing is only for the reveal and the drop; everything else is calm.
 - **Reduce motion:** fades only. No scaling, no overshoot, no tilt, no sheen (the reveal fades the outline in; the drop fades the tile in).
-- **Haptics:** only these two moments (light impact on reveal, success on save). Never on plain taps.
+- **Arrival:** on launch the objects rise in one after another (16 up, 0.96 → 1, 600ms, 45ms apart).
+- **Flight** (open a close-up): the object flies from its tile into the close-up with a soft overshoot (460ms) while the screens cross-fade and the glow blooms in behind it; closing, it flies home to its tile (380ms).
+- **Poof** (delete): the object shrinks to 0.6, blurs and fades (260ms) before the close-up closes.
+- **Tab bar:** shrinks to its icons when you scroll down, labels come back when you scroll up.
+- **Haptics** (Android and iPhone): light on a tab, opening an object, the ⋯ menu, Share and the reveal; medium on Capture and the shutter; success on save; warning on delete.
+- **Reduce motion:** arrival and drop become fades; no flight, poof, tilt or sheen.
 
 ---
 
