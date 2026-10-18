@@ -45,7 +45,7 @@ Platforms may only change a word where a platform term differs.
 | `processing.cutting` | Processing | "framing it…" |
 | `processing.setup` | First-time model download | "getting ready…" + "one-time setup" |
 | `review.name` | Review field | label "name", placeholder "Give it a name"; the keyboard waits for a tap |
-| `review.suggestTitle` / `review.suggestLabel` | Name suggestions | "Could be" (small caps) · a11y "suggested names"; chips show the suggested name in Sentence case |
+| `review.suggestTitle` / `review.suggestLabel` | Name suggestions | "Suggestions" (small caps) · a11y "suggested names"; chips show the suggested name in Sentence case |
 | `review.city` | City chip | "Add city" · "finding city…" · the city; a11y "remove london" |
 | `item.dateLine` | Detail date line | "oct 11", or "oct 11 · london" (same year rule) |
 | `toast.cityDenied` / `toast.cityFailed` | City lookup | "Location's off for collectobjects. You can turn it on in Settings" · "Couldn't find your city right now" (error icon) |

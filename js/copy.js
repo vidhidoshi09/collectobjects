@@ -54,7 +54,7 @@ export const copy = {
     label: `name your ${ITEM}`,
     name: 'name',
     namePlaceholder: 'Give it a name', // naming is never required: the keyboard waits for a tap
-    suggestTitle: 'Could be', // over the name chips (shown in small caps)
+    suggestTitle: 'Suggestions', // over the name chips (shown in small caps)
     suggestLabel: 'suggested names',
     photo: `your ${ITEM}`,
     retake: 'retake',

@@ -47,7 +47,7 @@ Branch: `claude/blissful-hypatia-ww0fmk` (make it the repo's default branch so t
 **Screens**
 - Empty: header + samples + "Start collecting" / "A little home for your trinkets and keepsakes." + dark + tile.
 - Grid: just the objects (no names or dates), newest first; a Liquid Glass tab bar floats at the bottom (Collection, Capture). The add tile only stays on the empty screen.
-- Save screen: centred group (object, name "Give it a name", no auto keyboard, "Could be" name suggestion chips from Vision / ML Kit, city chip, retake + "Add to collection").
+- Save screen: centred group (object, name "Give it a name", no auto keyboard, "Suggestions" name chips from Vision / ML Kit, city chip, retake + "Add to collection").
 - Close-up: a carousel of the collection: name and "oct 11 · london" on top, the object in the middle with its neighbours peeking in, swipe with a haptic tick; Share and Delete (asks first) as 44px glass buttons below. No story, no page dots. Opening: the other tiles scatter, the object flies in, the name rises.
 
 **Icon**
