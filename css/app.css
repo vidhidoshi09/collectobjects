@@ -738,7 +738,7 @@ body:has(.overlay.active) .tabbar { visibility: hidden; }
 #tumble { position: fixed; inset: 0; z-index: var(--z-tabbar); touch-action: none; overflow: hidden; }
 .tumble__obj { position: absolute; left: 0; top: 0; pointer-events: none; will-change: transform; }
 .tumble__tidy {
-  position: absolute;
+  position: fixed; z-index: calc(var(--z-tabbar) + 1); /* above the pile layer, not inside it */
   top: calc(var(--space-24) + env(safe-area-inset-top, 0px));
   right: calc(var(--screen-margin) + env(safe-area-inset-right, 0px));
   height: var(--close-size); padding: 0 var(--space-16);

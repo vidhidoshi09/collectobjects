@@ -126,7 +126,6 @@ async function tumble() {
 
   const layer = document.createElement('div');
   layer.id = 'tumble';
-  layer.innerHTML = `<button class="tumble__tidy glass" type="button">${copy.tumble.tidy}</button>`;
   document.body.append(layer);
   document.body.classList.add('is-tumbling');
 
@@ -211,18 +210,24 @@ async function tumble() {
     }
     scene.frame = requestAnimationFrame(step);
   };
-  scene = { engine, layer, items, stopTilt, mouse, frame: requestAnimationFrame(step) };
-  layer.querySelector('.tumble__tidy').addEventListener('click', tidy);
+  // Tidy up lives outside the pile layer: the drag handling there swallows taps (touchstart is prevented)
+  const tidyBtn = document.createElement('button');
+  tidyBtn.className = 'tumble__tidy glass';
+  tidyBtn.type = 'button';
+  tidyBtn.textContent = copy.tumble.tidy;
+  tidyBtn.addEventListener('click', tidy);
+  document.body.append(tidyBtn);
+  scene = { engine, layer, items, stopTilt, mouse, tidyBtn, frame: requestAnimationFrame(step) };
 }
 
 // Everything flies back to its tile
 async function tidy() {
   if (!scene) return;
-  const { engine, layer, items, stopTilt, frame } = scene;
+  const { engine, layer, items, stopTilt, frame, tidyBtn } = scene;
   cancelAnimationFrame(frame);
   stopTilt();
   tapLight();
-  layer.querySelector('.tumble__tidy').remove();
+  tidyBtn.remove();
   await Promise.all(items.map((it, i) => {
     const r = it.tile.getBoundingClientRect();
     return it.el.animate(

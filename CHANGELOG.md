@@ -32,6 +32,7 @@ What changed, when, and why. Newest first. (Formerly "Memories".)
 - **Tab bar** shrinks to icons while scrolling down, like iOS 26.
 - **Haptics** on Android and iPhone: tabs, opening an object, ⋯, Share, Capture and the shutter, save and delete.
 - Fixed: the close-up's sheen looked for sample pictures in the wrong folder.
+- Fixed: Tidy up did nothing on phones (the pile layer swallowed taps); the button now sits above it.
 
 ## Tab bar, Liquid Glass, objects that shine
 
