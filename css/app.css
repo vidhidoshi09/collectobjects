@@ -83,13 +83,13 @@
   --type-name:     var(--weight-heavy)   15px/1.2  var(--font-display); /* grid object name (white stroke) */
   --type-label:    var(--weight-semibold) 15px/1.2 var(--font-family); /* buttons, processing label, snackbar action */
   --type-body:     var(--weight-regular) 15px/1.5  var(--font-family); /* story, descriptions, snackbar */
+  --type-tab:      var(--weight-semibold) 11px/1.2 var(--font-family); /* tab bar labels */
   --type-caption:  var(--weight-regular) 13px/1.4  var(--font-family); /* count, subtitles */
   --type-overline: var(--weight-medium)  13px/1.3  var(--font-family); /* dates: set in small caps */
   --tracking-display:  -0.5px;
   --tracking-headline: -0.3px;
   --tracking-label:     0.2px;
   --tracking-overline:  1.2px;
-  --name-stroke: 4px; /* white "sticker" stroke behind grid names (sans only, never the serif) */
 
   /* ── Icons: Material Symbols Rounded, weight 400 ── */
   --icon-size:       24px;
@@ -152,22 +152,21 @@
   --shadow-menu:   0 8px 28px rgb(0 0 0 / 0.16), 0 1px 3px rgb(0 0 0 / 0.08);
   --blur-scrim:    blur(6px);
 
-  /* Signature cut-out: white sticker outline + soft shadow (outline offsets are fixed) */
-  --sticker-filter:
-    drop-shadow( 2px    0      0 var(--color-sticker))
-    drop-shadow(-2px    0      0 var(--color-sticker))
-    drop-shadow( 0      2px    0 var(--color-sticker))
-    drop-shadow( 0     -2px    0 var(--color-sticker))
-    drop-shadow( 1.5px  1.5px  0 var(--color-sticker))
-    drop-shadow(-1.5px  1.5px  0 var(--color-sticker))
-    drop-shadow( 1.5px -1.5px  0 var(--color-sticker))
-    drop-shadow(-1.5px -1.5px  0 var(--color-sticker))
-    drop-shadow(0 6px 18px rgb(0 0 0 / 0.12));
+  /* Cut-outs float on a soft shadow (no outline) */
+  --sticker-filter:      drop-shadow(0 6px 18px rgb(0 0 0 / 0.12));
   /* the same list, flat: where the reveal starts (same functions, so it can animate) */
-  --sticker-filter-flat:
-    drop-shadow(0 0 0 transparent) drop-shadow(0 0 0 transparent) drop-shadow(0 0 0 transparent)
-    drop-shadow(0 0 0 transparent) drop-shadow(0 0 0 transparent) drop-shadow(0 0 0 transparent)
-    drop-shadow(0 0 0 transparent) drop-shadow(0 0 0 transparent) drop-shadow(0 0 0 transparent);
+  --sticker-filter-flat: drop-shadow(0 0 0 transparent);
+
+  /* ── Liquid Glass: the tab bar and round buttons, on Android and iPhone ── */
+  --glass-fill:    rgb(250 249 247 / 0.55); /* paper, see-through */
+  --glass-blur:    blur(16px) saturate(1.8);
+  --glass-edge:    rgb(255 255 255 / 0.8);  /* hairline rim */
+  --glass-shine:   inset 0 1px 0 rgb(255 255 255 / 0.9), inset 0 -1px 0 rgb(255 255 255 / 0.35); /* light on the top and bottom edges */
+  --glass-pressed: rgb(0 0 0 / 0.06);       /* the open tab, a pressed button */
+  --tabbar-tab-width:  96px;
+  --tabbar-tab-height: 54px;
+  --tabbar-gap:        var(--space-16);     /* from the bottom edge (above the home indicator) */
+  --tabbar-clearance:  80px;                /* grid bottom padding added for the bar */
 
   /* ── Motion ── */
   --press-scale:      0.95; /* every tappable thing shrinks a little while pressed */
@@ -196,6 +195,7 @@
 
   /* ── Layers ── */
   --z-content:  1;
+  --z-tabbar:   100;
   --z-overlay:  200;
   --z-close:    10;
   --z-snackbar: 300;
@@ -254,12 +254,6 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
    Real cut-outs stay normal so the hue glow never tints their white outline. */
 .sticker--photo { mix-blend-mode: multiply; }
 
-/* Grid names: heavy weight with a white "sticker" stroke (serif names carry none) */
-.card__name {
-  -webkit-text-stroke: var(--name-stroke) var(--color-sticker);
-  paint-order: stroke fill;
-}
-
 /* Overline: dates and exhibit numbers, small caps, letter-spaced */
 .overline {
   font: var(--type-overline); letter-spacing: var(--tracking-overline);
@@ -281,16 +275,24 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
   white-space: nowrap;
 }
 
-/* Secondary: grey rounded square (Retake), the add tile's shape */
+/* Secondary: a glass rounded square (Retake), the add tile's shape */
 .btn-round {
   width: var(--button-height); height: var(--button-height); flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
   border-radius: var(--radius-md);
-  background: var(--color-round); color: var(--color-text);
+  color: var(--color-text);
 }
 
-/* Close: a fill-grey circle, top-left of every overlay (translucent dark over the camera).
-   40px circle inside a 48px touch target. */
+/* Liquid Glass: see-through paper with a bright rim, blurring what's behind */
+.glass, .btn-round, .btn-close:not(#camera-close) {
+  background: var(--glass-fill);
+  backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+  border: 0.5px solid var(--glass-edge);
+  box-shadow: var(--glass-shine), var(--shadow-menu);
+}
+
+/* Close: a glass circle, top-left of every overlay (translucent dark over the camera).
+   40px circle inside a 48px touch target: the glass is drawn on the inner circle. */
 .btn-close {
   position: absolute; z-index: var(--z-close);
   top:  calc(var(--space-16) - (var(--touch-target) - var(--close-size)) / 2 + env(safe-area-inset-top,  0px));
@@ -299,15 +301,21 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
   padding: calc((var(--touch-target) - var(--close-size)) / 2);
   display: flex; align-items: center; justify-content: center;
   border-radius: var(--radius-full);
-  background: var(--color-round); background-clip: content-box;
   color: var(--color-text);
 }
+/* the glass sits on the visible 40px circle, not the whole touch target */
+.btn-close:not(#camera-close) {
+  width: var(--close-size); height: var(--close-size); padding: 0;
+  margin: calc((var(--touch-target) - var(--close-size)) / 2);
+}
+.btn-close:not(#camera-close)::after { content: ''; position: absolute; inset: calc((var(--touch-target) - var(--close-size)) / -2); } /* keeps the 48px hit area */
 
-/* More (⋯): the close button's twin, top-right */
-.btn-more {
+/* More (⋯): the close button's twin, top-right; Share sits just left of it */
+.btn-more, .btn-share {
   left: auto;
   right: calc(var(--screen-margin) - (var(--touch-target) - var(--close-size)) / 2 + env(safe-area-inset-right, 0px));
 }
+.btn-share { right: calc(var(--screen-margin) - (var(--touch-target) - var(--close-size)) / 2 + var(--touch-target) + env(safe-area-inset-right, 0px)); }
 
 /* Menu: a small sheet of paper under ⋯, hugging its items */
 .menu {
@@ -346,21 +354,18 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
   padding:
     calc(var(--space-24) + env(safe-area-inset-top, 0px))
     calc(var(--screen-margin) + env(safe-area-inset-right, 0px))
-    calc(var(--toast-clearance) + env(safe-area-inset-bottom, 0px))
+    calc(var(--toast-clearance) + var(--tabbar-clearance) + env(safe-area-inset-bottom, 0px))
     calc(var(--screen-margin) + env(safe-area-inset-left, 0px));
 }
 
 .header { position: relative; margin-bottom: var(--space-32); }
-/* share the collection: the close button's circle, top-right of the header */
-.header__share { position: absolute; top: 0; right: calc((var(--touch-target) - var(--close-size)) / -2); left: auto; }
-body.is-empty .header__share { display: none; }
 /* the count reads like the dates: overline small caps ("4 OBJECTS", "OCT 11") */
 .header__count { margin-top: var(--space-4); }
 .header__title { font: var(--type-display); letter-spacing: var(--tracking-display); margin-block: var(--space-4); }
 
 .grid {
   display: grid; grid-template-columns: 1fr 1fr;
-  column-gap: var(--space-16); row-gap: var(--space-32);
+  column-gap: var(--space-16); row-gap: var(--space-8); /* no names under the tiles: objects sit close */
 }
 
 /* Grid item */
@@ -375,12 +380,6 @@ body.is-empty .header__share { display: none; }
   position: absolute; inset: var(--card-image-inset);
   width: calc(100% - var(--card-image-inset) * 2); height: calc(100% - var(--card-image-inset) * 2);
 }
-.card__name {
-  margin-top: var(--space-8);
-  font: var(--type-name); letter-spacing: var(--tracking-label);
-  text-align: center; max-width: 100%; overflow-wrap: anywhere;
-}
-.card__date { margin-top: var(--space-4); text-align: center; }
 
 /* The drop: a new object falls into place after saving (js/review.js) */
 .card--dropped { animation: drop var(--duration-drop) var(--easing-overshoot) var(--delay-drop) backwards; }
@@ -392,7 +391,6 @@ body.is-empty .header__share { display: none; }
    ADD TILE — first in the grid (top-left), a small quiet square +,
    centred where an object's cut-out would sit (on the empty screen too)
 ═══════════════════════════════════════ */
-.card--add { font: inherit; color: inherit; }
 .add-tile {
   position: absolute; inset: 0; margin: auto;
   width: var(--add-tile-size); height: var(--add-tile-size);
@@ -458,6 +456,7 @@ body.is-empty .header__share { display: none; }
 ═══════════════════════════════════════ */
 #camera-overlay { background: var(--color-camera); }
 #camera-close {
+  background-clip: content-box;
   background-color: var(--color-scrim); color: var(--color-on-camera);
   backdrop-filter: var(--blur-scrim); -webkit-backdrop-filter: var(--blur-scrim);
 }
@@ -710,6 +709,31 @@ body.is-empty #grid { flex: 1; grid-template-rows: 1fr; }
 }
 
 /* ═══════════════════════════════════════
+   TAB BAR — Liquid Glass capsule floating over the collection (Android and iPhone)
+   Collection (the open tab, tinted with the hue) and Capture (opens the camera).
+   Overlays cover it; toasts on the home screen sit above it.
+═══════════════════════════════════════ */
+.tabbar {
+  position: fixed; z-index: var(--z-tabbar);
+  left: 50%; translate: -50% 0;
+  bottom: calc(var(--tabbar-gap) + env(safe-area-inset-bottom, 0px));
+  display: flex; padding: var(--space-4);
+  border-radius: var(--radius-full);
+}
+.tabbar__tab {
+  width: var(--tabbar-tab-width); height: var(--tabbar-tab-height);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  border-radius: var(--radius-full);
+  font: var(--type-tab); letter-spacing: var(--tracking-label);
+  color: var(--color-text-secondary);
+  transition: transform var(--duration-press) var(--easing), background-color var(--duration-press) var(--easing);
+}
+.tabbar__tab:active { transform: scale(var(--press-scale)); }
+.tabbar__tab[aria-current="page"] { color: var(--hue-ink); background: var(--glass-pressed); }
+.tabbar .icon { --icon-size: 26px; }
+body:has(.overlay.active) .tabbar { visibility: hidden; }
+
+/* ═══════════════════════════════════════
    SNACKBAR — js/snackbar.js
    Paper card (the menu's surface, radius and shadow): orange icon + Sentence-case message, centred above
    the bottom; moves up to clear any .snackbar-anchor on the open screen.
@@ -720,7 +744,7 @@ body.is-empty #grid { flex: 1; grid-template-rows: 1fr; }
   left: 0; right: 0; margin-inline: auto;
   width: fit-content;
   max-width: calc(min(100vw, var(--app-max-width)) - var(--screen-margin) * 2);
-  bottom: var(--snackbar-bottom, calc(var(--space-24) + env(safe-area-inset-bottom, 0px)));
+  bottom: var(--snackbar-bottom, calc(var(--space-24) + var(--tabbar-lift, 0px) + env(safe-area-inset-bottom, 0px)));
   z-index: var(--z-snackbar);
   align-items: center; gap: var(--space-8);
   padding: var(--space-12) var(--space-20);
@@ -735,6 +759,7 @@ body.is-empty #grid { flex: 1; grid-template-rows: 1fr; }
     transform var(--duration-fade) var(--easing),
     display var(--duration-fade) allow-discrete;
 }
+body:not(:has(.overlay.active)) { --tabbar-lift: var(--tabbar-clearance); } /* above the tab bar on the home screen */
 .snackbar.visible { display: flex; opacity: 1; transform: none; }
 .snackbar__icon { --icon-size: var(--icon-size-small); color: var(--color-toast-icon); }
 .snackbar__icon[hidden] { display: none; }

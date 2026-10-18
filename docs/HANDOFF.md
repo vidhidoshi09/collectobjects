@@ -41,14 +41,14 @@ Branch: `claude/blissful-hypatia-ww0fmk` (make it the repo's default branch so t
 - Hue = orange `#F5A742` → maroon `#8E1B2D` mix. Only in: dot texture (mostly grey, 30% tint), soft glow behind the object (save + close-up, with sparkles), lightly on the empty screen, progress ring, toast icons, caret. Switch with `<html data-hue="orange|maroon">`.
 - Type: **Bricolage Grotesque** (titles, object names) + **Instrument Sans** (body, buttons, dates). Native dialogs use Instrument Sans.
 - Shape: radius 16 for everything tappable; circles only for close and chips; one shadow (menu/toast).
-- Cut-outs: white sticker outline + soft shadow; real cut-outs never multiply into the page.
+- Cut-outs: soft shadow only (the white outline was removed); real cut-outs never multiply into the page.
 - Count and dates share the overline style ("4 OBJECTS", "OCT 11").
 
 **Screens**
 - Empty: header + samples + "Start collecting" / "A little home for your trinkets and keepsakes." + dark + tile.
-- Grid: add tile first (grey square), then newest first; no orange FAB.
-- Save screen: centred group (object, name "What is it?", story "What's the story? (optional)", city chip, retake + "Add to collection").
-- Close-up: name, "oct 11 · london", story; ⋯ top right.
+- Grid: just the objects (no names or dates), newest first; a Liquid Glass tab bar floats at the bottom (Collection, Capture). The add tile only stays on the empty screen.
+- Save screen: centred group (object, name "Name it (optional)", no auto keyboard, story "What's the story? (optional)", city chip, retake + "Add to collection").
+- Close-up: name, "oct 11 · london", story; Share and ⋯ (Delete) top right, as glass buttons.
 
 **Icon**
 - The "c into o" single line, paper white, tilted 40°, bottom-right, on a grainy burgundy wash with an orange glow and cream haze, plus a sparkle. Generated for adaptive (round/squircle/themed), legacy, Play (512). Many alternatives were tried (sparkle, flower "co", croissant, ribbon, dreamy/blurred, separate "c o"); this clean version was chosen.

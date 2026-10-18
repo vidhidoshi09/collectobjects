@@ -28,8 +28,12 @@ export const copy = {
     title: `${COLLECTION[0].toUpperCase()}${COLLECTION.slice(1)}`, // "Collection"
     count: n => (n === 1 ? `1 ${ITEM}` : `${n} ${ITEMS}`),
     gridLabel: `your ${ITEMS}`,
-    add: `add ${AN_ITEM}`, // add tile accessibility label
-    share: `share your ${COLLECTION}`, // header share button accessibility label
+    add: `add ${AN_ITEM}`, // add tile accessibility label (empty screen)
+  },
+  nav: {
+    label: 'tabs', // tab bar accessibility label
+    collection: `${COLLECTION[0].toUpperCase()}${COLLECTION.slice(1)}`, // "Collection"
+    capture: 'Capture', // opens the camera
   },
   empty: {
     title: 'Start collecting',
@@ -49,7 +53,7 @@ export const copy = {
   review: {
     label: `name your ${ITEM}`,
     name: 'name',
-    namePlaceholder: 'What is it?',
+    namePlaceholder: 'Name it (optional)', // naming is never required
     photo: `your ${ITEM}`,
     storyPlaceholder: "What's the story? (optional)",
     retake: 'retake',
@@ -61,18 +65,19 @@ export const copy = {
     },
   },
   item: {
-    untitled: `untitled ${ITEM}`,
+    untitled: `untitled ${ITEM}`, // accessibility label of an unnamed object; never shown
     no: exhibitNo,      // kept in the data, not shown
     date: fmtShortDate, // grid: "oct 11" (year only when not this year)
     dateLine,           // detail: "oct 11", or "oct 11 · london"
   },
   detail: {
     label: ITEM,
-    name: 'name',
     story: 'story',
     storyPlaceholder: "What's the story?",
     more: 'more',
-    share: 'Share', // menu item
+    name: 'name',
+    namePlaceholder: 'Name it',
+    shareLabel: 'share', // share button accessibility label
     delete: 'Delete', // menu item
   },
   delete: {

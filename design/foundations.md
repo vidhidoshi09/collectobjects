@@ -78,6 +78,7 @@ the "sticker" feel. Serif text never does.
 - **Grid:** 2 columns, gutter 16, rows 32; tile = square image, 8 → name, 4 → number.
 - **Review:** image (fills what's left) → 24 → name → 24 → actions.
 - **Detail:** image → 24 → name → 4 → date → 16 → story → 24 → round delete. Centred, max width 340, no box.
+- **Liquid Glass** (Android and iPhone): the tab bar and the round buttons (close, share, ⋯, retake) are see-through paper (`rgb(250 249 247 / .55)`) with a 16px blur, a bright hairline rim and the one shadow.
 - **Shape:** round everything interactive: buttons and close are full circles/pills, the add tile is a rounded square like the objects; snackbar radius 20.
 - **Elevation:** orange glow under orange controls; soft dark shadow under the snackbar and cut-outs. Nothing else is raised.
 - **Touch targets:** ≥ 48 (close is a 40 circle in a 48 target).
@@ -88,7 +89,7 @@ the "sticker" feel. Serif text never does.
 
 Identical everywhere (grid, empty state, review, detail):
 - Object cut out with a transparent background, trimmed to its edges with a ~4% margin.
-- **White sticker outline** (~2px) + soft shadow `0 6px 18px rgba(0,0,0,0.12)`.
+- **No outline:** just a soft shadow `0 6px 18px rgba(0,0,0,0.12)` (the white sticker outline was removed so the object itself shines).
 - Floats directly on `bg` with the dot texture; never placed in a card or box.
 
 **Exhibit number:** every object still gets a permanent number when saved (highest so far + 1, never reused), kept in the data for future use (e.g. sharing cards) but not shown in the UI.
@@ -100,7 +101,7 @@ Identical everywhere (grid, empty state, review, detail):
 - **Press:** everything tappable scales to 0.95 (200ms ease).
 - **Screens:** overlays fade in/out (250ms). The snackbar fades and rises 8px.
 - **Progress:** the orange ring fills smoothly, % in the middle.
-- **The reveal** (review opens with a new cut-out): the object starts at 0.86 and flat (no outline or shadow), then over 600ms lifts to full size with a gentle overshoot while the white outline and shadow grow in. Light haptic tap as it lifts.
+- **The reveal** (review opens with a new cut-out): the object starts at 0.86 and flat (no outline or shadow), then over 600ms lifts to full size with a gentle overshoot while the shadow grows in. Light haptic tap as it lifts.
 - **The drop** (back on the grid after saving): the new tile drops in from 24 above at 0.9, overshoots a touch and settles (500ms); the count is already updated. Success haptic as it lands.
 - **Holographic tilt** (detail): the cut-out tilts with the phone, up to 12° each way, smoothed; a soft white/pink/blue glint clipped to the object's shape slides across it. On a desktop it follows the pointer. Stops when the detail closes.
 - Overshoot easing is only for the reveal and the drop; everything else is calm.

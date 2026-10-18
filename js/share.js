@@ -87,15 +87,13 @@ function sparkle(ctx, x, y, s) {
   ctx.restore();
 }
 
-// the cut-out, fitted into a box, with the white sticker outline and soft shadow
-function sticker(ctx, img, x, y, w, h, outline = 6) {
+// the cut-out, fitted into a box, on a soft shadow (no outline, like the app); `depth` sizes the shadow
+function sticker(ctx, img, x, y, w, h, depth = 6) {
   const s = Math.min(w / img.width, h / img.height);
   const dw = img.width * s, dh = img.height * s;
   const dx = x + (w - dw) / 2, dy = y + (h - dh) / 2;
-  const o = outline;
   ctx.save();
-  ctx.filter = [[o, 0], [-o, 0], [0, o], [0, -o], [o * 0.7, o * 0.7], [-o * 0.7, o * 0.7], [o * 0.7, -o * 0.7], [-o * 0.7, -o * 0.7]]
-    .map(([a, b]) => `drop-shadow(${a}px ${b}px 0 #fff)`).join(' ') + ` drop-shadow(0 ${o * 2}px ${o * 5}px rgb(0 0 0 / 0.14))`;
+  ctx.filter = `drop-shadow(0 ${depth * 2}px ${depth * 5}px rgb(0 0 0 / 0.14))`;
   ctx.drawImage(img, dx, dy, dw, dh);
   ctx.restore();
 }
@@ -143,8 +141,10 @@ export async function objectCard(m) {
   for (const [x, y, s] of [[170, 330, 46], [890, 280, 32], [960, 760, 52], [110, 860, 30], [640, 230, 26], [330, 1090, 36], [820, 1060, 28]]) sparkle(ctx, x, y, s);
 
   let y = 1250;
-  text(ctx, m.name, W / 2, y, { font: '700 80px "Bricolage Grotesque"', color: token('--color-text') });
-  y += 76;
+  if (m.name) { // naming is optional: without one, the date line moves up
+    text(ctx, m.name, W / 2, y, { font: '700 80px "Bricolage Grotesque"', color: token('--color-text') });
+    y += 76;
+  }
   text(ctx, copy.item.dateLine(m.date, m.city).toUpperCase(), W / 2, y, { font: '500 32px "Instrument Sans"', color: token('--color-text-secondary'), spacing: 6 });
   if (m.note) {
     ctx.font = '400 40px "Instrument Sans"';
@@ -188,7 +188,7 @@ export async function collectionCard(objects) {
 
   // the legend: "01 grandma's teapot / 02 bath duck / …", never splitting an entry
   ctx.font = '400 30px "Instrument Sans"';
-  const entries = picks.map((m, i) => `${String(i + 1).padStart(2, '0')}\u00a0${m.name.replace(/ /g, '\u00a0')}`);
+  const entries = picks.map((m, i) => `${String(i + 1).padStart(2, '0')}\u00a0${(m.name || copy.item.untitled).replace(/ /g, '\u00a0')}`);
   const lines = [];
   for (const e of entries) {
     const next = lines.length ? `${lines[lines.length - 1]} / ${e}` : e;

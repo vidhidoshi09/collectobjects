@@ -46,14 +46,7 @@ export function showReview(photo, original = null, { fromCamera = false } = {}) 
     backdrop.style.backgroundImage = `url("${original}")`;
     replay(backdrop, 'is-fading');
   }
-
-  // Auto-focus the name after the screen settles, unless a field already has focus
-  setTimeout(() => {
-    const active = document.activeElement;
-    if (!active || active === document.body || !document.getElementById('review-overlay').contains(active)) {
-      document.getElementById('name-input').focus();
-    }
-  }, 300);
+  // no auto-focus: naming is optional, so the keyboard waits for a tap
 }
 
 /* ════════════════════════════════════════════════
@@ -61,7 +54,7 @@ export function showReview(photo, original = null, { fromCamera = false } = {}) 
    Each object gets the next exhibit number, kept for good.
 ════════════════════════════════════════════════ */
 export async function saveObject() {
-  const name  = document.getElementById('name-input').value.trim() || copy.item.untitled;
+  const name  = document.getElementById('name-input').value.trim(); // '' is fine: naming is optional
   const note  = document.getElementById('story-input').value.trim();
   const city  = currentCity();
   const photo = state.pendingPhoto;

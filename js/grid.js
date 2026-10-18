@@ -11,20 +11,19 @@ import { startTilt } from './tilt.js';
 
 /* ════════════════════════════════════════════════
    RENDER GRID
-   An add tile first (top-left), then newest first. Each tile: cut-out, name, date.
-   A just-saved object drops into place (css .card--dropped).
+   Newest first, just the objects: no name or date under them, so the objects shine
+   (both open in the close-up). Capture in the tab bar adds one; the empty screen
+   keeps its own add tile. A just-saved object drops into place (css .card--dropped).
 ════════════════════════════════════════════════ */
+// The name as the person wrote it; '' when they skipped it (older saves stored "untitled object")
+export const nameOf = m => (m.name && m.name !== copy.item.untitled ? m.name : '');
+
 export async function renderGrid() {
   const objects = loadObjects().slice().reverse();
   const srcs = await Promise.all(objects.map(photoSrc));
   const grid = document.getElementById('grid');
 
   document.getElementById('header-count').textContent = copy.home.count(objects.length);
-
-  const addTile = `
-    <button class="card card--add" id="add-tile" type="button" aria-label="${esc(copy.home.add)}">
-      <span class="card__img-wrap"><span class="add-tile"><svg class="icon" aria-hidden="true"><use href="#i-add"/></svg></span></span>
-    </button>`;
 
   document.body.classList.toggle('is-empty', objects.length === 0);
   if (objects.length === 0) {
@@ -47,14 +46,12 @@ export async function renderGrid() {
 
   const dropped = state.justSaved;
   state.justSaved = null;
-  grid.innerHTML = addTile + objects.map((m, i) => `
+  grid.innerHTML = objects.map((m, i) => `
     <div class="card${m.id === dropped ? ' card--dropped' : ''}" role="button" tabindex="0"
-         aria-label="${esc(`${m.name}, ${copy.item.date(m.date)}`)}" data-id="${m.id}" data-no="${m.no}">
+         aria-label="${esc(`${nameOf(m) || copy.item.untitled}, ${copy.item.date(m.date)}`)}" data-id="${m.id}" data-no="${m.no}">
       <div class="card__img-wrap">
         <img class="sticker${m.file?.endsWith('.jpg') ? ' sticker--photo' : ''}" src="${srcs[i]}" alt="" loading="lazy" decoding="async" />
       </div>
-      <p class="card__name">${esc(m.name)}</p>
-      <p class="card__date overline">${esc(copy.item.date(m.date))}</p>
     </div>
   `).join('');
 
@@ -80,10 +77,10 @@ async function openDetail(id) {
 
   const src = await photoSrc(m);
   document.getElementById('detail-img').src = src;
-  document.getElementById('detail-img').alt = m.name;
+  document.getElementById('detail-img').alt = nameOf(m) || copy.item.untitled;
   document.getElementById('detail-img').classList.toggle('sticker--photo', Boolean(m.file?.endsWith('.jpg')));
   document.getElementById('detail-sheen').style.setProperty('--sheen-mask', `url("${src}")`);
-  document.getElementById('detail-name').value = m.name;
+  document.getElementById('detail-name').value = nameOf(m);
   document.getElementById('detail-note').value = m.note || '';
   document.getElementById('detail-meta').textContent = copy.item.dateLine(m.date, m.city);
   document.getElementById('detail-delete').dataset.id = m.id;
@@ -108,7 +105,7 @@ export async function updateOpenObject(changes) {
   renderGrid();
 }
 
-// The ⋯ menu (remove lives here, not one stray tap away)
+// The ⋯ menu (delete lives here, not one stray tap away)
 const menu = document.getElementById('detail-menu');
 const moreBtn = document.getElementById('detail-more');
 export const isDetailMenuOpen = () => !menu.hidden;

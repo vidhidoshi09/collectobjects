@@ -44,20 +44,21 @@ Platforms may only change a word where a platform term differs.
 | `camera.blocked` | Camera permission off | "camera's off. turn it on in settings, or pick a photo instead." |
 | `processing.cutting` | Processing | "framing it…" |
 | `processing.setup` | First-time model download | "getting ready…" + "one-time setup" |
-| `review.name` | Review field | label "name", placeholder "what is it?" |
+| `review.name` | Review field | label "name", placeholder "Name it (optional)"; the keyboard waits for a tap |
 | `review.storyPlaceholder` | Review story | "what's the story? (optional)" |
 | `review.city` | City chip | "Add city" · "finding city…" · the city; a11y "remove london" |
 | `item.dateLine` | Detail date line | "oct 11", or "oct 11 · london" (same year rule) |
 | `toast.cityDenied` / `toast.cityFailed` | City lookup | "Location's off for collectobjects. You can turn it on in Settings" · "Couldn't find your city right now" (error icon) |
 | `review.retake` / `review.save` | Review actions | "retake" (a11y) · "Add to collection" |
-| `item.untitled` | Default name | "untitled object" |
+| `item.untitled` | Accessibility label of an unnamed object (never shown) | "untitled object" |
 | `item.date` | Grid date | "oct 11"; with the year when it isn't this year: "mar 3, 2025" |
 | `greeting` | Toast on the first open of each day (phone's local time, no location) | 5–12 "Good morning" (sunrise) · 12–17 "Good afternoon" (sun) · 17–22 "Good evening" (moon) · otherwise "Up late?" (moon) |
 | `detail.story` | Story field | label "story", placeholder "what's the story?" |
 | `delete.title` / `delete.body` | Delete confirmation | "delete this object?" · "this can't be undone." |
 | `delete.confirm` / `delete.cancel` | Delete actions | "Delete" (destructive) / "Keep it" |
 | `detail.delete` | ⋯ menu item | "Delete" |
-| `detail.share` / `share.collectionTitle` | ⋯ menu item · collection card title | "Share" · "My collection" (a11y for the header button: "share your collection") |
+| `detail.shareLabel` / `share.collectionTitle` | Share button on the close-up (a11y) · collection card title | "share" · "My collection" |
+| `nav.collection` / `nav.capture` | Tab bar | "Collection" · "Capture" (a11y for the bar: "tabs") |
 | `toast.shareFailed` | Share failed | "Couldn't share. Try again?" (error) |
 | `toast.added` | After saving | "Added to your collection" (check) |
 | `toast.deleted` | After delete | "Object deleted" (delete) |

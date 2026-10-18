@@ -1,14 +1,14 @@
 import { App, isNative } from './platform.js';
 import { initStorage, loadObjects } from './storage.js';
 import { hideOverlay, hideAll } from './overlays.js';
-import { renderGrid, updateOpenObject, closeDetail, confirmDelete, deleteObject, toggleDetailMenu, isDetailMenuOpen } from './grid.js';
+import { renderGrid, nameOf, updateOpenObject, closeDetail, confirmDelete, deleteObject, toggleDetailMenu, isDetailMenuOpen } from './grid.js';
 import { openCamera, stopCamera, onShutterPressed, onGalleryPicked } from './camera.js';
 import { saveObject } from './review.js';
 import { showSnackbar } from './snackbar.js';
 import { greetOncePerDay } from './greeting.js';
 import { autoGrow } from './textfield.js';
 import { copy, applyCopy } from './copy.js';
-import { objectCard, collectionCard, shareCard } from './share.js';
+import { objectCard, shareCard } from './share.js';
 
 window.__appReady = true; // the boot check in index.html stays quiet
 applyCopy(); // fills the static markup's words
@@ -16,9 +16,14 @@ applyCopy(); // fills the static markup's words
 /* ════════════════════════════════════════════════
    EVENTS
 ════════════════════════════════════════════════ */
-// the add tile (first in the grid, also on the empty screen) opens the camera
+// Capture in the tab bar, and the add tile on the empty screen, open the camera
 document.getElementById('grid').addEventListener('click', e => {
   if (e.target.closest('#add-tile')) openCamera();
+});
+document.getElementById('tab-capture').addEventListener('click', openCamera);
+// Collection is the open tab: tapping it again scrolls back to the top
+document.getElementById('tab-collection').addEventListener('click', () => {
+  document.getElementById('home').scrollTo({ top: 0, behavior: 'smooth' });
 });
 document.getElementById('camera-close').addEventListener('click', () => { stopCamera(); hideAll(); });
 document.getElementById('shutter-btn').addEventListener('click', onShutterPressed);
@@ -47,10 +52,9 @@ document.getElementById('story-input').addEventListener('input', e => autoGrow(e
 
 // Detail view
 document.getElementById('detail-close').addEventListener('click', closeDetail);
+// naming is optional, so clearing the name is allowed too
 document.getElementById('detail-name').addEventListener('change', e => {
-  const name = e.target.value.trim();
-  if (name) updateOpenObject({ name });
-  else e.target.value = loadObjects().find(m => String(m.id) === document.getElementById('detail-delete').dataset.id)?.name || '';
+  updateOpenObject({ name: e.target.value.trim() });
 });
 document.getElementById('detail-name').addEventListener('keydown', e => {
   if (e.key === 'Enter') e.target.blur();
@@ -70,11 +74,7 @@ document.addEventListener('click', e => {
 document.getElementById('detail-share').addEventListener('click', () => {
   const m = loadObjects().find(x => String(x.id) === document.getElementById('detail-delete').dataset.id);
   toggleDetailMenu(false);
-  if (m) shareCard(objectCard(m), m.name);
-});
-document.getElementById('share-collection').addEventListener('click', () => {
-  const objects = loadObjects();
-  if (objects.length) shareCard(collectionCard(objects), copy.share.collectionTitle);
+  if (m) shareCard(objectCard({ ...m, name: nameOf(m) }), nameOf(m));
 });
 document.getElementById('detail-delete').addEventListener('click', async e => {
   const id = e.currentTarget.dataset.id;

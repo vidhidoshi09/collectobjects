@@ -22,8 +22,8 @@
 
 ### Now (v1, Android)
 - **Snap or pick a photo.** The object is cut out on the device (ML Kit Subject Segmentation) and lifts off the page with a soft glow, sparkles and a haptic tap.
-- **Name it and keep its story,** with an optional city (approximate location, city name only).
-- **Your collection,** newest first, with a close-up that tilts with the phone and catches the light.
+- **Name it (optional) and keep its story,** with an optional city (approximate location, city name only).
+- **Your collection,** just the objects, newest first, with a floating Liquid Glass tab bar (Collection, Capture) and a close-up that tilts with the phone and catches the light.
 - **Share cards:** one object, or your whole collection as a numbered "starter pack", story-sized for Instagram and friends.
 - **Little touches:** a time-of-day greeting, toasts with icons, a quiet ⋯ menu for delete.
 - **Private by design:** no account, no ads, no tracking. Photos and stories are stored only on the device.

@@ -2,6 +2,14 @@
 
 What changed, when, and why. Newest first. (Formerly "Memories".)
 
+## Tab bar, Liquid Glass, objects that shine
+
+- **Tab bar:** a Liquid Glass capsule floating over the collection, on Android and iPhone: **Collection** and **Capture** (opens the camera). The grey add tile left the grid; the empty screen keeps its own.
+- **Liquid Glass buttons:** close, share, ⋯ and retake are see-through glass with a bright rim.
+- **Objects shine:** no name or date under the grid tiles (both live in the close-up), rows sit closer, and cut-outs lost the white outline (soft shadow only, in the share cards too).
+- **Naming is optional:** the keyboard no longer opens by itself, the field says "Name it (optional)", and an unnamed object shows no "untitled object" label anywhere. A name can be cleared in the close-up.
+- **Share on the close-up:** its own button next to ⋯ (the menu keeps Delete). The header share button for the collection card was removed.
+
 ## iPhone app (in testing)
 
 - Added the **iOS app** (`ios/`), the same web UI through Capacitor, so collectobjects can run on iPhone.

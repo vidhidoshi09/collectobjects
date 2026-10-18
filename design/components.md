@@ -9,7 +9,8 @@ the native v2. Metrics are in [`foundations.md`](foundations.md) and the platfor
 | Component | Behavior (all platforms) | Android (v1) | iOS (v2, SwiftUI) |
 |---|---|---|---|
 | **Screen header** | Title "Collection", count | Brand: `display` title, count in `overline` small caps like the dates (no date) | `NavigationStack` large title + subtitle |
-| **Add tile** | Starts a new object; always first in the grid (top-left), on the empty screen too | Brand: small square (56% of a cell) centred where a cut-out would sit, `round` bg, radius 16, 24 `add`; no label (a11y "add an object") | Toolbar `plus` button or bottom glass button (`.glassProminent`, brand tint) |
+| **Tab bar** | Collection (open tab) and Capture (opens the camera) | Liquid Glass capsule floating 16 above the bottom on Android and iPhone: see-through paper, blur, bright rim, one shadow; open tab tinted `hue-ink` on a pressed fill; Instrument Sans 11 labels | `TabView` with Liquid Glass (iOS 26) |
+| **Add tile** | Starts a new object; on the empty screen only (Capture in the tab bar does it elsewhere) | Brand: small square (56% of a cell) centred where a cut-out would sit, `round` bg, radius 16, 24 `add`; no label (a11y "add an object") | Toolbar `plus` button or bottom glass button (`.glassProminent`, brand tint) |
 | **Primary button** (Add to collection, Add an object) | One per screen, brand orange | Brand pill: 52 high, `accent` bg, `on-accent` `label` text, orange glow | `.buttonStyle(.glassProminent)` tinted brand orange |
 | **Secondary button** (retake) | Lower emphasis, icon only | Brand round: 52 circle, `round` bg, 24 `text` icon | `.buttonStyle(.glass)` |
 | **Close** (camera, review, detail) | Leaves the screen | Brand: 40 translucent-dark circle (48 target), 16 from top-left, white 24 `close` | System navigation bar / toolbar item (Liquid Glass) |
@@ -45,9 +46,9 @@ the native v2. Metrics are in [`foundations.md`](foundations.md) and the platfor
 
 ## Screens
 
-1. **Home (grid):** header ("collection" / "4 objects"), 2-column grid of square tiles (name + "oct 11"): the add tile first, then newest first. A just-saved object drops in.
+1. **Home (grid):** header ("Collection" / "4 objects"), 2-column grid of square tiles with **just the objects** (no name or date, so they shine), newest first; the glass tab bar floats at the bottom. A just-saved object drops in.
 2. **Empty state:** header ("collection" / "0 objects") and the add tile as usual; below, centred: three sample cut-outs, "Start collecting", "Snap a trinket, cut it out, keep its story." No orange button.
 3. **Camera:** full-bleed preview, close top-left, gallery + shutter at the bottom.
 4. **Processing:** orange ring with % inside, "framing it…", optional sub-label.
-5. **Review:** close; centred as one group: cut-out that lifts off the page (shrinks, never crops, when the keyboard opens), name "what is it?", optional story, city chip, round retake + "Add to collection" pill.
+5. **Review:** close; centred as one group: cut-out that lifts off the page (shrinks, never crops, when the keyboard opens), name "Name it (optional)" (no auto keyboard), optional story, city chip, round retake + "Add to collection" pill.
 6. **Detail:** close, floating cut-out that tilts with the phone, then open on the page, centred: name, the date ("oct 11", or "oct 11 · london"), the story (no box, no number). ⋯ top-right → menu → Delete (→ native confirmation "delete this object?").
