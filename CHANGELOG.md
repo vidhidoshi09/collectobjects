@@ -2,6 +2,10 @@
 
 What changed, when, and why. Newest first. (Formerly "Memories".)
 
+## v1.0.0: first GitHub Release
+
+- Pushing a version tag (`v1.0.0`, …) now publishes a **GitHub Release** with the APK attached (`collectobjects-v1.0.0.apk`), so testers and portfolio visitors can download it on their phone without unzipping an Actions artifact.
+
 ## Unreleased (in progress)
 
 **Identity**

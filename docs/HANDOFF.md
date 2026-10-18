@@ -11,7 +11,7 @@ Branch: `claude/blissful-hypatia-ww0fmk` (make it the repo's default branch so t
 | What | Where |
 |---|---|
 | Live web preview | https://collectobjects.vercel.app (Vercel project `collectobjects`, Production tracks this branch; every push deploys) |
-| Android APK | GitHub → **Actions** → newest green run → artifact `collectobjects-debug-apk` |
+| Android APK | GitHub → **Releases** → latest (`collectobjects-vX.Y.Z.apk`); every push also leaves an artifact under **Actions** |
 | Repo | https://github.com/vidhidoshi09/collectobjects (renamed from `pictureapp`) |
 | Portfolio page | `README.md` (feature graphic, 5 screens, the ML Kit explanation, product updates) |
 | Design system | `design.md`, `design/` (foundations, components, content, tokens, platforms), `design/research/competitors.md` |
@@ -70,7 +70,9 @@ In Android Studio: File → Sync Project with Gradle Files → Build → Clean P
 
 **If `git pull` says "Repository not found"** (repo renamed/private): `git remote set-url origin https://github.com/vidhidoshi09/collectobjects.git`, and sign in with `brew install gh && gh auth login && gh auth setup-git`.
 
-**APK without Android Studio:** Actions → newest green run → `collectobjects-debug-apk` → unzip → install `app-debug.apk` (allow unknown apps; Samsung: turn off Auto Blocker while installing).
+**APK without Android Studio:** Releases → latest → download the `.apk` on the phone and open it. Or Actions → newest green run → `collectobjects-debug-apk` → unzip → install `app-debug.apk` (allow unknown apps; Samsung: turn off Auto Blocker while installing).
+
+**Release for testers (GitHub, free):** bump `versionName`/`versionCode` in `android/app/build.gradle`, then `git tag vX.Y.Z && git push origin vX.Y.Z`; the Action publishes a GitHub Release with the APK. Each CI build is signed with a fresh debug key, so testers must uninstall the old version (which deletes their objects) before installing a new one, until we sign with a fixed key.
 
 **Release (Play Store):** see README "Release build": create the upload key (never commit it or share the password), `android/keystore.properties`, `npm run release` → `.aab`. Bump `versionCode` each upload.
 
@@ -79,6 +81,8 @@ In Android Studio: File → Sync Project with Gradle Files → Build → Clean P
 **Working style that worked:** one step at a time; show a picture before building UI; mock-ups first, then code; keep the UI polish for when the flow is settled; screenshots of the whole app after design changes.
 
 ## 5. Launch plan (GTM)
+
+0. ☑ Free download for testers and the portfolio: GitHub Release `v1.0.0` with the APK. Play's free "personal apps" (Oct 2026) only cover apps built in Google AI Studio, private to your own device, so a public Play launch still needs the $25 developer account.
 
 1. ☐ Test the APK on a real phone end to end (cut-out, city, share sheet into Instagram story, haptics, back button). The blank-screen report from earlier was never diagnosed; the error card will show the cause if it recurs.
 2. ☐ Play Console account ($25 + identity check; can take days, start early).

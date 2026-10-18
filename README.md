@@ -8,7 +8,7 @@
 
 ## Try it
 - **Live web preview:** **https://collectobjects.vercel.app**
-- **Android app (the full experience):** open the latest green run under [**Actions**](../../actions), download `collectobjects-debug-apk`, unzip it and install `app-debug.apk` on an Android phone.
+- **Android app (the full experience):** download the APK from the [**latest release**](../../releases/latest) on an Android phone and open it to install.
 
 > **Why the web preview isn't the full experience.** The heart of the app, cutting your object out of the photo, runs **on the phone** with **Google ML Kit Subject Segmentation**, an on-device machine-learning model that ships with Google Play services. It finds the main object in the photo and returns a soft-edged mask, so the cut-out looks clean and **your photo never leaves the phone**. Browsers can't use that Android model, so on the web a photo is kept whole. "Add city" (Android's geocoder), haptics and the native share sheet are Android-only too. The web preview is there to show the design and the flow; install the APK to see the cut-out.
 
@@ -75,7 +75,11 @@ Saving `index.html` or a file in `css/` or `js/` now refreshes the app on the em
 ## Android app
 
 ### Get an APK without installing anything
-Each push runs the **Android APK** GitHub Action. Open the run under the repo's **Actions** tab, download the `collectobjects-debug-apk` artifact, unzip it, and install `app-debug.apk` on your phone. To install it, allow "Install unknown apps" for your browser or file manager.
+The easiest way: download `collectobjects-vX.Y.Z.apk` from the [**latest release**](../../releases/latest) on your phone and open it. To install it, allow "Install unknown apps" for your browser or file manager.
+
+Each push also runs the **Android APK** GitHub Action: open the run under the repo's **Actions** tab, download the `collectobjects-debug-apk` artifact, unzip it, and install `app-debug.apk`.
+
+**Publish a new release:** bump `versionName` (and `versionCode`) in `android/app/build.gradle`, then push a matching tag, e.g. `git tag v1.0.1 && git push origin v1.0.1`. The Action builds the APK and publishes the release with it attached.
 
 ### Build locally
 Requirements: Node 20+, JDK 21, Android Studio (with the Android SDK).
