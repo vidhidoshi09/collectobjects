@@ -83,6 +83,9 @@ export const copy = {
     confirm: 'Delete',
     cancel: 'Keep it',
   },
+  tumble: {
+    tidy: 'Tidy up', // shake to tumble: puts the objects back in the grid
+  },
   share: {
     collectionTitle: `My ${COLLECTION}`, // the collection card's title
     dialogTitle: 'Share',

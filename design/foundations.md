@@ -111,8 +111,9 @@ Identical everywhere (grid, empty state, review, detail):
 - **Flight** (open a close-up): the object flies from its tile into the close-up with a soft overshoot (460ms) while the screens cross-fade and the glow blooms in behind it; closing, it flies home to its tile (380ms).
 - **Poof** (delete): the object shrinks to 0.6, blurs and fades (260ms) before the close-up closes.
 - **Tab bar:** shrinks to its icons when you scroll down, labels come back when you scroll up.
-- **Haptics** (Android and iPhone): light on a tab, opening an object, the ⋯ menu, Share and the reveal; medium on Capture and the shutter; success on save; warning on delete.
-- **Reduce motion:** arrival and drop become fades; no flight, poof, tilt or sheen.
+- **Haptics** (Android and iPhone, `Feel` plugin for the tumble: Core Haptics / amplitude): light on a tab, opening an object, the ⋯ menu, Share and the reveal; medium on Capture and the shutter; success on save; warning on delete.
+- **Shake to tumble:** a hard shake (3 jolts over 2.2 g within 0.8s) on the home screen drops the objects into a physics pile (Matter.js), each body the convex outline of its cut-out. Landing taps scale with impact and the object's weight (how much of the tile it fills); sharpness comes from its shape (thin or spiky = sharp, round and full = soft). Rumble on let-go, light tick on pick-up. Tidy up flies them home (520ms, slight overshoot).
+- **Reduce motion:** arrival and drop become fades; no flight, poof, tilt, sheen or tumble.
 
 ---
 

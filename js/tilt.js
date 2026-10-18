@@ -1,8 +1,9 @@
 import { reducedMotion } from './motion.js';
+import { onMotion } from './sensors.js';
 
 /* ════════════════════════════════════════════════
    HOLOGRAPHIC TILT — detail view (2.5D)
-   The cut-out tilts with the phone (deviceorientation) or, on a desktop,
+   The cut-out tilts with the phone (js/sensors.js: Core Motion on iPhone) or, on a desktop,
    follows the pointer. A sheen clipped to the object's shape slides across
    it (css: .tilt, .sheen). Smoothed every frame; nothing runs with
    reduce motion on. startTilt() returns stop(), which removes every listener.
@@ -46,7 +47,7 @@ export function startTilt(el) {
     frame = requestAnimationFrame(step);
   };
 
-  addEventListener('deviceorientation', onOrientation);
+  const stopMotion = onMotion(onOrientation);
   if (finePointer) {
     addEventListener('pointermove', onPointer);
     document.documentElement.addEventListener('pointerleave', onLeave);
@@ -54,7 +55,7 @@ export function startTilt(el) {
   frame = requestAnimationFrame(step);
 
   return function stop() {
-    removeEventListener('deviceorientation', onOrientation);
+    stopMotion();
     removeEventListener('pointermove', onPointer);
     document.documentElement.removeEventListener('pointerleave', onLeave);
     cancelAnimationFrame(frame);

@@ -26,6 +26,7 @@
 - **Your collection,** just the objects, newest first, with a floating Liquid Glass tab bar (Collection, Capture) and a close-up that tilts with the phone and catches the light.
 - **Share cards:** one object, or your whole collection as a numbered "starter pack", story-sized for Instagram and friends.
 - **The close-up is a carousel:** swipe through your collection with a haptic tick on each object; Share and Delete (it asks first) sit just below.
+- **Shake to tumble:** shake hard and the whole collection falls into a pile you can drag and toss around, each object with its own weight and feel in the haptics.
 - **Little touches:** a time-of-day greeting, toasts with icons, objects that fly open and scatter the rest, a tab bar that shrinks as you scroll.
 - **Private by design:** no account, no ads, no tracking. Photos and stories are stored only on the device.
 - **Play Store ready:** icon, store listing, screenshots, privacy policy and Data safety answers in [`store/`](store).
@@ -154,5 +155,6 @@ The Swift twins of the Android plugins are in `ios/App/App/` (see [`design/platf
   - `overlays.js`, `format.js`: overlay show/hide, date and HTML helpers.
   - `snackbar.js`: snackbar messages.
   - `carousel.js`, `flight.js`: the swipeable close-up; the fly-open, scatter and poof animations.
+  - `tumble.js`, `sensors.js`: shake to tumble (Matter.js physics, haptics from each cut-out); the phone's motion on every platform.
 - `src/native.js`: source of `vendor/native.js` (bundled by `npm run vendor`).
 - `assets/`: images and fonts (Bricolage Grotesque, Instrument Sans; OFL). `android/`: the Capacitor Android project. `www/`: build output.

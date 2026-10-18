@@ -7,5 +7,6 @@ class MainViewController: CAPBridgeViewController {
         bridge?.registerPluginInstance(BackgroundRemoverPlugin())
         bridge?.registerPluginInstance(NativeUiPlugin())
         bridge?.registerPluginInstance(PlacePlugin())
+        bridge?.registerPluginInstance(FeelPlugin())
     }
 }

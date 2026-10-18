@@ -26,7 +26,7 @@ Branch: `claude/blissful-hypatia-ww0fmk` (make it the repo's default branch so t
 
 - Android app (Capacitor: web UI + native Java plugins). iPhone app in testing (same web UI + Swift twins of the plugins in `ios/App/App/`, Apple Vision cut-out, iOS 17+). Web preview on Vercel.
 - **Cut-out:** Google **ML Kit Subject Segmentation**, on the device (`BackgroundRemoverPlugin.java`): confidence mask → soft edges, stray islands removed, cropped. Photos never leave the phone. Not available in browsers, so the web preview keeps the whole photo.
-- **Features (v1):** camera + gallery, cut-out reveal (lift, glow, sparkles, haptic), optional name + optional city (`PlacePlugin.java`: coarse location → Android Geocoder → city name only), collection grid (just the objects) with a Liquid Glass tab bar (Collection, Capture), close-up carousel (swipe with haptics, tilt + holographic sheen, Share and Delete with native confirm), share cards (one object / numbered "My collection" starter pack, 1080×1920, `js/share.js`), daily greeting toast, toasts with icons, on-screen boot error card (if the app fails to start it says why).
+- **Features (v1):** camera + gallery, cut-out reveal (lift, glow, sparkles, haptic), optional name + optional city (`PlacePlugin.java`: coarse location → Android Geocoder → city name only), collection grid (just the objects) with a Liquid Glass tab bar (Collection, Capture), close-up carousel (swipe with haptics, tilt + holographic sheen, Share and Delete with native confirm), shake to tumble (physics pile, Matter.js, haptics from each cut-out via the `Feel` plugin: Core Haptics / Core Motion on iPhone, amplitude vibration on Android), share cards (one object / numbered "My collection" starter pack, 1080×1920, `js/share.js`), daily greeting toast, toasts with icons, on-screen boot error card (if the app fails to start it says why).
 - **Privacy:** no account, no ads, no analytics. Data lives in app storage (`objects.json` + `objects/`). Uninstall deletes everything.
 
 ## 3. Decisions (and why)
@@ -102,7 +102,6 @@ In Android Studio: File → Sync Project with Gradle Files → Build → Clean P
 - "On this day" toast.
 - Camera framing guide ("one object, fully in frame").
 - Edit affordance on the close-up (pencil when the name is empty).
-- Shake to tumble: shaking the phone drops every object into a pile you can drag around (with haptics on each landing). Mock-up first.
 - **Web cut-out (optional):** a Vercel function `api/remove-bg.js` that holds a remove.bg key in env `REMOVE_BG_API_KEY` (size `preview` is free), checks the request comes from our own site, posts `image_file_b64` to `https://api.remove.bg/v1.0/removebg`, and returns the PNG as base64; the web client calls it only when not native and quietly keeps the photo if it returns 404/501. The old remove.bg key is visible in git history (commit `d3e3c66`): revoke it in the remove.bg dashboard.
 - iPhone v1 (Capacitor) is built; to do: test on a real iPhone (cut-out, city, share, haptics, camera permission), then TestFlight ($99/year). Native v2 later: SwiftUI + Liquid Glass, Apple Vision cut-outs (`VNGenerateForegroundInstanceMaskRequest`), 3D scans with Object Capture on LiDAR iPhones.
 - Dark mode (same palette flipped: deep cola background, cream text, the same glow).

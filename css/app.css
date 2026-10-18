@@ -710,6 +710,26 @@ body:has(.overlay.active) .tabbar { visibility: hidden; }
 .tabbar-min .tabbar__tab span { opacity: 0; font-size: 0; }
 
 /* ═══════════════════════════════════════
+   SHAKE TO TUMBLE — js/tumble.js
+   The objects leave the grid and pile up on top of everything else on the
+   home screen; the tab bar steps aside. "Tidy up" is a glass pill top-right.
+═══════════════════════════════════════ */
+#tumble { position: fixed; inset: 0; z-index: var(--z-tabbar); touch-action: none; overflow: hidden; }
+.tumble__obj { position: absolute; left: 0; top: 0; pointer-events: none; will-change: transform; }
+.tumble__tidy {
+  position: absolute;
+  top: calc(var(--space-24) + env(safe-area-inset-top, 0px));
+  right: calc(var(--screen-margin) + env(safe-area-inset-right, 0px));
+  height: var(--close-size); padding: 0 var(--space-16);
+  border-radius: var(--radius-full);
+  font: var(--type-label); letter-spacing: var(--tracking-label); color: var(--color-text);
+  animation: rise 420ms var(--easing-out) 600ms backwards;
+}
+.tumble__tidy:active { transform: scale(var(--press-scale)); }
+body.is-tumbling #grid { visibility: hidden; }
+body.is-tumbling .tabbar { visibility: hidden; }
+
+/* ═══════════════════════════════════════
    SNACKBAR — js/snackbar.js
    Paper card (the menu's surface, radius and shadow): orange icon + Sentence-case message, centred above
    the bottom; moves up to clear any .snackbar-anchor on the open screen.

@@ -7,6 +7,7 @@ import { saveObject } from './review.js';
 import { showSnackbar } from './snackbar.js';
 import { greetOncePerDay } from './greeting.js';
 import { tapLight, tapMedium } from './haptics.js';
+import { initTumble } from './tumble.js';
 import { copy, applyCopy } from './copy.js';
 import { objectCard, shareCard } from './share.js';
 
@@ -89,11 +90,15 @@ document.addEventListener('keydown', e => {
   hideAll();
 });
 
+// Shake hard on the home screen: everything tumbles into a pile (js/tumble.js)
+const tumble = initTumble();
+
 // Android hardware back button
 if (isNative) {
   App.addListener('backButton', () => {
     const isActive = id => document.getElementById(id).classList.contains('active');
     if (isActive('processing-overlay')) return; // let background removal finish
+    if (tumble.isTumbling()) return tumble.tidy();
     if (isActive('review-overlay'))  return document.getElementById('review-close').click();
     if (isActive('camera-overlay'))  return document.getElementById('camera-close').click();
     if (isActive('detail-overlay'))  return document.getElementById('detail-close').click();

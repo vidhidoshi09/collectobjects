@@ -2,6 +2,13 @@
 
 What changed, when, and why. Newest first. (Formerly "Memories".)
 
+## Shake to tumble, Core Haptics, motion that works on iPhone
+
+- **Shake to tumble** (home screen only): shake hard and every object falls into a heap with real physics (Matter.js), each shaped like its own cut-out. Drag, toss and stack them; tilting the phone rolls them around; **Tidy up** flies them back into the grid.
+- **Haptics worked out from each cut-out**, since we can't know the objects: fuller objects land heavier, thin or spiky ones feel sharp and clicky, round ones soft and dull. A rumble when the pile lets go, a tick when you pick one up.
+- **New native plugin `Feel`:** Core Haptics on iPhone (exact strength and sharpness per tap) and amplitude-controlled vibration on Android; Core Motion on iPhone.
+- **Fixed: the close-up tilt didn't move on iPhone.** Web-view motion events need a permission there; motion now comes from Core Motion (no prompt), through `js/sensors.js`.
+
 ## Close-up carousel, no more stories
 
 - **The close-up is a carousel:** swipe left and right through your whole collection, with a light haptic tick on each object. The middle object glows and tilts; its neighbours peek in. No page dots.

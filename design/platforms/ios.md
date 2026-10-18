@@ -10,6 +10,7 @@ native pieces have Swift twins in `ios/App/App/`, registered in `MainViewControl
 | `BackgroundRemoverPlugin` | `BackgroundRemoverPlugin.swift` | Apple Vision `VNGenerateForegroundInstanceMaskRequest` (iOS 17+, on the device), then the same soft edges, island removal and crop |
 | `PlacePlugin` | `PlacePlugin.swift` | approximate location (`NSLocationDefaultAccuracyReduced`) → `CLGeocoder` → city name only |
 | `NativeUiPlugin` | `NativeUiPlugin.swift` | `UIAlertController` (Delete in red) |
+| `FeelPlugin` | `FeelPlugin.swift` | Core Haptics (tap strength + sharpness, rumble) and Core Motion (tilt and shake, no permission prompt) |
 
 Permission texts live in `ios/App/App/Info.plist`, in the app's voice. Portrait only.
 Below iOS 17, and in the Simulator, the cut-out is not available and the photo stays whole.

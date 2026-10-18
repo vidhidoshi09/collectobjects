@@ -20,6 +20,7 @@
 		A1C0B00000000000000000B2 /* BackgroundRemoverPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C0B00000000000000000A2 /* BackgroundRemoverPlugin.swift */; };
 		A1C0B00000000000000000B3 /* PlacePlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C0B00000000000000000A3 /* PlacePlugin.swift */; };
 		A1C0B00000000000000000B4 /* NativeUiPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C0B00000000000000000A4 /* NativeUiPlugin.swift */; };
+		A1C0B00000000000000000B5 /* FeelPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C0B00000000000000000A5 /* FeelPlugin.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		A1C0B00000000000000000A2 /* BackgroundRemoverPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundRemoverPlugin.swift; sourceTree = "<group>"; };
 		A1C0B00000000000000000A3 /* PlacePlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacePlugin.swift; sourceTree = "<group>"; };
 		A1C0B00000000000000000A4 /* NativeUiPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeUiPlugin.swift; sourceTree = "<group>"; };
+		A1C0B00000000000000000A5 /* FeelPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeelPlugin.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +77,7 @@
 				9582B6822FE993A50072D4E8 /* SceneDelegate.swift */,
 				50379B222058CBB4000EE86E /* capacitor.config.json */,
 				504EC3071FED79650016851F /* AppDelegate.swift */,
+				A1C0B00000000000000000A5 /* FeelPlugin.swift */,
 				A1C0B00000000000000000A4 /* NativeUiPlugin.swift */,
 				A1C0B00000000000000000A3 /* PlacePlugin.swift */,
 				A1C0B00000000000000000A2 /* BackgroundRemoverPlugin.swift */,
@@ -172,6 +175,7 @@
 			files = (
 				504EC3081FED79650016851F /* AppDelegate.swift in Sources */,
 				9582B6832FE993A70072D4E8 /* SceneDelegate.swift in Sources */,
+				A1C0B00000000000000000B5 /* FeelPlugin.swift in Sources */,
 				A1C0B00000000000000000B4 /* NativeUiPlugin.swift in Sources */,
 				A1C0B00000000000000000B3 /* PlacePlugin.swift in Sources */,
 				A1C0B00000000000000000B2 /* BackgroundRemoverPlugin.swift in Sources */,

@@ -10,6 +10,7 @@ public class MainActivity extends BridgeActivity {
         registerPlugin(BackgroundRemoverPlugin.class);
         registerPlugin(NativeUiPlugin.class);
         registerPlugin(PlacePlugin.class);
+        registerPlugin(FeelPlugin.class);
         super.onCreate(savedInstanceState);
     }
 }
