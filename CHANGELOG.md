@@ -2,6 +2,13 @@
 
 What changed, when, and why. Newest first. (Formerly "Memories".)
 
+## Name suggestions, native buttons
+
+- **Name suggestions:** after the cut-out, up to three small glass chips under the name ("Could be") suggest what it is, worked out on the phone (Apple Vision image classification on iPhone, Google ML Kit image labeling on Android; offline, private). Tap one to use it; typing your own hides them. Generic labels ("material", "indoor"…) are filtered out.
+- **Copy:** the name field says "Give it a name".
+- **Native buttons:** Add to collection is a dark, tinted Liquid Glass capsule; Retake, Share and Delete are glass circles.
+- Home-screen and lock-screen widgets and 3D scans are designed (`design/mockups/autoname-widgets-3d.png`) and on hold.
+
 ## Shake to tumble, Core Haptics, motion that works on iPhone
 
 - **The film feel:** the pile runs in slow motion (60% speed, soft gravity), bounces more, drifts with a little air, sways gently and now and then one object does a soft hop, so it is never quite still; fast objects get a touch of motion blur.

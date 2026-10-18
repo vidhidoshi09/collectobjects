@@ -129,6 +129,7 @@
   --text-measure-wide: 340px; /* name column on the detail screen */
   --card-image-inset:  5%;
   --chip-height:       40px; /* city chip */
+  --suggest-height:    30px; /* name suggestion chips */
   --processing-wash:   0.55;
   --toast-clearance:   112px; /* grid bottom padding: a toast never covers the last row */
   --add-tile-solo:     64px; /* the add tile on the empty screen */
@@ -260,22 +261,25 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
 /* ═══════════════════════════════════════
    BUTTONS
 ═══════════════════════════════════════ */
-/* Primary: dark grey rounded rectangle (Add to collection), the add tile's shape */
+/* Primary: a dark, tinted Liquid Glass capsule (Add to collection), like iOS 26's prominent glass button */
 .btn-primary {
   display: inline-flex; align-items: center; justify-content: center; gap: var(--space-8);
   height: var(--button-height);
   padding: 0 var(--space-32);
-  border-radius: var(--radius-md);
-  background: var(--color-ink); color: var(--color-on-ink);
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--color-ink) 88%, transparent); color: var(--color-on-ink);
+  backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+  border: 0.5px solid rgb(255 255 255 / 0.18);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.22), inset 0 -1px 0 rgb(255 255 255 / 0.06), var(--shadow-menu);
   font: var(--type-label); letter-spacing: var(--tracking-label);
   white-space: nowrap;
 }
 
-/* Secondary: a glass rounded square (Retake), the add tile's shape */
+/* Secondary: a glass circle (Retake, Share, Delete) */
 .btn-round {
   width: var(--button-height); height: var(--button-height); flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   color: var(--color-text);
 }
 
@@ -557,6 +561,23 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
 
 /* The name reads as the object's title, not a form: no line, just the orange caret */
 .review-name { flex-shrink: 0; margin-top: var(--space-32); border-bottom-color: transparent !important; }
+
+/* Name suggestions: small-caps title, up to three glass chips (js/review.js) */
+.suggest { flex-shrink: 0; margin-top: var(--space-8); text-align: center; animation: rise 360ms var(--easing-out) backwards; }
+.suggest[hidden] { display: none; }
+.suggest__chips { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-8); margin-top: var(--space-8); }
+.suggest__chip {
+  display: inline-flex; align-items: center; gap: var(--space-4);
+  height: var(--suggest-height); padding: 0 var(--space-12);
+  border-radius: var(--radius-full);
+  font: var(--weight-medium) 12px/1 var(--font-family); color: var(--color-text);
+  --icon-size: 10px;
+  transition: transform var(--duration-press) var(--easing), background-color var(--duration-press) var(--easing);
+}
+.suggest__chip .icon { color: var(--hue-ink); }
+.suggest__chip:active { transform: scale(var(--press-scale)); }
+.suggest__chip.is-picked { background: var(--color-ink); color: var(--color-on-ink); border-color: transparent; }
+.suggest__chip.is-picked .icon { color: var(--color-on-ink); }
 
 /* City chip: "add city", or the city once found (tap to take it off) */
 .chip {

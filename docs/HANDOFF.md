@@ -47,7 +47,7 @@ Branch: `claude/blissful-hypatia-ww0fmk` (make it the repo's default branch so t
 **Screens**
 - Empty: header + samples + "Start collecting" / "A little home for your trinkets and keepsakes." + dark + tile.
 - Grid: just the objects (no names or dates), newest first; a Liquid Glass tab bar floats at the bottom (Collection, Capture). The add tile only stays on the empty screen.
-- Save screen: centred group (object, name "Name it (optional)", no auto keyboard, city chip, retake + "Add to collection").
+- Save screen: centred group (object, name "Give it a name", no auto keyboard, "Could be" name suggestion chips from Vision / ML Kit, city chip, retake + "Add to collection").
 - Close-up: a carousel of the collection: name and "oct 11 · london" on top, the object in the middle with its neighbours peeking in, swipe with a haptic tick; Share and Delete (asks first) as 44px glass buttons below. No story, no page dots. Opening: the other tiles scatter, the object flies in, the name rises.
 
 **Icon**
@@ -103,6 +103,8 @@ In Android Studio: File → Sync Project with Gradle Files → Build → Clean P
 - Camera framing guide ("one object, fully in frame").
 - Edit affordance on the close-up (pencil when the name is empty).
 - **Web cut-out (optional):** a Vercel function `api/remove-bg.js` that holds a remove.bg key in env `REMOVE_BG_API_KEY` (size `preview` is free), checks the request comes from our own site, posts `image_file_b64` to `https://api.remove.bg/v1.0/removebg`, and returns the PNG as base64; the web client calls it only when not native and quietly keeps the photo if it returns 404/501. The old remove.bg key is visible in git history (commit `d3e3c66`): revoke it in the remove.bg dashboard.
+- **Widgets (on hold, designed):** home screen (small: one object a day / your newest few; medium: "From your collection" with name, date, city) and lock screen (round silhouette, wide count + newest). WidgetKit on iPhone needs an App Group to read the collection, which needs the paid Apple Developer account; Android uses an AppWidget (Glance). See `design/mockups/autoname-widgets-3d.png`.
+- **3D scans (on hold, designed):** Object Capture on LiDAR iPhones (Pro, iOS 17+): walk around the object, get a USDZ; the close-up turns it with a finger and "View in your room" opens AR Quick Look.
 - iPhone v1 (Capacitor) is built; to do: test on a real iPhone (cut-out, city, share, haptics, camera permission), then TestFlight ($99/year). Native v2 later: SwiftUI + Liquid Glass, Apple Vision cut-outs (`VNGenerateForegroundInstanceMaskRequest`), 3D scans with Object Capture on LiDAR iPhones.
 - Dark mode (same palette flipped: deep cola background, cream text, the same glow).
 

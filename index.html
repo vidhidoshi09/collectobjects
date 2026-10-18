@@ -102,6 +102,11 @@
     <input class="name-field review-name" id="name-input" type="text" data-copy-placeholder="review.namePlaceholder" data-copy-aria="review.name"
            maxlength="40" autocomplete="off" autocorrect="off"
            autocapitalize="none" spellcheck="false" enterkeyhint="next" />
+    <!-- name suggestions from the photo (on the device); tap one to use it -->
+    <div class="suggest" id="name-suggest" data-copy-aria="review.suggestLabel" hidden>
+      <p class="overline" data-copy="review.suggestTitle"></p>
+      <div class="suggest__chips" id="name-suggest-chips"></div>
+    </div>
     <!-- optional: the city it was found in (Android only; approximate location, city name only) -->
     <button class="chip" id="city-chip" type="button" hidden>
       <svg class="icon" aria-hidden="true"><use href="#i-location"/></svg>

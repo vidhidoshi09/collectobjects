@@ -16,6 +16,13 @@ import com.google.android.gms.common.moduleinstall.ModuleInstallClient;
 import com.google.android.gms.common.moduleinstall.ModuleInstallRequest;
 import com.google.android.gms.common.moduleinstall.ModuleInstallStatusUpdate;
 import com.google.mlkit.vision.common.InputImage;
+import com.google.mlkit.vision.label.ImageLabel;
+import com.google.mlkit.vision.label.ImageLabeler;
+import com.google.mlkit.vision.label.ImageLabeling;
+import com.google.mlkit.vision.label.defaults.ImageLabelerOptions;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import com.getcapacitor.JSArray;
 import com.google.mlkit.vision.segmentation.subject.SubjectSegmentation;
 import com.google.mlkit.vision.segmentation.subject.SubjectSegmenter;
 import com.google.mlkit.vision.segmentation.subject.SubjectSegmenterOptions;
@@ -31,6 +38,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * downloaded once (at install from the Play Store, or on first use otherwise).
  *
  * JS: BackgroundRemover.removeBackground({ image: <base64 JPEG/PNG> }) → { image: <base64 PNG> }
+ *     BackgroundRemover.suggestNames({ image }) → { names: [string] }  (ML Kit image labeling, on the device)
  * While the model downloads, emits "modelDownload" events: { percent: 0–100 }.
  * Logcat tag: BackgroundRemover
  */
@@ -42,15 +50,18 @@ public class BackgroundRemoverPlugin extends Plugin {
 
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private SubjectSegmenter segmenter;
+    private ImageLabeler labeler;
 
     @Override
     public void load() {
         segmenter = SubjectSegmentation.getClient(new SubjectSegmenterOptions.Builder().enableForegroundConfidenceMask().build());
+        labeler = ImageLabeling.getClient(new ImageLabelerOptions.Builder().setConfidenceThreshold(0.5f).build());
     }
 
     @Override
     protected void handleOnDestroy() {
         segmenter.close();
+        labeler.close();
         executor.shutdown();
     }
 
@@ -68,6 +79,42 @@ public class BackgroundRemoverPlugin extends Plugin {
             return;
         }
         whenModelReady(call, () -> segment(call, bitmap));
+    }
+
+    /**
+     * Names for the object in the photo, best first. The cut-out is laid on white first,
+     * since transparency reads as black. Never fails: no names is a fine answer.
+     */
+    @PluginMethod
+    public void suggestNames(PluginCall call) {
+        String image = call.getString("image");
+        byte[] bytes = image == null ? new byte[0] : Base64.decode(image, Base64.DEFAULT);
+        Bitmap src = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        if (src == null) {
+            resolveNames(call, new JSArray());
+            return;
+        }
+        Bitmap onWhite = Bitmap.createBitmap(src.getWidth(), src.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(onWhite);
+        canvas.drawColor(Color.WHITE);
+        canvas.drawBitmap(src, 0, 0, null);
+        labeler
+            .process(InputImage.fromBitmap(onWhite, 0))
+            .addOnSuccessListener(labels -> {
+                JSArray names = new JSArray();
+                for (ImageLabel label : labels) names.put(label.getText());
+                resolveNames(call, names);
+            })
+            .addOnFailureListener(e -> {
+                Log.w(TAG, "Labeling failed", e);
+                resolveNames(call, new JSArray());
+            });
+    }
+
+    private static void resolveNames(PluginCall call, JSArray names) {
+        JSObject ret = new JSObject();
+        ret.put("names", names);
+        call.resolve(ret);
     }
 
     /** Runs onReady once the segmentation module is installed, installing it first if needed. */

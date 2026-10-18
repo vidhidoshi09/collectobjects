@@ -48,5 +48,5 @@ the native v2. Metrics are in [`foundations.md`](foundations.md) and the platfor
 2. **Empty state:** header ("collection" / "0 objects") and the add tile as usual; below, centred: three sample cut-outs, "Start collecting", "A little home for your trinkets and keepsakes." No orange button.
 3. **Camera:** full-bleed preview, close top-left, gallery + shutter at the bottom.
 4. **Processing:** orange ring with % inside, "framing it…", optional sub-label.
-5. **Review:** close; centred as one group: cut-out that lifts off the page (shrinks, never crops, when the keyboard opens), name "Name it (optional)" (no auto keyboard), city chip, round retake + "Add to collection" pill.
+5. **Review:** close; centred as one group: cut-out that lifts off the page (shrinks, never crops, when the keyboard opens), name "Give it a name" (no auto keyboard), "Could be" suggestion chips (30px glass, up to three, the best one with a sparkle), city chip, round retake + "Add to collection" pill.
 6. **Detail:** close; name (editable) and date ("oct 11 · london") on top; the carousel of objects in the middle; Share and Delete as 44px glass buttons below (Delete → native confirmation "Delete this object?"). Opens with the other tiles scattering, the object flying in and the name rising; closes by flying home.

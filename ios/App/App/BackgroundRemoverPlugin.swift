@@ -9,6 +9,7 @@ import Vision
  * soft edges, stray islands removed, cropped with a small margin.
  *
  * JS: BackgroundRemover.removeBackground({ image: <base64 JPEG/PNG> }) → { image: <base64 PNG> }
+ *     BackgroundRemover.suggestNames({ image }) → { names: [string] }  (Vision image classification, on the device)
  * Below iOS 17 (or in the Simulator) it rejects, and the app keeps the whole photo.
  */
 @objc(BackgroundRemoverPlugin)
@@ -16,8 +17,43 @@ public class BackgroundRemoverPlugin: CAPPlugin, CAPBridgedPlugin {
     public let identifier = "BackgroundRemoverPlugin"
     public let jsName = "BackgroundRemover"
     public let pluginMethods: [CAPPluginMethod] = [
-        CAPPluginMethod(name: "removeBackground", returnType: CAPPluginReturnPromise)
+        CAPPluginMethod(name: "removeBackground", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "suggestNames", returnType: CAPPluginReturnPromise)
     ]
+
+    /// Names for the object in the photo, best first. The cut-out is laid on white first
+    /// (transparency would read as black). Never fails: no names is a fine answer.
+    @objc func suggestNames(_ call: CAPPluginCall) {
+        guard let image = call.getString("image"),
+              let data = Data(base64Encoded: image, options: .ignoreUnknownCharacters),
+              let src = UIImage(data: data) else {
+            call.resolve(["names": [String]()])
+            return
+        }
+        DispatchQueue.global(qos: .userInitiated).async {
+            let format = UIGraphicsImageRendererFormat()
+            format.scale = 1
+            let onWhite = UIGraphicsImageRenderer(size: src.size, format: format).image { ctx in
+                UIColor.white.setFill()
+                ctx.fill(CGRect(origin: .zero, size: src.size))
+                src.draw(at: .zero)
+            }
+            guard let cg = onWhite.cgImage else { call.resolve(["names": [String]()]); return }
+            let request = VNClassifyImageRequest()
+            do {
+                try VNImageRequestHandler(cgImage: cg, options: [:]).perform([request])
+            } catch {
+                call.resolve(["names": [String]()])
+                return
+            }
+            let names = (request.results ?? [])
+                .filter { $0.confidence > 0.12 }
+                .sorted { $0.confidence > $1.confidence }
+                .prefix(8)
+                .map { $0.identifier.replacingOccurrences(of: "_", with: " ") }
+            call.resolve(["names": Array(names)])
+        }
+    }
 
     @objc func removeBackground(_ call: CAPPluginCall) {
         guard let image = call.getString("image") else {

@@ -53,7 +53,9 @@ export const copy = {
   review: {
     label: `name your ${ITEM}`,
     name: 'name',
-    namePlaceholder: 'Name it (optional)', // naming is never required
+    namePlaceholder: 'Give it a name', // naming is never required: the keyboard waits for a tap
+    suggestTitle: 'Could be', // over the name chips (shown in small caps)
+    suggestLabel: 'suggested names',
     photo: `your ${ITEM}`,
     retake: 'retake',
     save: `Add to ${COLLECTION}`,

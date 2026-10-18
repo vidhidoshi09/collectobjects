@@ -79,7 +79,7 @@ the "sticker" feel. Serif text never does.
 - **Grid:** 2 columns, gutter 16, rows 32; tile = square image, 8 → name, 4 → number.
 - **Review:** image (fills what's left) → 24 → name → 24 → actions.
 - **Detail:** image → 24 → name → 4 → date → 16 → story → 24 → round delete. Centred, max width 340, no box.
-- **Liquid Glass** (Android and iPhone): the tab bar and the round buttons (close, ⋯, retake) are see-through paper (`rgb(250 249 247 / .55)`) with a 16px blur, a bright hairline rim and the one shadow. Share on the close-up is tertiary: the icon alone (Material Symbols `ios_share`).
+- **Liquid Glass** (Android and iPhone): the tab bar and the round buttons (close, retake, share, delete; all circles) are see-through paper (`rgb(250 249 247 / .55)`) with a 16px blur, a bright hairline rim and the one shadow. The primary button (Add to collection) is a dark tinted glass capsule.
 - **Shape:** round everything interactive: buttons and close are full circles/pills, the add tile is a rounded square like the objects; snackbar radius 20.
 - **Elevation:** orange glow under orange controls; soft dark shadow under the snackbar and cut-outs. Nothing else is raised.
 - **Touch targets:** ≥ 48 (close is a 40 circle in a 48 target).
