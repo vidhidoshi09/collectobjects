@@ -284,7 +284,7 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
 }
 
 /* Liquid Glass: see-through paper with a bright rim, blurring what's behind */
-.glass, .btn-round, .btn-close:not(#camera-close) {
+.glass, .btn-round, .btn-close:not(#camera-close, .btn-share) {
   background: var(--glass-fill);
   backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
   border: 0.5px solid var(--glass-edge);
@@ -315,6 +315,7 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
   left: auto;
   right: calc(var(--screen-margin) - (var(--touch-target) - var(--close-size)) / 2 + env(safe-area-inset-right, 0px));
 }
+/* Share is tertiary: just the icon, no glass (left out of the glass rule above) */
 .btn-share { right: calc(var(--screen-margin) - (var(--touch-target) - var(--close-size)) / 2 + var(--touch-target) + env(safe-area-inset-right, 0px)); }
 
 /* Menu: a small sheet of paper under ⋯, hugging its items */

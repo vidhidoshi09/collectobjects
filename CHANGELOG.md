@@ -8,7 +8,7 @@ What changed, when, and why. Newest first. (Formerly "Memories".)
 - **Liquid Glass buttons:** close, share, ⋯ and retake are see-through glass with a bright rim.
 - **Objects shine:** no name or date under the grid tiles (both live in the close-up), rows sit closer, and cut-outs lost the white outline (soft shadow only, in the share cards too).
 - **Naming is optional:** the keyboard no longer opens by itself, the field says "Name it (optional)", and an unnamed object shows no "untitled object" label anywhere. A name can be cleared in the close-up.
-- **Share on the close-up:** its own button next to ⋯ (the menu keeps Delete). The header share button for the collection card was removed.
+- **Share on the close-up:** its own tertiary button next to ⋯ (just the icon, the modern box-and-arrow share icon; the menu keeps Delete). The header share button for the collection card was removed.
 
 ## iPhone app (in testing)
 
