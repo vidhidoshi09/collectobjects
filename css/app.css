@@ -126,7 +126,7 @@
   --progress-stroke:   6;    /* SVG user units of the 100-unit ring */
   --underline:         2px;
   --text-measure:      280px; /* short centred copy */
-  --text-measure-wide: 340px; /* name + story column on the detail screen */
+  --text-measure-wide: 340px; /* name column on the detail screen */
   --card-image-inset:  5%;
   --chip-height:       40px; /* city chip */
   --processing-wash:   0.55;
@@ -134,8 +134,8 @@
   --add-tile-solo:     64px; /* the add tile on the empty screen */
   --add-tile-size:     56%; /* of a grid cell: a small square where a cut-out would sit */
   --review-image-width: 72%;
-  --review-story-max:   120px; /* the story scrolls past this while saving */
-  --detail-image-width: 78%;
+  --detail-image-width: 68%;
+  --detail-action-size: 44px; /* Share and Delete under the carousel */
   --sample-width:      30%;
   --sample-scale:      1.25; /* teapot artwork has extra padding */
   --overlay-top:       calc(var(--space-16) * 2 + var(--close-size)); /* clears the close button */
@@ -280,7 +280,7 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
 }
 
 /* Liquid Glass: see-through paper with a bright rim, blurring what's behind */
-.glass, .btn-round, .btn-close:not(#camera-close, .btn-share) {
+.glass, .btn-round, .btn-close:not(#camera-close) {
   background: var(--glass-fill);
   backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
   border: 0.5px solid var(--glass-edge);
@@ -305,40 +305,6 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
   margin: calc((var(--touch-target) - var(--close-size)) / 2);
 }
 .btn-close:not(#camera-close)::after { content: ''; position: absolute; inset: calc((var(--touch-target) - var(--close-size)) / -2); } /* keeps the 48px hit area */
-
-/* More (⋯): the close button's twin, top-right; Share sits just left of it */
-.btn-more, .btn-share {
-  left: auto;
-  right: calc(var(--screen-margin) - (var(--touch-target) - var(--close-size)) / 2 + env(safe-area-inset-right, 0px));
-}
-/* Share is tertiary: just the icon, no glass (left out of the glass rule above) */
-.btn-share { right: calc(var(--screen-margin) - (var(--touch-target) - var(--close-size)) / 2 + var(--touch-target) + env(safe-area-inset-right, 0px)); }
-
-/* Menu: a small sheet of paper under ⋯, hugging its items */
-.menu {
-  position: absolute; z-index: var(--z-close);
-  top: calc(var(--space-16) + var(--close-size) + var(--space-8) + env(safe-area-inset-top, 0px));
-  right: calc(var(--screen-margin) + env(safe-area-inset-right, 0px));
-  padding: var(--space-4);
-  border-radius: var(--radius-md);
-  background: var(--color-surface);
-  box-shadow: var(--shadow-menu);
-  transform-origin: top right;
-  animation: menu-in var(--duration-press) var(--easing-out);
-}
-.menu[hidden] { display: none; }
-@keyframes menu-in { from { opacity: 0; transform: scale(0.92); } }
-.menu__item {
-  display: flex; align-items: center; gap: var(--space-12);
-  width: 100%; min-height: var(--touch-target);
-  padding: 0 var(--space-12);
-  border-radius: calc(var(--radius-md) - var(--space-4)); /* nested inside the menu's 16 */
-  font: var(--type-label); letter-spacing: var(--tracking-label); text-align: left;
-  color: var(--color-text);
-  transition: background-color var(--duration-press) var(--easing);
-}
-.menu__item:active { background: var(--color-round); }
-.menu__item--danger { color: var(--color-danger); }
 
 /* ═══════════════════════════════════════
    HOME / GRID
@@ -385,7 +351,7 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
 /* Flight: the copy of a cut-out that flies between its tile and the close-up (js/flight.js) */
 .flyer { position: fixed; z-index: var(--z-flyer); pointer-events: none; margin: 0; transform-origin: center; will-change: transform; }
 /* the close-up's glow blooms in as the object lands */
-.detail-img-wrap.is-opening::before { animation: glow-bloom var(--duration-bloom) var(--easing-out) 120ms both; }
+#detail-overlay.is-opening .slide.is-active .slide__wrap::before { animation: glow-bloom var(--duration-bloom) var(--easing-out) 120ms both; }
 
 /* The drop: a new object falls into place after saving (js/review.js) */
 .card--dropped { animation: drop var(--duration-drop) var(--easing-overshoot) var(--delay-drop) backwards; }
@@ -453,9 +419,9 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
   caret-color: var(--color-accent);
   transition: border-color var(--duration-press) var(--easing);
 }
-.name-field::placeholder, .story::placeholder { color: var(--color-text-secondary); }
-.name-field:focus, .story:focus { border-bottom-color: var(--color-accent); }
-.name-field:focus-visible, .story:focus-visible { outline: none; }
+.name-field::placeholder { color: var(--color-text-secondary); }
+.name-field:focus { border-bottom-color: var(--color-accent); }
+.name-field:focus-visible { outline: none; }
 
 /* ═══════════════════════════════════════
    STEP 1 — CAMERA
@@ -589,16 +555,8 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
 @keyframes reveal-lift    { from { transform: scale(var(--reveal-scale)); } to { transform: none; } }
 @keyframes reveal-outline { from { filter: var(--sticker-filter-flat); } to { filter: var(--sticker-filter); } }
 
-/* Name and story read as the object's title and caption, not a form:
-   no lines, just the orange caret (same as the detail screen) */
-.review-name, .review-story { border-bottom-color: transparent !important; }
-.review-name { flex-shrink: 0; margin-top: var(--space-32); }
-/* Optional story under the name: quiet until typed in */
-.review-story {
-  flex-shrink: 0; max-height: var(--review-story-max); overflow-y: auto;
-  margin-top: var(--space-4);
-  text-align: center;
-}
+/* The name reads as the object's title, not a form: no line, just the orange caret */
+.review-name { flex-shrink: 0; margin-top: var(--space-32); border-bottom-color: transparent !important; }
 
 /* City chip: "add city", or the city once found (tap to take it off) */
 .chip {
@@ -628,19 +586,49 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
 .review-save { flex: 1; max-width: var(--primary-max-width); }
 
 /* ═══════════════════════════════════════
-   DETAIL VIEW
+   DETAIL VIEW — the close-up carousel (js/carousel.js)
+   Name and date on top, the objects in a row (the middle one large and
+   glowing, its neighbours peeking in), Share and Delete just below.
 ═══════════════════════════════════════ */
-.screen--scroll { overflow-y: auto; -webkit-overflow-scrolling: touch; }
-.screen__content {
-  margin-block: auto; /* centred when it fits, scrolls when it doesn't */
-  width: 100%;
-  display: flex; flex-direction: column; align-items: center;
+#detail-overlay { align-items: center; }
+.detail-head {
+  flex-shrink: 0; width: 100%; max-width: var(--text-measure-wide);
+  margin-top: calc(var(--overlay-top) + env(safe-area-inset-top, 0px));
+  padding-inline: var(--screen-margin);
+  text-align: center;
 }
+.detail-name { text-align: center; border-bottom-color: transparent; }
+.detail-date { margin-top: var(--space-4); }
 
-.detail-img-wrap {
-  width: var(--detail-image-width); aspect-ratio: 1;
-  perspective: var(--tilt-perspective);
+.carousel {
+  position: relative; flex: 1; min-height: 0; width: 100%;
+  display: flex; align-items: center; justify-content: center;
+  touch-action: pan-y; /* vertical scrolls stay native; horizontal drags swipe */
+  user-select: none; -webkit-user-select: none;
+  outline: none;
 }
+.carousel__track { position: relative; width: var(--detail-image-width); aspect-ratio: 1; }
+.slide { position: absolute; inset: 0; transform-origin: center; }
+.carousel__track.is-settling .slide { transition: transform 380ms var(--easing-out), opacity 380ms var(--easing-out); }
+.slide__wrap { position: relative; width: 100%; height: 100%; perspective: var(--tilt-perspective); }
+.slide img { -webkit-user-drag: none; pointer-events: none; }
+/* only the middle object glows and shines */
+.slide:not(.is-active) .sheen { display: none; }
+.carousel .sparkles { position: absolute; width: var(--detail-image-width); aspect-ratio: 1; pointer-events: none; }
+
+.detail-actions {
+  flex-shrink: 0;
+  display: flex; justify-content: center; gap: var(--space-16);
+  margin-bottom: calc(var(--space-64) + var(--space-40) + env(safe-area-inset-bottom, 0px)); /* close under the object */
+}
+.btn-round.detail-action { width: var(--detail-action-size); height: var(--detail-action-size); border-radius: var(--radius-full); }
+
+/* opening: the name rises in and the buttons follow, as the object lands */
+#detail-overlay.is-opening .detail-head    { animation: rise 420ms var(--easing-out) 140ms backwards; }
+#detail-overlay.is-opening .detail-actions { animation: rise 420ms var(--easing-out) 200ms backwards; }
+/* swiping: the name and date swap with a quick fade; the sparkles pop again */
+.detail-head.is-swapping { animation: swap-in 260ms var(--easing-out); }
+@keyframes swap-in { from { opacity: 0; transform: translateY(6px); } }
 /* Tilts with the phone (js/tilt.js sets transform + --tilt-x/-y) */
 .tilt { position: relative; width: 100%; height: 100%; will-change: transform; }
 .tilt img { display: block; width: 100%; height: 100%; }
@@ -660,28 +648,6 @@ button { cursor: pointer; user-select: none; border: none; background: none; }
   mix-blend-mode: overlay;
   opacity: var(--sheen-opacity);
 }
-
-/* Name, date and story sit open on the page, centred under the object */
-.detail-info {
-  width: 100%; max-width: var(--text-measure-wide);
-  margin-top: var(--space-24);
-  text-align: center;
-}
-.detail-name { text-align: center; }
-.detail-date { margin-top: var(--space-4); }
-.detail-story { margin-top: var(--space-16); text-align: center; text-wrap: pretty; }
-
-/* Story: body text, underline only while editing */
-.story {
-  display: block; width: 100%;
-  padding: var(--space-4) 0;
-  background: none; border: none; border-radius: 0; outline: none; resize: none; overflow: hidden;
-  border-bottom: var(--underline) solid transparent;
-  font: var(--type-body); color: var(--color-text);
-  caret-color: var(--color-accent);
-  transition: border-color var(--duration-press) var(--easing);
-}
-
 
 /* ═══════════════════════════════════════
    EMPTY STATE: header as usual; the invitation centred below it, ending
@@ -807,7 +773,7 @@ body:not(:has(.overlay.active)) { --tabbar-lift: var(--tabbar-clearance); } /* a
    your object (save + close-up), with sparkles in the page colour on top
 ═══════════════════════════════════════ */
 #home { isolation: isolate; }
-#home::before, .review-img-wrap::before, .detail-img-wrap::before {
+#home::before, .review-img-wrap::before, .slide.is-active .slide__wrap::before {
   content: ''; position: absolute; z-index: -1; pointer-events: none;
   background:
     radial-gradient(closest-side at 32% 52%, var(--hue-glow-1), transparent),
@@ -819,9 +785,9 @@ body.is-empty #home::before {
   display: block; position: fixed; left: 50%; translate: -50% 0; bottom: 38%;
   width: var(--glow-width-empty); height: var(--glow-height-empty); opacity: var(--glow-opacity-empty);
 }
-.review-img-wrap, .detail-img-wrap { position: relative; }
-#review-overlay .screen, #detail-overlay .screen__content { isolation: isolate; }
-.review-img-wrap::before, .detail-img-wrap::before { inset: 6%; border-radius: 50%; }
+.review-img-wrap { position: relative; }
+#review-overlay .screen, .slide__wrap { isolation: isolate; }
+.review-img-wrap::before, .slide__wrap::before { inset: 6%; border-radius: 50%; }
 
 /* the save screen: the glow blooms in as the cut-out lifts off */
 .review-img-wrap.is-revealing::before { animation: glow-bloom var(--duration-bloom) var(--easing-out) var(--delay-reveal) both; }
@@ -848,7 +814,8 @@ body.is-empty #home::before {
 @media (prefers-reduced-motion: reduce) {
   #review-img.is-revealing { animation: reveal-outline var(--duration-reveal) var(--easing) both; }
   .card--dropped, .card--enter { animation-name: fade-in; animation-timing-function: var(--easing); }
-  .detail-img-wrap.is-opening::before { animation: none; }
+  #detail-overlay.is-opening .slide__wrap::before, #detail-overlay.is-opening .detail-head, #detail-overlay.is-opening .detail-actions, .detail-head.is-swapping { animation: none; }
+  .carousel__track.is-settling .slide { transition-property: opacity; }
   @keyframes fade-in { from { opacity: 0; } }
   .sheen, .review-backdrop.is-fading { display: none; }
   .sparkle, .review-img-wrap.is-revealing .sparkle, .review-img-wrap.is-revealing::before { animation: none; }

@@ -5,11 +5,11 @@ import { state } from './state.js';
 import { showOverlay, hideOverlay } from './overlays.js';
 import { NativeUi, isNative } from './platform.js';
 import { showSnackbar } from './snackbar.js';
-import { autoGrow } from './textfield.js';
 import { success, tapLight, warning } from './haptics.js';
 import { fly, poof } from './flight.js';
 import { startTilt } from './tilt.js';
-import { replay } from './motion.js';
+import { replay, reducedMotion } from './motion.js';
+import { createCarousel } from './carousel.js';
 
 /* ════════════════════════════════════════════════
    RENDER GRID
@@ -70,48 +70,101 @@ export async function renderGrid({ enter = false } = {}) {
 }
 
 /* ════════════════════════════════════════════════
-   DETAIL VIEW — floating cut-out (tilts), name, date, story
+   DETAIL VIEW — the close-up: a carousel of the whole collection (js/carousel.js)
+   Opening: the other tiles scatter outward and fade, the tapped object flies
+   into the middle (js/flight.js) and the name rises in. Swiping to another
+   object ticks (haptic) and swaps the name and date. Closing flies the object
+   in the middle home to its tile and the others gather back.
 ════════════════════════════════════════════════ */
 let stopTilt = () => {};
+let scattered = []; // the grid tiles' scatter animations, reversed on close
+let order = [];     // ids in grid order (newest first), one slide each
 
 const tileImg = id => document.querySelector(`#grid .card[data-id="${id}"] img`);
+const openId = () => document.getElementById('detail-delete').dataset.id;
+const objectById = id => loadObjects().find(x => String(x.id) === String(id));
 
-async function openDetail(id) {
-  const m = loadObjects().find(x => String(x.id) === String(id));
+const carousel = createCarousel(document.getElementById('carousel'), document.getElementById('carousel-track'), {
+  onChange: i => { tapLight(); showObject(order[i], { swap: true }); },
+});
+
+// Name, date (and city) of the object in the middle, and its tilt
+function showObject(id, { swap = false } = {}) {
+  const m = objectById(id);
   if (!m) return;
-  tapLight();
-
-  const src = await photoSrc(m);
-  const img = document.getElementById('detail-img');
-  img.src = src;
-  await img.decode().catch(() => {}); // ready before it flies
-  document.getElementById('detail-img').alt = nameOf(m) || copy.item.untitled;
-  document.getElementById('detail-img').classList.toggle('sticker--photo', Boolean(m.file?.endsWith('.jpg')));
-  // absolute, so a bundled sample's relative path isn't read from css/ (where the variable is used)
-  document.getElementById('detail-sheen').style.setProperty('--sheen-mask', `url("${new URL(src, location.href).href}")`);
-  document.getElementById('detail-name').value = nameOf(m);
-  document.getElementById('detail-note').value = m.note || '';
+  const name = document.getElementById('detail-name');
+  if (document.activeElement === name) name.blur(); // commits an edit to the previous object
+  name.value = nameOf(m);
   document.getElementById('detail-meta').textContent = copy.item.dateLine(m.date, m.city);
   document.getElementById('detail-delete').dataset.id = m.id;
-
-  // the object flies from its tile into the close-up; the glow blooms in behind it
-  const tile = tileImg(m.id);
-  const from = tile?.getBoundingClientRect();
-  img.style.visibility = 'hidden';
-  if (tile) tile.style.visibility = 'hidden';
-  showOverlay('detail-overlay');
-  autoGrow(document.getElementById('detail-note'));
-  replay(document.querySelector('.detail-img-wrap'), 'is-opening');
+  if (swap) {
+    replay(document.getElementById('detail-head'), 'is-swapping');
+    replay(document.getElementById('carousel'), 'is-swapping'); // sparkles pop again
+  }
   stopTilt();
+  const tilt = carousel.active()?.querySelector('.tilt');
+  stopTilt = tilt ? startTilt(tilt) : () => {};
+}
+
+// Other tiles on screen push away from the tapped one and fade (the reference transition)
+function scatter(fromTile) {
+  if (reducedMotion() || !fromTile) return;
+  const c = fromTile.getBoundingClientRect();
+  const cx = c.left + c.width / 2, cy = c.top + c.height / 2;
+  scattered = [...document.querySelectorAll('#grid .card')].filter(card => {
+    const r = card.getBoundingClientRect();
+    return r.bottom > 0 && r.top < innerHeight && !card.contains(fromTile);
+  }).map(card => {
+    const r = card.getBoundingClientRect();
+    const dx = r.left + r.width / 2 - cx, dy = r.top + r.height / 2 - cy;
+    const len = Math.hypot(dx, dy) || 1;
+    return card.animate(
+      [{ transform: 'none', opacity: 1, filter: 'blur(0)' },
+       { transform: `translate(${(dx / len) * 56}px, ${(dy / len) * 56}px) scale(0.9)`, opacity: 0, filter: 'blur(4px)' }],
+      { duration: 340, easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)', fill: 'forwards' });
+  });
+}
+function gather() {
+  const anims = scattered;
+  scattered = [];
+  anims.forEach(a => { a.reverse(); a.finished.then(() => a.cancel(), () => {}); });
+}
+
+async function openDetail(id) {
+  const objects = loadObjects().slice().reverse();
+  order = objects.map(m => String(m.id));
+  const at = order.indexOf(String(id));
+  if (at < 0) return;
+  tapLight();
+
+  const srcs = await Promise.all(objects.map(photoSrc));
+  carousel.set(objects.map((m, i) => `
+    <div class="slide__wrap">
+      <div class="tilt">
+        <img class="sticker${m.file?.endsWith('.jpg') ? ' sticker--photo' : ''}" src="${srcs[i]}" alt="${esc(nameOf(m) || copy.item.untitled)}" decoding="async" />
+        <div class="sheen" aria-hidden="true" style="--sheen-mask: url(&quot;${esc(new URL(srcs[i], location.href).href)}&quot;)"></div>
+      </div>
+    </div>`), at);
+
+  const tile = tileImg(id);
+  const from = tile?.getBoundingClientRect();
+  if (tile) tile.style.visibility = 'hidden';
+  scatter(tile);
+  showOverlay('detail-overlay');
+  carousel.measure(); // sizes are known once the screen is shown
+  showObject(id);
+  const img = carousel.active().querySelector('img');
+  await img.decode().catch(() => {});
+  img.style.visibility = 'hidden';
+  replay(document.getElementById('detail-overlay'), 'is-opening'); // the glow blooms, the name rises in
   await fly(img, from, img, { opening: true });
   img.style.visibility = '';
   if (tile) tile.style.visibility = '';
-  stopTilt = startTilt(document.getElementById('detail-tilt'));
 }
 
-// Saves an edited name or story for the object open in the detail view
+// Saves an edited name for the object in the middle of the close-up
 export async function updateOpenObject(changes) {
-  const id = document.getElementById('detail-delete').dataset.id;
+  const id = openId();
   const updated = loadObjects().map(m => String(m.id) === String(id) ? { ...m, ...changes } : m);
   try {
     await saveObjects(updated);
@@ -120,51 +173,35 @@ export async function updateOpenObject(changes) {
     showSnackbar(copy.toast.saveFailed);
     return;
   }
-  renderGrid();
+  const img = carousel.active()?.querySelector('img');
+  if (img) img.alt = changes.name || copy.item.untitled;
 }
 
-// The ⋯ menu (delete lives here, not one stray tap away)
-const menu = document.getElementById('detail-menu');
-const moreBtn = document.getElementById('detail-more');
-export const isDetailMenuOpen = () => !menu.hidden;
-export function toggleDetailMenu(open = menu.hidden, { refocus = false } = {}) {
-  menu.hidden = !open;
-  moreBtn.setAttribute('aria-expanded', String(open));
-  if (open) menu.querySelector('[role="menuitem"]').focus();
-  else if (refocus) moreBtn.focus();
-}
-
-// `flyBack`: the object flies home to its tile (not after a delete: it's gone)
+// `flyBack`: the object in the middle flies home to its tile (not after a delete: it's gone)
 export async function closeDetail({ flyBack = true } = {}) {
-  toggleDetailMenu(false);
-  document.activeElement?.blur(); // commits an in-progress name/story edit
+  document.activeElement?.blur(); // commits an in-progress name edit
   stopTilt();
   stopTilt = () => {};
-  const img = document.getElementById('detail-img');
-  const tile = flyBack ? tileImg(document.getElementById('detail-delete').dataset.id) : null;
-  const from = img.getBoundingClientRect();
-  if (tile && img.src) img.style.visibility = 'hidden'; // only the flyer travels home
-  hideOverlay('detail-overlay');
-  if (tile && img.src) {
-    const to = tile.getBoundingClientRect();
-    const onScreen = to.bottom > 0 && to.top < innerHeight;
-    if (onScreen) {
-      tile.style.visibility = 'hidden';
-      // flies from the close-up's box to the tile's (fly() moves "from → to", so run it closing)
-      await fly(img, to, flyerTarget(from), { opening: false });
-      tile.style.visibility = '';
-    }
+  const img = carousel.active()?.querySelector('img');
+  const id = openId();
+  // after swiping, the object in the middle may be far down the grid: bring its tile into view first
+  let tile = flyBack ? tileImg(id) : null;
+  if (tile) {
+    const r = tile.getBoundingClientRect();
+    if (r.top < 0 || r.bottom > innerHeight) tile.scrollIntoView({ block: 'center' });
   }
-  img.src = '';
-  img.style.removeProperty('visibility');
-  img.style.removeProperty('opacity'); img.style.removeProperty('transform'); img.style.removeProperty('filter');
-  document.getElementById('detail-sheen').style.removeProperty('--sheen-mask');
+  const from = img?.getBoundingClientRect();
+  if (tile && img) img.style.visibility = 'hidden'; // only the flyer travels home
+  hideOverlay('detail-overlay');
+  gather();
+  if (tile && img && from) {
+    tile.style.visibility = 'hidden';
+    await fly(img, tile.getBoundingClientRect(), { getBoundingClientRect: () => from }, { opening: false });
+    tile.style.visibility = '';
+  }
+  await renderGrid(); // picks up renamed objects
 }
 
-// fly() measures its target element; on close the close-up is fading out, so give it the box it had
-const flyerTarget = rect => ({ getBoundingClientRect: () => rect });
-
-// Native Material 3 dialog on Android; plain confirm() in a desktop browser
 export async function confirmDelete() {
   const { title, body: message, confirm: confirmLabel, cancel: cancelLabel } = copy.delete;
   if (!isNative) return confirm(`${title}\n\n${message}`);
@@ -187,8 +224,9 @@ export async function deleteObject(id) {
   }
   if (removed?.file) await deletePhoto(removed.file);
   warning();
-  await poof(document.getElementById('detail-img')); // the object shrinks away
-  closeDetail({ flyBack: false });
-  await renderGrid();
+  const img = carousel.active()?.querySelector('img');
+  if (img) await poof(img); // the object shrinks away
+  scattered = []; // the grid redraws without it
+  await closeDetail({ flyBack: false });
   showSnackbar(copy.toast.deleted);
 }

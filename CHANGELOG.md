@@ -2,6 +2,13 @@
 
 What changed, when, and why. Newest first. (Formerly "Memories".)
 
+## Close-up carousel, no more stories
+
+- **The close-up is a carousel:** swipe left and right through your whole collection, with a light haptic tick on each object. The middle object glows and tilts; its neighbours peek in. No page dots.
+- **Opening like the reference:** the other tiles scatter outward and fade, the tapped object flies into the carousel, and the name rises in. Closing flies whichever object is in the middle back to its tile (scrolling to it if needed) while the rest gather back.
+- **Share and Delete** sit just under the object as 44px glass buttons; Delete still asks first ("Delete this object?"). The ⋯ menu is gone.
+- **No more stories:** the story field is gone from the save screen, the close-up and the share card (existing stories stay in the data, unseen).
+
 ## Micro-animations and haptics
 
 - **Flight:** tapping an object flies it from its tile into the close-up (with a soft landing and the glow blooming in); closing flies it home.

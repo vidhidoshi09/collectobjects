@@ -55,7 +55,6 @@ export const copy = {
     name: 'name',
     namePlaceholder: 'Name it (optional)', // naming is never required
     photo: `your ${ITEM}`,
-    storyPlaceholder: "What's the story? (optional)",
     retake: 'retake',
     save: `Add to ${COLLECTION}`,
     city: {
@@ -72,13 +71,11 @@ export const copy = {
   },
   detail: {
     label: ITEM,
-    story: 'story',
-    storyPlaceholder: "What's the story?",
-    more: 'more',
+    carousel: `your ${ITEMS}, swipe for more`, // carousel accessibility label
     name: 'name',
     namePlaceholder: 'Name it',
     shareLabel: 'share', // share button accessibility label
-    delete: 'Delete', // menu item
+    deleteLabel: 'delete', // delete button accessibility label (it asks first)
   },
   delete: {
     title: `Delete this ${ITEM}?`,

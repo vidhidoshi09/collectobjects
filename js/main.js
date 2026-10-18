@@ -1,13 +1,12 @@
 import { App, isNative } from './platform.js';
 import { initStorage, loadObjects } from './storage.js';
 import { hideOverlay, hideAll } from './overlays.js';
-import { renderGrid, nameOf, updateOpenObject, closeDetail, confirmDelete, deleteObject, toggleDetailMenu, isDetailMenuOpen } from './grid.js';
+import { renderGrid, nameOf, updateOpenObject, closeDetail, confirmDelete, deleteObject } from './grid.js';
 import { openCamera, stopCamera, onShutterPressed, onGalleryPicked } from './camera.js';
 import { saveObject } from './review.js';
 import { showSnackbar } from './snackbar.js';
 import { greetOncePerDay } from './greeting.js';
 import { tapLight, tapMedium } from './haptics.js';
-import { autoGrow } from './textfield.js';
 import { copy, applyCopy } from './copy.js';
 import { objectCard, shareCard } from './share.js';
 
@@ -57,14 +56,13 @@ document.getElementById('retake-btn').addEventListener('click', () => {
 // Save
 document.getElementById('save-btn').addEventListener('click', saveObject);
 
-// Enter in the name field moves on to the story (it stays optional)
+// Enter in the name field closes the keyboard
 document.getElementById('name-input').addEventListener('keydown', e => {
-  if (e.key === 'Enter') { e.preventDefault(); document.getElementById('story-input').focus(); }
+  if (e.key === 'Enter') { e.preventDefault(); e.target.blur(); }
 });
-document.getElementById('story-input').addEventListener('input', e => autoGrow(e.target));
 
 // Detail view
-document.getElementById('detail-close').addEventListener('click', closeDetail);
+document.getElementById('detail-close').addEventListener('click', () => closeDetail());
 // naming is optional, so clearing the name is allowed too
 document.getElementById('detail-name').addEventListener('change', e => {
   updateOpenObject({ name: e.target.value.trim() });
@@ -72,35 +70,20 @@ document.getElementById('detail-name').addEventListener('change', e => {
 document.getElementById('detail-name').addEventListener('keydown', e => {
   if (e.key === 'Enter') e.target.blur();
 });
-document.getElementById('detail-note').addEventListener('input', e => autoGrow(e.target));
-document.getElementById('detail-note').addEventListener('change', e => {
-  updateOpenObject({ note: e.target.value.trim() });
-});
-// ⋯ opens the menu; a tap anywhere else closes it
-document.getElementById('detail-more').addEventListener('click', e => {
-  e.stopPropagation();
-  tapLight();
-  toggleDetailMenu();
-});
-document.addEventListener('click', e => {
-  if (isDetailMenuOpen() && !e.target.closest('#detail-menu')) toggleDetailMenu(false);
-});
 document.getElementById('detail-share').addEventListener('click', () => {
   const m = loadObjects().find(x => String(x.id) === document.getElementById('detail-delete').dataset.id);
-  toggleDetailMenu(false);
   tapLight();
   if (m) shareCard(objectCard({ ...m, name: nameOf(m) }), nameOf(m));
 });
 document.getElementById('detail-delete').addEventListener('click', async e => {
   const id = e.currentTarget.dataset.id;
-  toggleDetailMenu(false);
-  if (await confirmDelete()) deleteObject(id);
+  tapLight();
+  if (await confirmDelete()) deleteObject(id); // the native "Delete this object?" pop-up first
 });
 
 // Escape closes everything (the detail view through closeDetail, which stops the tilt)
 document.addEventListener('keydown', e => {
   if (e.key !== 'Escape') return;
-  if (isDetailMenuOpen()) return toggleDetailMenu(false, { refocus: true });
   if (document.getElementById('detail-overlay').classList.contains('active')) closeDetail();
   stopCamera();
   hideAll();
@@ -111,7 +94,6 @@ if (isNative) {
   App.addListener('backButton', () => {
     const isActive = id => document.getElementById(id).classList.contains('active');
     if (isActive('processing-overlay')) return; // let background removal finish
-    if (isDetailMenuOpen()) return toggleDetailMenu(false);
     if (isActive('review-overlay'))  return document.getElementById('review-close').click();
     if (isActive('camera-overlay'))  return document.getElementById('camera-close').click();
     if (isActive('detail-overlay'))  return document.getElementById('detail-close').click();

@@ -40,12 +40,11 @@ Platforms may only change a word where a platform term differs.
 | `TAGLINE` | Feature graphic, store, docs | "for your trinkets" |
 | `home.title` | Home title (serif) | "collection" |
 | `home.count` | Home subtitle | "1 object" / "{n} objects" |
-| `empty.title` / `empty.body` | Empty state | "Start collecting" · "Snap a trinket, cut it out, keep its story." (echoes the Play Store line) |
+| `empty.title` / `empty.body` | Empty state | "Start collecting" · "A little home for your trinkets and keepsakes." |
 | `camera.blocked` | Camera permission off | "camera's off. turn it on in settings, or pick a photo instead." |
 | `processing.cutting` | Processing | "framing it…" |
 | `processing.setup` | First-time model download | "getting ready…" + "one-time setup" |
 | `review.name` | Review field | label "name", placeholder "Name it (optional)"; the keyboard waits for a tap |
-| `review.storyPlaceholder` | Review story | "what's the story? (optional)" |
 | `review.city` | City chip | "Add city" · "finding city…" · the city; a11y "remove london" |
 | `item.dateLine` | Detail date line | "oct 11", or "oct 11 · london" (same year rule) |
 | `toast.cityDenied` / `toast.cityFailed` | City lookup | "Location's off for collectobjects. You can turn it on in Settings" · "Couldn't find your city right now" (error icon) |
@@ -53,10 +52,9 @@ Platforms may only change a word where a platform term differs.
 | `item.untitled` | Accessibility label of an unnamed object (never shown) | "untitled object" |
 | `item.date` | Grid date | "oct 11"; with the year when it isn't this year: "mar 3, 2025" |
 | `greeting` | Toast on the first open of each day (phone's local time, no location) | 5–12 "Good morning" (sunrise) · 12–17 "Good afternoon" (sun) · 17–22 "Good evening" (moon) · otherwise "Up late?" (moon) |
-| `detail.story` | Story field | label "story", placeholder "what's the story?" |
 | `delete.title` / `delete.body` | Delete confirmation | "delete this object?" · "this can't be undone." |
 | `delete.confirm` / `delete.cancel` | Delete actions | "Delete" (destructive) / "Keep it" |
-| `detail.delete` | ⋯ menu item | "Delete" |
+| `detail.deleteLabel` / `detail.carousel` | Delete button (a11y; it asks first) · carousel (a11y) | "delete" · "your objects, swipe for more" |
 | `detail.shareLabel` / `share.collectionTitle` | Share button on the close-up (a11y) · collection card title | "share" · "My collection" |
 | `nav.collection` / `nav.capture` | Tab bar | "Collection" · "Capture" (a11y for the bar: "tabs") |
 | `toast.shareFailed` | Share failed | "Couldn't share. Try again?" (error) |
@@ -67,8 +65,8 @@ Platforms may only change a word where a platform term differs.
 | `toast.photoUnreadable` | Bad gallery photo | "That photo didn't open. Try another one?" (error) |
 | `toast.loadFailed` | Load failed | "Couldn't load your objects. Restart the app?" (error) |
 
-**Accessibility labels:** "add an object" (add), "close", "more" (⋯), "Delete" (menu item),
-"choose from gallery", "take photo", "retake", "name", "story". A grid tile reads
+**Accessibility labels:** "add an object" (add), "close", "delete", "share",
+"choose from gallery", "take photo", "retake", "name". A grid tile reads
 "{name}, oct 11".
 
 **Dates:** records keep the date as saved ("October 10, 2026", en-US) so the data

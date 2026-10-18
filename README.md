@@ -4,7 +4,7 @@
 
 ![collectobjects](store/feature-graphic.png)
 
-**A little home for your trinkets and keepsakes.** Snap something you love, it's cut out on your phone, and it keeps the story behind it: where it's from, who gave it to you, why it stays.
+**A little home for your trinkets and keepsakes.** Snap something you love, it's cut out on your phone, and it joins your collection: just the objects, beautifully.
 
 ## Try it
 - **Live web preview:** **https://collectobjects.vercel.app**
@@ -14,18 +14,19 @@
 
 ## Screens
 
-| Your collection | Snap it | Cut out | Its story | Share |
+| Your collection | Snap it | Cut out | Close-up | Share |
 |---|---|---|---|---|
-| ![Collection](store/screenshots/01-collection.png) | ![Snap](store/screenshots/02-camera.png) | ![Cut out](store/screenshots/03-review.png) | ![Its story](store/screenshots/04-detail.png) | ![Share](store/screenshots/05-share.png) |
+| ![Collection](store/screenshots/01-collection.png) | ![Snap](store/screenshots/02-camera.png) | ![Cut out](store/screenshots/03-review.png) | ![Close-up](store/screenshots/04-detail.png) | ![Share](store/screenshots/05-share.png) |
 
 ## Product updates
 
 ### Now (v1, Android)
 - **Snap or pick a photo.** The object is cut out on the device (ML Kit Subject Segmentation) and lifts off the page with a soft glow, sparkles and a haptic tap.
-- **Name it (optional) and keep its story,** with an optional city (approximate location, city name only).
+- **Name it (optional),** with an optional city (approximate location, city name only).
 - **Your collection,** just the objects, newest first, with a floating Liquid Glass tab bar (Collection, Capture) and a close-up that tilts with the phone and catches the light.
 - **Share cards:** one object, or your whole collection as a numbered "starter pack", story-sized for Instagram and friends.
-- **Little touches:** a time-of-day greeting, toasts with icons, a quiet ⋯ menu for delete.
+- **The close-up is a carousel:** swipe through your collection with a haptic tick on each object; Share and Delete (it asks first) sit just below.
+- **Little touches:** a time-of-day greeting, toasts with icons, objects that fly open and scatter the rest, a tab bar that shrinks as you scroll.
 - **Private by design:** no account, no ads, no tracking. Photos and stories are stored only on the device.
 - **Play Store ready:** icon, store listing, screenshots, privacy policy and Data safety answers in [`store/`](store).
 
@@ -151,6 +152,7 @@ The Swift twins of the Android plugins are in `ios/App/App/` (see [`design/platf
   - `tilt.js`: holographic tilt of the detail cut-out.
   - `motion.js`, `haptics.js`: restart CSS animations, reduce-motion check; the two haptic moments.
   - `overlays.js`, `format.js`: overlay show/hide, date and HTML helpers.
-  - `snackbar.js`, `textfield.js`: snackbar messages, the growing story field.
+  - `snackbar.js`: snackbar messages.
+  - `carousel.js`, `flight.js`: the swipeable close-up; the fly-open, scatter and poof animations.
 - `src/native.js`: source of `vendor/native.js` (bundled by `npm run vendor`).
 - `assets/`: images and fonts (Bricolage Grotesque, Instrument Sans; OFL). `android/`: the Capacitor Android project. `www/`: build output.

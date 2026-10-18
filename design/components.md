@@ -15,11 +15,9 @@ the native v2. Metrics are in [`foundations.md`](foundations.md) and the platfor
 | **Secondary button** (retake) | Lower emphasis, icon only | Brand round: 52 circle, `round` bg, 24 `text` icon | `.buttonStyle(.glass)` |
 | **Close** (camera, review, detail) | Leaves the screen | Brand: 40 translucent-dark circle (48 target), 16 from top-left, white 24 `close` | System navigation bar / toolbar item (Liquid Glass) |
 | **Name field** (review, detail) | Big name in the display font, edits in place | Brand: `headline` (Bricolage), no stroke; centred; reads as a title, not a form: no underline on review, orange caret; 2px `accent` underline only while editing on detail; a blank name reverts | `TextField` in the display font, `.title` |
-| **Story field** (review, detail) | Optional story, grows with its text | Brand: `body`, centred; "what's the story? (optional)" on review, "what's the story?" on detail | Multi-line `TextField(axis: .vertical)` |
 | **Share card** | Story-sized image (1080×1920) of one object or the collection | Canvas (`js/share.js`): page colour + tinted dots, hue glow, white-outlined cut-out(s), sparkles; object: name (Bricolage 80), date · city (small caps), story (4 lines); collection: "My collection", count, up to 9 numbered objects + legend; wordmark + tagline at the foot. `@capacitor/share` sheet | `ImageRenderer` + `ShareLink` |
-| **More menu** (detail) | Share, then Delete, behind ⋯ | Brand: ⋯ is the close button's twin, top-right; menu is a `surface` card that hugs its items, radius 16, `menu` shadow, 48px rows; Delete in `danger`; closes on outside tap, back or Escape | `Menu` on a toolbar `ellipsis` button, `Button(role: .destructive)` |
+| **Close-up carousel** | Swipe through the collection | Brand: middle object 68% wide, glowing, tilting; neighbours at 72% size and 55% opacity peek in; drag follows the finger, settles in 380ms; light haptic per object; no page dots | `TabView(.page)` or `ScrollView` paging |
 | **City chip** (review) | Optional city the object was found in | Brand: `fill` pill, 40 high, `caption` text + 18 `location_on`; "Add city" in `text-secondary`, the city in `text` once found (tap to take it off); Android only | `CLGeocoder` reverse geocode, `locality` only |
-| **Story field** | Multi-line, grows, under the date | Brand: `body` (Instrument Sans), centred, `accent` underline on focus, placeholder "what's the story?" | `TextField(axis: .vertical)` |
 | **Progress** (processing) | Determinate %, label | Brand: 96 orange ring, `title` % inside, `label` text below | `ProgressView(value:)` circular, brand tint |
 | **Confirmation** (delete) | Title, body, destructive + cancel | **Native** `MaterialAlertDialogBuilder` via `NativeUi.confirm` (theme colors + brand font) | **Native** `.confirmationDialog` / `.alert` with `role: .destructive` |
 | **Choice sheet** | Pick between actions | **Native** M3 `BottomSheetDialog` (add to `NativeUi` when needed) | **Native** `.sheet` with detents / `.confirmationDialog` |
@@ -47,8 +45,8 @@ the native v2. Metrics are in [`foundations.md`](foundations.md) and the platfor
 ## Screens
 
 1. **Home (grid):** header ("Collection" / "4 objects"), 2-column grid of square tiles with **just the objects** (no name or date, so they shine), newest first; the glass tab bar floats at the bottom. A just-saved object drops in.
-2. **Empty state:** header ("collection" / "0 objects") and the add tile as usual; below, centred: three sample cut-outs, "Start collecting", "Snap a trinket, cut it out, keep its story." No orange button.
+2. **Empty state:** header ("collection" / "0 objects") and the add tile as usual; below, centred: three sample cut-outs, "Start collecting", "A little home for your trinkets and keepsakes." No orange button.
 3. **Camera:** full-bleed preview, close top-left, gallery + shutter at the bottom.
 4. **Processing:** orange ring with % inside, "framing it…", optional sub-label.
-5. **Review:** close; centred as one group: cut-out that lifts off the page (shrinks, never crops, when the keyboard opens), name "Name it (optional)" (no auto keyboard), optional story, city chip, round retake + "Add to collection" pill.
-6. **Detail:** close, floating cut-out that tilts with the phone, then open on the page, centred: name, the date ("oct 11", or "oct 11 · london"), the story (no box, no number). ⋯ top-right → menu → Delete (→ native confirmation "delete this object?").
+5. **Review:** close; centred as one group: cut-out that lifts off the page (shrinks, never crops, when the keyboard opens), name "Name it (optional)" (no auto keyboard), city chip, round retake + "Add to collection" pill.
+6. **Detail:** close; name (editable) and date ("oct 11 · london") on top; the carousel of objects in the middle; Share and Delete as 44px glass buttons below (Delete → native confirmation "Delete this object?"). Opens with the other tiles scattering, the object flying in and the name rising; closes by flying home.

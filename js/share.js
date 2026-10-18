@@ -5,8 +5,8 @@ import { showSnackbar } from './snackbar.js';
 
 /* ════════════════════════════════════════════════
    SHARE CARDS — story-sized images (1080×1920) drawn on a canvas
-   · one object: the cut-out on the hue glow with sparkles, its name, date,
-     city and story
+   · one object: the cut-out on the hue glow with sparkles, its name, date
+     and city
    · the collection: a "starter pack" of up to 9 objects, numbered 01., 02. …
    Both carry the wordmark. Native: written to the cache and handed to the
    Android share sheet. Browser: Web Share with files, else a download.
@@ -105,26 +105,6 @@ function text(ctx, str, x, y, { font, color, align = 'center', spacing = 0 }) {
   if ('letterSpacing' in ctx) ctx.letterSpacing = '0px';
 }
 
-// wraps to maxWidth, at most maxLines (the last one ends with …)
-function wrap(ctx, str, maxWidth, maxLines) {
-  const words = str.split(/\s+/).filter(Boolean);
-  const lines = [];
-  let line = '';
-  for (const w of words) {
-    const next = line ? `${line} ${w}` : w;
-    if (ctx.measureText(next).width <= maxWidth) { line = next; continue; }
-    lines.push(line); line = w;
-    if (lines.length === maxLines) break;
-  }
-  if (lines.length < maxLines && line) lines.push(line);
-  if (lines.length === maxLines && words.join(' ') !== lines.join(' ')) {
-    let last = lines[maxLines - 1];
-    while (ctx.measureText(`${last}…`).width > maxWidth && last.includes(' ')) last = last.slice(0, last.lastIndexOf(' '));
-    lines[maxLines - 1] = `${last}…`;
-  }
-  return lines;
-}
-
 function wordmark(ctx) {
   text(ctx, BRAND, W / 2, H - 150, { font: '800 52px "Bricolage Grotesque"', color: token('--color-text') });
   text(ctx, TAGLINE, W / 2, H - 98, { font: '400 32px "Instrument Sans"', color: token('--color-text-secondary') });
@@ -146,14 +126,6 @@ export async function objectCard(m) {
     y += 76;
   }
   text(ctx, copy.item.dateLine(m.date, m.city).toUpperCase(), W / 2, y, { font: '500 32px "Instrument Sans"', color: token('--color-text-secondary'), spacing: 6 });
-  if (m.note) {
-    ctx.font = '400 40px "Instrument Sans"';
-    y += 90;
-    for (const line of wrap(ctx, m.note, 840, 4)) {
-      text(ctx, line, W / 2, y, { font: '400 40px "Instrument Sans"', color: token('--color-text') });
-      y += 60;
-    }
-  }
   wordmark(ctx);
   return c;
 }

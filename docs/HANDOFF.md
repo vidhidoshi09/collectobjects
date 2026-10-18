@@ -22,11 +22,11 @@ Branch: `claude/blissful-hypatia-ww0fmk` (make it the repo's default branch so t
 
 ## 2. What the product is
 
-**collectobjects — for your trinkets.** A little home for your trinkets and keepsakes: snap something you love, it's cut out on your phone, and it keeps the story behind it.
+**collectobjects — for your trinkets.** A little home for your trinkets and keepsakes: snap something you love, it's cut out on your phone, and it joins your collection.
 
 - Android app (Capacitor: web UI + native Java plugins). iPhone app in testing (same web UI + Swift twins of the plugins in `ios/App/App/`, Apple Vision cut-out, iOS 17+). Web preview on Vercel.
 - **Cut-out:** Google **ML Kit Subject Segmentation**, on the device (`BackgroundRemoverPlugin.java`): confidence mask → soft edges, stray islands removed, cropped. Photos never leave the phone. Not available in browsers, so the web preview keeps the whole photo.
-- **Features (v1):** camera + gallery, cut-out reveal (lift, glow, sparkles, haptic), name + optional story + optional city (`PlacePlugin.java`: coarse location → Android Geocoder → city name only), collection grid (add tile first), close-up that tilts with a holographic sheen, ⋯ menu (Share, Delete with native confirm), share cards (one object / numbered "My collection" starter pack, 1080×1920, `js/share.js`), daily greeting toast, toasts with icons, on-screen boot error card (if the app fails to start it says why).
+- **Features (v1):** camera + gallery, cut-out reveal (lift, glow, sparkles, haptic), optional name + optional city (`PlacePlugin.java`: coarse location → Android Geocoder → city name only), collection grid (just the objects) with a Liquid Glass tab bar (Collection, Capture), close-up carousel (swipe with haptics, tilt + holographic sheen, Share and Delete with native confirm), share cards (one object / numbered "My collection" starter pack, 1080×1920, `js/share.js`), daily greeting toast, toasts with icons, on-screen boot error card (if the app fails to start it says why).
 - **Privacy:** no account, no ads, no analytics. Data lives in app storage (`objects.json` + `objects/`). Uninstall deletes everything.
 
 ## 3. Decisions (and why)
@@ -47,8 +47,8 @@ Branch: `claude/blissful-hypatia-ww0fmk` (make it the repo's default branch so t
 **Screens**
 - Empty: header + samples + "Start collecting" / "A little home for your trinkets and keepsakes." + dark + tile.
 - Grid: just the objects (no names or dates), newest first; a Liquid Glass tab bar floats at the bottom (Collection, Capture). The add tile only stays on the empty screen.
-- Save screen: centred group (object, name "Name it (optional)", no auto keyboard, story "What's the story? (optional)", city chip, retake + "Add to collection").
-- Close-up: name, "oct 11 · london", story; Share and ⋯ (Delete) top right, as glass buttons.
+- Save screen: centred group (object, name "Name it (optional)", no auto keyboard, city chip, retake + "Add to collection").
+- Close-up: a carousel of the collection: name and "oct 11 · london" on top, the object in the middle with its neighbours peeking in, swipe with a haptic tick; Share and Delete (asks first) as 44px glass buttons below. No story, no page dots. Opening: the other tiles scatter, the object flies in, the name rises.
 
 **Icon**
 - The "c into o" single line, paper white, tilted 40°, bottom-right, on a grainy burgundy wash with an orange glow and cream haze, plus a sparkle. Generated for adaptive (round/squircle/themed), legacy, Play (512). Many alternatives were tried (sparkle, flower "co", croissant, ribbon, dreamy/blurred, separate "c o"); this clean version was chosen.
@@ -101,7 +101,8 @@ In Android Studio: File → Sync Project with Gradle Files → Build → Clean P
 - Backup / export (zip to Drive).
 - "On this day" toast.
 - Camera framing guide ("one object, fully in frame").
-- Edit affordance on the close-up (pencil when the story is empty).
+- Edit affordance on the close-up (pencil when the name is empty).
+- Shake to tumble: shaking the phone drops every object into a pile you can drag around (with haptics on each landing). Mock-up first.
 - **Web cut-out (optional):** a Vercel function `api/remove-bg.js` that holds a remove.bg key in env `REMOVE_BG_API_KEY` (size `preview` is free), checks the request comes from our own site, posts `image_file_b64` to `https://api.remove.bg/v1.0/removebg`, and returns the PNG as base64; the web client calls it only when not native and quietly keeps the photo if it returns 404/501. The old remove.bg key is visible in git history (commit `d3e3c66`): revoke it in the remove.bg dashboard.
 - iPhone v1 (Capacitor) is built; to do: test on a real iPhone (cut-out, city, share, haptics, camera permission), then TestFlight ($99/year). Native v2 later: SwiftUI + Liquid Glass, Apple Vision cut-outs (`VNGenerateForegroundInstanceMaskRequest`), 3D scans with Object Capture on LiDAR iPhones.
 - Dark mode (same palette flipped: deep cola background, cream text, the same glow).
