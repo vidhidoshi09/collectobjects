@@ -7,7 +7,7 @@ import { reducedMotion } from './motion.js';
    nearest object (or the next one after a quick flick). Arrow keys work too.
    `onChange(index)` runs whenever a different object settles in the middle.
 ════════════════════════════════════════════════ */
-const STEP      = 0.78;  // distance between slides, as a share of a slide's width (neighbours peek)
+const STEP      = 0.92;  // distance between slides, as a share of a slide's width: neighbours just peek in at the edges, with a clear gap
 const SIDE      = 0.72;  // a neighbour's size
 const FADE      = 0.45;  // how much a neighbour fades
 const FLICK     = 0.35;  // px per ms: a flick this fast moves one object, however short
