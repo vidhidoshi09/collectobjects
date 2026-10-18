@@ -112,7 +112,7 @@ Identical everywhere (grid, empty state, review, detail):
 - **Poof** (delete): the object shrinks to 0.6, blurs and fades (260ms) before the close-up closes.
 - **Tab bar:** shrinks to its icons when you scroll down, labels come back when you scroll up.
 - **Haptics** (Android and iPhone, `Feel` plugin for the tumble: Core Haptics / amplitude): light on a tab, opening an object, the ⋯ menu, Share and the reveal; medium on Capture and the shutter; success on save; warning on delete.
-- **Shake to tumble:** a hard shake (3 jolts over 2.2 g within 0.8s) on the home screen drops the objects into a physics pile (Matter.js), each body the convex outline of its cut-out. Landing taps scale with impact and the object's weight (how much of the tile it fills); sharpness comes from its shape (thin or spiky = sharp, round and full = soft). Rumble on let-go, light tick on pick-up. Tidy up flies them home (520ms, slight overshoot).
+- **Shake to tumble:** a hard shake (3 jolts over 2.2 g within 0.8s) on the home screen drops the objects into a physics pile (Matter.js), each body the convex outline of its cut-out. Landing taps scale with impact and the object's weight (how much of the tile it fills); sharpness comes from its shape (thin or spiky = sharp, round and full = soft). Rumble on let-go, light tick on pick-up. Tidy up flies them home (520ms, slight overshoot). The film feel: time at 60%, gravity 0.0009, restitution 0.55, air friction 0.028, a 4.2s left-right sway and a soft hop every 0.9–2.2s; motion blur up to 1.6px with speed.
 - **Reduce motion:** arrival and drop become fades; no flight, poof, tilt, sheen or tumble.
 
 ---

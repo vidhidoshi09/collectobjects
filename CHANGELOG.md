@@ -4,6 +4,7 @@ What changed, when, and why. Newest first. (Formerly "Memories".)
 
 ## Shake to tumble, Core Haptics, motion that works on iPhone
 
+- **The film feel:** the pile runs in slow motion (60% speed, soft gravity), bounces more, drifts with a little air, sways gently and now and then one object does a soft hop, so it is never quite still; fast objects get a touch of motion blur.
 - **Shake to tumble** (home screen only): shake hard and every object falls into a heap with real physics (Matter.js), each shaped like its own cut-out. Drag, toss and stack them; tilting the phone rolls them around; **Tidy up** flies them back into the grid.
 - **Haptics worked out from each cut-out**, since we can't know the objects: fuller objects land heavier, thin or spiky ones feel sharp and clicky, round ones soft and dull. A rumble when the pile lets go, a tick when you pick one up.
 - **New native plugin `Feel`:** Core Haptics on iPhone (exact strength and sharpness per tap) and amplitude-controlled vibration on Android; Core Motion on iPhone.

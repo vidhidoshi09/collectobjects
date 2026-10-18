@@ -21,6 +21,14 @@ const SHAKE_WITHIN = 800; // …within this many ms
 const MAX_OBJECTS = 40;   // the newest ones tumble; a bigger pile gets slow
 const THUD_GAP_MS = 45;   // at most one landing tap this often; the strongest in the gap wins
 const WALL = 400;         // invisible wall thickness
+// The film feel: slow motion, soft gravity, bouncy and floaty, never quite still
+const TIME_SCALE  = 0.6;    // the world runs at 60% speed
+const GRAVITY     = 0.0009;
+const BODY = { restitution: 0.55, friction: 0.12, frictionStatic: 0.2, frictionAir: 0.028 };
+const SWAY        = 0.28;   // the pile drifts gently left and right…
+const SWAY_PERIOD = 4200;   // …over this many ms
+const HOP_EVERY   = [900, 2200]; // now and then one object does a soft hop (ms, min–max)
+const BLUR_SPEED  = 9;      // px per step at which motion blur peaks (1.6px)
 
 let scene = null; // { engine, layer, items, frame, stopTilt, mouse }
 
@@ -107,7 +115,8 @@ async function tumble() {
 
   const W = innerWidth, H = innerHeight;
   const floor = H - safeBottom() - 8;
-  const engine = Engine.create({ gravity: { x: 0, y: 1, scale: 0.0012 } });
+  const engine = Engine.create({ gravity: { x: 0, y: 1, scale: GRAVITY } });
+  engine.timing.timeScale = TIME_SCALE;
   Composite.add(engine.world, [
     Bodies.rectangle(W / 2, floor + WALL / 2, W * 3, WALL, { isStatic: true, label: 'wall' }),
     Bodies.rectangle(-WALL / 2, H / 2 - H, WALL, H * 4, { isStatic: true, label: 'wall' }),
@@ -131,7 +140,7 @@ async function tumble() {
     const cy = visible ? r.top + size / 2 : -size * (1 + (i % 6));
     const verts = feel.hull?.length >= 3 ? feel.hull.map(p => ({ x: (p.x - 0.5) * size, y: (p.y - 0.5) * size })) : null;
     const centre = verts ? Vertices.centre(verts) : { x: 0, y: 0 };
-    const opts = { restitution: 0.25, friction: 0.6, frictionAir: 0.012, density: 0.0012 * feel.weight };
+    const opts = { ...BODY, density: 0.0012 * feel.weight };
     const body = verts
       ? Bodies.fromVertices(cx + centre.x, cy + centre.y, [verts], opts)
       : Bodies.rectangle(cx, cy, size * 0.8, size * 0.8, opts);
@@ -170,17 +179,35 @@ async function tumble() {
 
   // tilting the phone rolls them around
   const stopTilt = onMotion(({ gamma }) => {
-    if (gamma != null) engine.gravity.x = clamp(Math.sin((gamma * Math.PI) / 180) * 1.2, -1, 1);
+    tiltX = gamma == null ? 0 : clamp(Math.sin((gamma * Math.PI) / 180) * 1.2, -1, 1);
   });
+  let tiltX = 0;
+
+  // now and then, one object (not the one in your hand) does a soft little hop
+  let hopAt = performance.now() + 1800;
+  const hop = now => {
+    if (now < hopAt) return;
+    hopAt = now + HOP_EVERY[0] + Math.random() * (HOP_EVERY[1] - HOP_EVERY[0]);
+    const free = items.filter(it => it.body !== grab.body && it.body.speed < 0.6);
+    const it = free[Math.floor(Math.random() * free.length)];
+    if (!it) return;
+    Body.setVelocity(it.body, { x: (Math.random() - 0.5) * 4, y: -(5 + Math.random() * 3.5) });
+    Body.setAngularVelocity(it.body, (Math.random() - 0.5) * 0.12);
+  };
 
   let last = performance.now();
   const step = now => {
+    engine.gravity.x = tiltX + SWAY * Math.sin((now / SWAY_PERIOD) * Math.PI * 2); // the slow sway
+    hop(now);
     Engine.update(engine, Math.min(now - last, 33));
     last = now;
     for (const it of items) {
-      const { position: p, angle } = it.body;
+      const { position: p, angle, speed } = it.body;
       const o = Vector.rotate(it.offset, angle); // the image's centre, from the body's centre of mass
       it.el.style.transform = `translate(${p.x + o.x - it.size / 2}px, ${p.y + o.y - it.size / 2}px) rotate(${angle}rad)`;
+      // a touch of motion blur while it moves fast, like film
+      const blur = Math.round(Math.min(speed / BLUR_SPEED, 1) * 16) / 10;
+      if (blur !== it.blur) { it.blur = blur; it.el.style.filter = blur ? `var(--sticker-filter) blur(${blur}px)` : ''; }
     }
     scene.frame = requestAnimationFrame(step);
   };
