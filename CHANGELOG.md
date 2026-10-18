@@ -33,6 +33,7 @@ What changed, when, and why. Newest first. (Formerly "Memories".)
 - **Haptics** on Android and iPhone: tabs, opening an object, ⋯, Share, Capture and the shutter, save and delete.
 - Fixed: the close-up's sheen looked for sample pictures in the wrong folder.
 - The close-up neighbours sit further away: just a hint of each peeks in at the edges.
+- Shake to tumble also works on Android phones without a linear-acceleration sensor (it reads the jolt from the gravity-included reading instead).
 - Fixed: Tidy up did nothing on phones (the pile layer swallowed taps); the button now sits above it.
 
 ## Tab bar, Liquid Glass, objects that shine

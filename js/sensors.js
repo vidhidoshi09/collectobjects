@@ -14,9 +14,18 @@ const native = Capacitor.getPlatform() === 'ios';
 let running = false, last = {}, nativeHandle = null;
 
 const onOrientation = e => { last = { ...last, beta: e.beta, gamma: e.gamma }; emit(last); };
+// Acceleration without gravity. Some Android phones have no linear-acceleration sensor and only
+// report it *with* gravity: then the jolt is how far the total strays from gravity (9.81 m/s²).
+const G = 9.81;
 const onDeviceMotion = e => {
   const a = e.acceleration;
-  if (a) { last = { ...last, ax: a.x, ay: a.y, az: a.z }; emit(last); }
+  if (a && a.x != null) { last = { ...last, ax: a.x, ay: a.y, az: a.z }; emit(last); return; }
+  const g = e.accelerationIncludingGravity;
+  if (g && g.x != null) {
+    const jolt = Math.abs(Math.hypot(g.x, g.y, g.z) - G);
+    last = { ...last, ax: jolt, ay: 0, az: 0 }; // same magnitude the shake check reads
+    emit(last);
+  }
 };
 
 async function start() {
