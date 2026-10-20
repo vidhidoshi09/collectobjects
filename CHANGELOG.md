@@ -2,6 +2,14 @@
 
 What changed, when, and why. Newest first. (Formerly "Memories".)
 
+## 1.1.0: store material, one object per cut-out
+
+- **Version 1.1.0** (Android versionCode 2, iOS build 2).
+- **Fixed: other objects showed up on the save screen.** The cut-out kept everything the model found (a mug next to the phone you photographed). Now it keeps only the main object: the biggest one, favouring the middle of the frame (Vision instances on iPhone; on Android, detached pieces stay only if they touch the main object's box).
+- **Share card:** the soft hue wash replaces the dots, matching the app.
+- **Store:** five new screenshots (collection, save with suggestions, close-up with Share and Delete, the tumbled pile, a share card), a rewritten listing in Sentence case, and an updated privacy policy (on-device name suggestions, motion used in the moment only, iPhone) and Data safety notes.
+- **Privacy policy page:** `npm run build` turns `store/privacy-policy.md` into `/privacy.html`, the public URL the stores ask for.
+
 ## Name suggestions, native buttons
 
 - **Name suggestions:** after the cut-out, up to three small glass chips under the name ("Suggestions") suggest what it is, worked out on the phone (Apple Vision image classification on iPhone, Google ML Kit image labeling on Android; offline, private). Tap one to use it; typing your own hides them. Generic labels ("material", "indoor"…) are filtered out.

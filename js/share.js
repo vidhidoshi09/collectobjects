@@ -38,20 +38,22 @@ function canvas() {
   return [c, c.getContext('2d')];
 }
 
-// page colour + the dot grid, tinted like the app
+// page colour + the soft hue wash, like the app: orange light from the top, a hint of maroon at the bottom
 function paper(ctx) {
   ctx.fillStyle = token('--color-bg');
   ctx.fillRect(0, 0, W, H);
-  const grad = ctx.createLinearGradient(0, 0, W, H);
-  grad.addColorStop(0, mix(token('--hue'), token('--color-dot'), 0.3));
-  grad.addColorStop(1, mix(token('--hue-2'), token('--color-dot'), 0.3));
-  ctx.fillStyle = grad;
-  const step = 56;
-  for (let y = step / 2; y < H; y += step) {
-    for (let x = step / 2; x < W; x += step) {
-      ctx.beginPath(); ctx.arc(x, y, 2, 0, Math.PI * 2); ctx.fill();
-    }
-  }
+  const wash = (cx, cy, rx, ry, color, alpha) => {
+    ctx.save();
+    ctx.translate(cx, cy); ctx.scale(rx / ry, 1);
+    const g = ctx.createRadialGradient(0, 0, 0, 0, 0, ry);
+    g.addColorStop(0, mix(color, token('--color-bg'), alpha));
+    g.addColorStop(1, clear(token('--color-bg')));
+    ctx.fillStyle = g;
+    ctx.fillRect(-ry, -ry, ry * 2, ry * 2);
+    ctx.restore();
+  };
+  wash(W / 2, 0, W * 1.2, H * 0.6, token('--hue'), 0.16);
+  wash(W / 2, H, W, H * 0.5, token('--hue-2'), 0.1);
 }
 
 // the same colour at zero alpha ("rgb(r g b / a)" or "#rrggbb")

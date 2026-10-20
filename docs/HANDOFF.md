@@ -89,10 +89,10 @@ In Android Studio: File → Sync Project with Gradle Files → Build → Clean P
 1. ☐ Test the APK on a real phone end to end (cut-out, city, share sheet into Instagram story, haptics, back button). The blank-screen report from earlier was never diagnosed; the error card will show the cause if it recurs.
 2. ☐ Play Console account ($25 + identity check; can take days, start early).
 3. ☐ Upload key + `npm run release`.
-4. ☐ Host the privacy policy (`store/privacy-policy.md`; fill name, email, date) on a public page (Notion/Google Sites, or GitHub Pages while the repo is public).
-5. ☐ Store listing from `store/listing.md`; screenshots `store/screenshots/` (plan to redo: 4 images, a title image with objects + logo and no phone, fewer teapots, no "sticker" wording; references: CapWords' scattered objects, Trinket's "Keep the little things"); feature graphic `store/feature-graphic.png`.
+4. ◐ Privacy policy: `npm run build` publishes `store/privacy-policy.md` as https://collectobjects.vercel.app/privacy.html (live once merged to Production). Still to fill: name, support email, date.
+5. ◐ Store listing rewritten for 1.1 (`store/listing.md`, Sentence case, no "sticker" or story); five new screenshots in `store/screenshots/` (collection, save, close-up, shake, share; composed from browser captures, swap in real-phone captures later). Earlier idea still open: a title image with objects + logo and no phone (refs: CapWords' scattered objects, Trinket's "Keep the little things"). Feature graphic `store/feature-graphic.png` still shows dots.
 6. ☐ Data safety (`store/data-safety.md`; verify the ML Kit and Geocoder notes against Google's guidance).
-7. ☐ Closed test: 12+ testers for 14 days, then apply for production.
+7. ☐ Closed test: 12+ testers opted in for 14 days in a row, then apply for production. Invite by email list or Google Group from Play Console → Testing → Closed testing; testers join through the opt-in link and keep the app installed.
 8. ☐ Launch posts: Product Hunt/Peerlist, short videos ("my desk starter pack" made with the share card), and the portfolio case study.
 
 ## 6. Backlog

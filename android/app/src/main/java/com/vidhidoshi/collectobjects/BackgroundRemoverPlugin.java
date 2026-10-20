@@ -185,7 +185,7 @@ public class BackgroundRemoverPlugin extends Plugin {
                 executor.execute(() -> {
                     FloatBuffer mask = result.getForegroundConfidenceMask();
                     Bitmap foreground = mask == null ? null : softCutout(bitmap, mask);
-                    Bitmap cropped = foreground == null ? null : cropToContent(removeSmallIslands(foreground));
+                    Bitmap cropped = foreground == null ? null : cropToContent(keepMainObject(foreground));
                     if (cropped == null) {
                         call.reject("No object found in the photo");
                         return;
@@ -229,11 +229,14 @@ public class BackgroundRemoverPlugin extends Plugin {
     }
 
     /**
-     * Keeps the main object: clears detached pieces smaller than 8% of the largest
-     * one (e.g. a stray bit of background the model kept), which would otherwise
-     * widen the crop and shrink the object in its tile.
+     * Keeps the main object only. ML Kit's foreground mask holds every object it
+     * found, so a mug next to the phone you photographed would come along. The main
+     * piece is the biggest, favouring the middle of the frame; other pieces stay only
+     * if they're at least 8% of its size and touch its box (a detached part of the
+     * same object, like a key's ring). Everything else, including stray bits of
+     * background that would widen the crop, is cleared.
      */
-    private static Bitmap removeSmallIslands(Bitmap src) {
+    private static Bitmap keepMainObject(Bitmap src) {
         int w = src.getWidth();
         int h = src.getHeight();
         int[] pixels = new int[w * h];
@@ -241,32 +244,47 @@ public class BackgroundRemoverPlugin extends Plugin {
 
         int[] label = new int[w * h]; // 0 = unvisited/transparent, n = component id
         java.util.ArrayList<Integer> sizes = new java.util.ArrayList<>();
-        sizes.add(0);
+        java.util.ArrayList<Double> scores = new java.util.ArrayList<>();
+        java.util.ArrayList<int[]> boxes = new java.util.ArrayList<>(); // minX, minY, maxX, maxY
+        sizes.add(0); scores.add(0.0); boxes.add(null);
         int[] stack = new int[w * h];
         for (int start = 0; start < pixels.length; start++) {
             if (label[start] != 0 || (pixels[start] >>> 24) <= 16) continue;
             int id = sizes.size();
             int size = 0, top = 0;
+            double score = 0;
+            int[] box = { w, h, -1, -1 };
             stack[top++] = start;
             label[start] = id;
             while (top > 0) {
                 int i = stack[--top];
                 size++;
                 int x = i % w, y = i / w;
+                double dx = (x / (double) w - 0.5) * 2, dy = (y / (double) h - 0.5) * 2;
+                score += 1 - 0.6 * Math.min(1, Math.sqrt(dx * dx + dy * dy) / 1.414); // 0 in the middle, 1 in a corner
+                box[0] = Math.min(box[0], x); box[1] = Math.min(box[1], y);
+                box[2] = Math.max(box[2], x); box[3] = Math.max(box[3], y);
                 if (x > 0) top = visit(i - 1, id, pixels, label, stack, top);
                 if (x < w - 1) top = visit(i + 1, id, pixels, label, stack, top);
                 if (y > 0) top = visit(i - w, id, pixels, label, stack, top);
                 if (y < h - 1) top = visit(i + w, id, pixels, label, stack, top);
             }
-            sizes.add(size);
+            sizes.add(size); scores.add(score); boxes.add(box);
         }
         if (sizes.size() <= 2) return src; // zero or one piece: nothing to clean
 
-        int largest = 0;
-        for (int size : sizes) largest = Math.max(largest, size);
-        int minKeep = Math.round(largest * 0.08f);
+        int main = 1;
+        for (int id = 2; id < sizes.size(); id++) if (scores.get(id) > scores.get(main)) main = id;
+        int[] m = boxes.get(main);
+        int minKeep = Math.round(sizes.get(main) * 0.08f);
+        boolean[] keep = new boolean[sizes.size()];
+        for (int id = 1; id < sizes.size(); id++) {
+            int[] b = boxes.get(id);
+            boolean touches = b[0] <= m[2] && b[2] >= m[0] && b[1] <= m[3] && b[3] >= m[1];
+            keep[id] = id == main || (sizes.get(id) >= minKeep && touches);
+        }
         for (int i = 0; i < pixels.length; i++) {
-            if (label[i] != 0 && sizes.get(label[i]) < minKeep) pixels[i] = 0;
+            if (label[i] != 0 && !keep[label[i]]) pixels[i] = 0;
         }
         Bitmap out = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         out.setPixels(pixels, 0, w, 0, 0, w, h);

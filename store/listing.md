@@ -10,7 +10,7 @@
 | In-app purchases | No |
 | Target audience | 13+ |
 | Contact email | _your support email_ |
-| Privacy policy URL | _public URL where `privacy-policy.md` is hosted_ |
+| Privacy policy URL | https://collectobjects.vercel.app/privacy.html (built from `privacy-policy.md`; live once merged to Production) |
 
 > The lockup is **collectobjects — for your trinkets**. Play allows 30 characters for the
 > app name, so the name is the wordmark alone (14); the tagline lives on the feature
@@ -18,64 +18,75 @@
 
 ## Short description (≤80)
 
-every little thing has a story. snap it, cut it out, keep it.
+Snap the things you keep. They cut themselves out and join your collection.
 
 ## Full description (≤4000)
 
-collectobjects — for your trinkets.
+collectobjects, for your trinkets.
 
-a little archive of the things you keep.
+A little home for the things you keep.
 
-snap something that matters to you: the key to your first flat, a ticket stub,
-grandma's teapot, the rock from that one beach. it's cut out from its
-background like a sticker and added to your collection.
+Snap something that matters to you: the key to your first flat, a ticket stub,
+grandma's teapot, the rock from that one beach. It's cut out from its background
+right on your phone and added to your collection.
 
-every little thing has a story.
+Just your objects
+Your collection shows the objects alone, on a soft warm background. No labels,
+no clutter. Collection and Capture float at the bottom in a glass tab bar.
 
-— keep the day you found it
-each object keeps its date and its story.
-your collection grows one find at a time.
+Names, if you want them
+After the cut-out, a few names are suggested for you to tap. They're worked out
+on your phone. Naming is optional: leave it blank and the object simply stands
+on its own.
 
-— write its story
-open any object to see its name, the day you found it, and the story
-behind it. where it came from, who gave it to you, why you can't throw it away.
+The close-up
+Tap an object and it flies open while the rest step aside. Swipe left and right
+to visit the others, with a gentle tick for each one. Share or delete right from
+there; delete always asks first.
 
-— watch it come alive
-new cut-outs lift off the page. saved ones drop into your collection. tilt your
-phone and each object tilts with you, with a soft holographic shine.
+Shake it up
+Shake your phone hard on the home screen and your whole collection tumbles into
+a slow, bouncy pile. Drag them, toss them, tilt your phone to roll them around,
+then tidy up. Each object feels a little different when it lands.
 
-— from your camera or your gallery
-snap something new, or bring in photos you already have.
+Share your favourites
+Turn any object into a card with its name, date and city, and send it to friends.
 
-— private by design
-• cutting out happens on your phone. your photos are never uploaded.
-• no account, no sign-up, no ads, no tracking.
-• your collection lives on your device.
+From your camera or your gallery
+Snap something new, or bring in photos you already have.
 
-— just your things
-no feeds, no likes, no followers. just your things and the stories that come with them.
+Private by design
+• Cutting out and name suggestions happen on your phone. Your photos are never uploaded.
+• No account, no sign-up, no ads, no tracking.
+• Your collection lives on your device.
+
+Just your things
+No feeds, no likes, no followers. Just your things.
 
 ## Graphics
 
 | Asset | File | Spec |
 |---|---|---|
 | App icon | `store/icon-512.png` (also `assets/logo/`) | 512×512 PNG: the "c into o" line in paper (`#FAF9F7`), tilted 40° toward the bottom right so it reads "co", on a grainy burgundy wash (`#8E1B2D`) with an orange (`#F5A742`) glow and a cream haze, plus a sparkle |
-| Feature graphic | `store/feature-graphic.png` | 1024×500 PNG: icon + "collectobjects" + "for your trinkets" on the page colour with tinted dots, croissant / teapot / duck stickers on the hue glow |
-| Phone screenshots | `store/screenshots/01–05` | 5 × 1080×1920 PNG (9:16): headline + the app in a phone frame, telling the story: collection → snap → sticker → story → share |
+| Feature graphic | `store/feature-graphic.png` | 1024×500 PNG: icon + "collectobjects" + "for your trinkets" on the page colour, croissant / teapot / duck cut-outs on the hue glow |
+| Phone screenshots | `store/screenshots/01–05` | 5 × 1080×1920 PNG (9:16): headline + the app in a phone frame, telling the story: collection → save → close-up → shake → share |
 
 Screenshots in `store/screenshots/` (upload in this order):
 
-| # | Headline | Shows |
-|---|---|---|
-| 1 | Keep the little things | Collection |
-| 2 | Point at anything you love | Camera |
-| 3 | It becomes a sticker | Save screen with the cut-out |
-| 4 | Keep the story behind it | Close-up with its story |
-| 5 | Share your favourites | A share card |
+| # | File | Headline | Shows |
+|---|---|---|---|
+| 1 | `01-collection.png` | Keep the little things | Collection under the glass tab bar |
+| 2 | `02-save.png` | It cuts itself out | Save screen with name suggestions |
+| 3 | `03-closeup.png` | Swipe through them | Close-up carousel with Share and Delete |
+| 4 | `04-shake.png` | Give it a shake | The tumbled pile with Tidy up |
+| 5 | `05-share.png` | Share your favourites | A share card |
+
+Composed from browser captures (no on-device cut-out or city in the preview). Real-phone
+captures can replace the screens later; keep the frame, headlines and order.
 
 Earlier suggestions, for real-phone screenshots later:
 1. Grid ("collection") with 6–8 real cut-outs and their dates
-2. Detail view: an object with its name, date and story
-3. Review screen as a new cut-out lifts off the page ("what is it?")
-4. Empty state ("start collecting")
-5. Processing ("framing it…")
+2. Close-up: an object with its name and date
+3. Save screen as a new cut-out lifts off the page, with suggestions
+4. Empty state
+5. The tumbled pile, mid-shake

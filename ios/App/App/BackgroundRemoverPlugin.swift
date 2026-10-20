@@ -6,7 +6,8 @@ import Vision
  * Cuts the main object out of a photo on the device with Apple Vision's
  * foreground mask (the same model behind "lift subject" in Photos, iOS 17+).
  * No network API is involved. The iOS twin of BackgroundRemoverPlugin.java:
- * soft edges, stray islands removed, cropped with a small margin.
+ * only the main object (the biggest, favouring the centre), soft edges, stray
+ * islands removed, cropped with a small margin.
  *
  * JS: BackgroundRemover.removeBackground({ image: <base64 JPEG/PNG> }) → { image: <base64 PNG> }
  *     BackgroundRemover.suggestNames({ image }) → { names: [string] }  (Vision image classification, on the device)
@@ -89,8 +90,9 @@ public class BackgroundRemoverPlugin: CAPPlugin, CAPBridgedPlugin {
         let request = VNGenerateForegroundInstanceMaskRequest()
         try handler.perform([request])
         guard let observation = request.results?.first, !observation.allInstances.isEmpty else { return nil }
-        // every object Vision found, at the photo's size; removeSmallIslands keeps the main one(s)
-        let mask = try observation.generateScaledMaskForImage(forInstances: observation.allInstances, from: handler)
+        // only the main object, so the mug next to it doesn't come along; removeSmallIslands tidies stray bits
+        let main = mainInstance(observation.instanceMask, among: observation.allInstances)
+        let mask = try observation.generateScaledMaskForImage(forInstances: [main], from: handler)
 
         let w = cgImage.width, h = cgImage.height
         // RGBA, premultiplied, rows top to bottom (like Vision's mask)
@@ -106,6 +108,28 @@ public class BackgroundRemoverPlugin: CAPPlugin, CAPBridgedPlugin {
         guard let box = contentBox(pixels, stride: stride, width: w, height: h),
               let cropped = ctx.makeImage()?.cropping(to: box) else { return nil }
         return UIImage(cgImage: cropped).pngData()
+    }
+
+    /// The object the photo is of: the biggest one, favouring the middle of the frame
+    /// (a large object at the edge loses to a slightly smaller one in the centre).
+    /// `labels` holds one instance number per pixel, 0 for background.
+    private static func mainInstance(_ labels: CVPixelBuffer, among instances: IndexSet) -> Int {
+        CVPixelBufferLockBaseAddress(labels, .readOnly)
+        defer { CVPixelBufferUnlockBaseAddress(labels, .readOnly) }
+        guard instances.count > 1, let base = CVPixelBufferGetBaseAddress(labels) else { return instances.first ?? 1 }
+        let w = CVPixelBufferGetWidth(labels), h = CVPixelBufferGetHeight(labels)
+        let rowBytes = CVPixelBufferGetBytesPerRow(labels)
+        var score = [Int: Double]()
+        for y in 0..<h {
+            let row = base.advanced(by: y * rowBytes).assumingMemoryBound(to: UInt8.self)
+            let dy = (Double(y) / Double(h) - 0.5) * 2
+            for x in 0..<w where row[x] != 0 {
+                let dx = (Double(x) / Double(w) - 0.5) * 2
+                let d = min(1, (dx * dx + dy * dy).squareRoot() / 1.414) // 0 in the middle, 1 in a corner
+                score[Int(row[x]), default: 0] += 1 - 0.6 * d
+            }
+        }
+        return score.filter { instances.contains($0.key) }.max { $0.value < $1.value }?.key ?? instances.first ?? 1
     }
 
     /// Alpha from Vision's per-pixel confidence: below LOW is background, above HIGH
